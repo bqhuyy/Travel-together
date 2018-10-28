@@ -18,7 +18,7 @@ public class MainActivity extends AppCompatActivity {
         btn_Note.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent noteIntent = new Intent(MainActivity.this, Note_MainActivity.class );
+                Intent noteIntent = new Intent(MainActivity.this, Note_Main_Activity.class );
                 startActivity(noteIntent);
             }
         });
