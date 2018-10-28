@@ -16,7 +16,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Note_MainActivity"></activity>
+        <activity android:name=".Note_Main_Activity"></activity>
+        <activity android:name=".Note_AddNote_Activity"></activity>
     </application>
 
 </manifest>
