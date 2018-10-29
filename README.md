@@ -8,7 +8,7 @@ implementation 'com.android.volley:volley:1.1.1'
 ```
   
 - Expandable recylerview  
-(https://github.com/thoughtbot/expandable-recycler-view)  
+[Visit here](https://github.com/thoughtbot/expandable-recycler-view)  
 ```
 implementation 'com.thoughtbot:expandablerecyclerview:1.3'
 ```
