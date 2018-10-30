@@ -87,4 +87,7 @@
     <string name="edit_account">Edit Account</string>
     <string name="username">Username</string>
     <string name="save">Save</string>
+    <string name="police">Police</string>
+    <string name="ambulance">Ambulance</string>
+    <string name="firefighter">Firefighter</string>
 </resources>
