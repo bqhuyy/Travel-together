@@ -2,7 +2,6 @@ package cs300.apcs04.traveltogether;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -17,7 +16,6 @@ import android.view.View;
 
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.orm.SugarContext;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -30,17 +28,19 @@ public class Note_Main_Activity extends AppCompatActivity {
     FloatingActionButton fab;
 
     NotesAdapter adapter;
-    List<Note> notes = new ArrayList<>();
+    List<Note> list_of_notes = new ArrayList<>();
     FirebaseDatabase database = FirebaseDatabase.getInstance();
     DatabaseReference myRef = database.getReference("note");
 
-    long initialCount;
-    int modifyPos = -1;
-
+    //long initialCount;
+    //int modifyPos = -1;
+    Date tempDate;
+    String tempID;
+    final static int REQUEST_CODE_MODIFY = 1234;
+    int callback = 0;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        SugarContext.init(this);
         setContentView(R.layout.activity_note_main);
         Log.d("Main", "onCreate");
         recyclerView = findViewById(R.id.main_list);
@@ -51,21 +51,19 @@ public class Note_Main_Activity extends AppCompatActivity {
         gridLayoutManager.setGapStrategy(StaggeredGridLayoutManager.GAP_HANDLING_MOVE_ITEMS_BETWEEN_SPANS);
 
         recyclerView.setLayoutManager(gridLayoutManager);
-        initialCount = Note.count(Note.class);
 
-        if (savedInstanceState != null)
-            modifyPos = savedInstanceState.getInt("modify");
+        list_of_notes = new ArrayList<>();
+        adapter = new NotesAdapter(Note_Main_Activity.this, list_of_notes);
+        recyclerView.setAdapter(adapter);
 
-        if (initialCount >= 0){
-            notes = Note.listAll(Note.class);
-            adapter = new NotesAdapter(Note_Main_Activity.this, notes);
-            recyclerView.setAdapter(adapter);
-            if (notes.isEmpty())
-                Snackbar.make(recyclerView, "No notes added.", Snackbar.LENGTH_LONG).show();
-        } else {
-            notes = new ArrayList<>();
-            adapter = new NotesAdapter(Note_Main_Activity.this, notes);
-        }
+        // Re****************************ad data in firebase and insert to list
+
+        //if (savedInstanceState != null)
+            //modifyPos = savedInstanceState.getInt("modify");
+
+        if (list_of_notes.isEmpty())
+            Snackbar.make(recyclerView, "No list_of_notes added.", Snackbar.LENGTH_LONG).show();
+
 
 
         // Floating point action button
@@ -88,22 +86,21 @@ public class Note_Main_Activity extends AppCompatActivity {
             public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int i) {
                 //remove swiped item from list and notify the RecyclerView
                 final int position = viewHolder.getAdapterPosition();
-                final Note note =notes.get(viewHolder.getAdapterPosition());
-                notes.remove(viewHolder.getAdapterPosition());
+                final Note note = list_of_notes.get(viewHolder.getAdapterPosition());
+                list_of_notes.remove(viewHolder.getAdapterPosition());
                 adapter.notifyItemRemoved(position);
 
-                note.delete();
-                initialCount -= 1;
+                // remove on firease*********************************
+                if ()
 
                 Snackbar.make(recyclerView, "Note deleted.", Snackbar.LENGTH_SHORT)
                         .setAction("UNDO", new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
                                 //note.save();
-                                myRef.child(note.GetAnoteID()).setValue(note);
-                                notes.add(position, note);
+                                myRef.child(note.getNoteID()).setValue(note);
+                                list_of_notes.add(position, note);
                                 adapter.notifyItemInserted(position);
-                                initialCount += 1;
                             }
                         }).show();
             }
@@ -118,47 +115,59 @@ public class Note_Main_Activity extends AppCompatActivity {
             public void onItemClick(View view, int position) {
 
                 Log.d("Main", "click");
+                Note tempNote = list_of_notes.get(position);
+                tempDate = tempNote.getTime();
+                tempID = tempNote.getNoteID();
 
                 Intent i = new Intent(Note_Main_Activity.this, Note_AddNote_Activity.class);
                 i.putExtra("isEditing", true);
-                i.putExtra("note_title", notes.get(position).title);
-                i.putExtra("note", notes.get(position).note);
-                i.putExtra("note_time", notes.get(position).time);
+                i.putExtra("note_title", tempNote.getTitle());
+                i.putExtra("note_description", tempNote.getDescription());
+                i.putExtra("note_ID", tempNote.getNoteID());
 
-                modifyPos = position;
-
-                startActivity(i);
+                startActivityForResult(i, REQUEST_CODE_MODIFY);
             }
         });
     }
 
     @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putInt("modify", modifyPos);
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == REQUEST_CODE_MODIFY && resultCode == RESULT_OK){
+            callback = data.getIntExtra("callback", 0);
+        }
     }
 
     @Override
     protected void onResume(){
         super.onResume();
-        final long newCount = Note.count(Note.class);
-        Log.d("SIZE", "onResume: " + notes.size());
-        if (newCount > initialCount){
+        //final long newCount = Note.count(Note.class);
+        Log.d("SIZE", "onResume: " + list_of_notes.size());
+        Intent i = new Intent();
+        callback = i.getIntExtra("callback", 0);
+        if (callback == 2){
             //a note is added
             Log.d("Main", "Adding new note");
 
+            Note newNote = (Note) i.getSerializableExtra("NewNote");
             // Just load the last added note (new)
-            Note note = Note.last(Note.class);
+            list_of_notes.add(newNote);
 
-           // notes.add(note);
-            adapter.notifyItemInserted((int) newCount);
-
-            initialCount = newCount;
+           // list_of_notes.add(note);
+            adapter.notifyDataSetChanged();
         }
 
-        if (modifyPos != -1){
-            notes.set(modifyPos, Note.listAll(Note.class).get(modifyPos));
-            adapter.notifyItemChanged(modifyPos);
+        if (callback == 1){
+            //list_of_notes.set(modifyPos, Note.listAll(Note.class).get(modifyPos));
+            Note newnote = null;
+            for(Note tmpNote : list_of_notes){
+                if(tmpNote.getNoteID().equals(tempID) && tempDate.compareTo(tmpNote.getTime()) == 0){
+                    newnote = tmpNote;
+                    break;
+                }
+            }
+            list_of_notes.remove(newnote);
+            adapter.notifyDataSetChanged();
         }
     }
 

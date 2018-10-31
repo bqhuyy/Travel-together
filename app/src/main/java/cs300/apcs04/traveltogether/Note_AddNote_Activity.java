@@ -1,5 +1,6 @@
 package cs300.apcs04.traveltogether;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -12,15 +13,13 @@ import android.widget.EditText;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-import java.util.List;
-
 public class Note_AddNote_Activity extends AppCompatActivity {
     Toolbar toolbar;
     FloatingActionButton fab;
 
     EditText etTitle, etDesc;
 
-    String title, note;
+    String title, noteID, description;
     long time;
 
     boolean editingNote;
@@ -32,7 +31,7 @@ public class Note_AddNote_Activity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_note);
 
-        toolbar = (Toolbar) findViewById(R.id.addnote_toolbar);
+        toolbar = findViewById(R.id.addnote_toolbar);
         setSupportActionBar(toolbar);
         toolbar.setNavigationIcon(R.drawable.ic_clear_24dp);
         getSupportActionBar().setTitle("Add new note");
@@ -53,11 +52,10 @@ public class Note_AddNote_Activity extends AppCompatActivity {
         editingNote = getIntent().getBooleanExtra("isEditing", false);
         if (editingNote){
             title = getIntent().getStringExtra("note_title");
-            note = getIntent().getStringExtra("note");
-            time = getIntent().getLongExtra("note_time", 0);
-
+            description = getIntent().getStringExtra("note_description");
+            noteID = getIntent().getStringExtra("note_ID");
             etTitle.setText(title);
-            etDesc.setText(note);
+            etDesc.setText(description);
         }
 
         fab.setOnClickListener(new View.OnClickListener() {
@@ -66,29 +64,29 @@ public class Note_AddNote_Activity extends AppCompatActivity {
                 // Add note to Database
                 String newTitle = etTitle.getText().toString();
                 String newDesc = etDesc.getText().toString();
-                long newTime = System.currentTimeMillis();
-
+                //long newTime = System.currentTimeMillis();
+                int callback = 0;
+                Intent data = new Intent(Note_AddNote_Activity.this, Note_Main_Activity.class);
                 //TO DO: Check if note exists before saving
                 if (!editingNote){
-                    Log.d("Note", "Saving");
-                    Note note = new Note(newTitle, newDesc, newTime);
-                    //note.save();
-                    myRef.child(note.GetAnoteID()).setValue(note);
-
+                    Log.d("Note", "Saving new note");
+                    Note note = new Note(newTitle, newDesc);
+                    myRef.child(note.getNoteID()).setValue(note);
+                    data.putExtra("NewNote", note);
+                    callback = 2;
                 } else {
-                    Log.d("Note", "Updating");
-                    List<Note> notes = Note.find(Note.class, "title = ?", title);
-                    if (notes.size() > 0) {
-
-                        Note note = notes.get(0);
-                        Log.d("got note", "note: " + note.title);
-                        note.title = newTitle;
-                        note.note = newDesc;
-                        note.time = newTime;
-                        //note.save();
-                        myRef.child(note.GetAnoteID()).setValue(note);
+                    Log.d("Note", "Updating a note");
+                    if (!(newTitle.equals(title) && newDesc.equals(description))){
+                        Note newNote = new Note(newTitle, newDesc, noteID);
+                        myRef.child(noteID).setValue(newNote);
+                        callback = 1;
+                        data.putExtra("NewNote", newNote);
                     }
+
                 }
+
+                data.putExtra("callback", callback);
+                setResult(RESULT_OK, data);
                 finish();
             }
         });

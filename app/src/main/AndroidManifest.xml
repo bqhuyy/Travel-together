@@ -20,18 +20,6 @@
         </activity>
         <activity android:name=".Note_Main_Activity"></activity>
         <activity android:name=".Note_AddNote_Activity"></activity>
-        <meta-data
-            android:name="DATABASE"
-            android:value="notes.db" />
-        <meta-data
-            android:name="VERSION"
-            android:value="1" />
-        <meta-data
-            android:name="QUERY_LOG"
-            android:value="true" />
-        <meta-data
-            android:name="DOMAIN_PACKAGE_NAME"
-            android:value="cs300.apcs04.traveltogether" />
     </application>
 
 </manifest>

@@ -1,48 +1,40 @@
 package cs300.apcs04.traveltogether;
 
-import com.orm.SugarRecord;
-
+import java.io.Serializable;
+import java.util.Date;
 import java.util.UUID;
 
-public class Note extends SugarRecord  {
-    String title, note, AnoteID;
-    long time;
+public class Note implements  Serializable {
+    private String title, description, noteID;
+    private Date time;
 
-    public Note() {
-    }
+    //public Note() {}
 
-    public String GetAnoteID(){
-        return this.AnoteID;
-    }
+    public String getNoteID(){ return this.noteID; }
 
-    public Note(String title, String note, long time) {
+    public Note(String title, String description) {
         this.title = title;
-        this.note = note;
-        this.time = time;
-        this.AnoteID = UUID.randomUUID().toString();
+        this.description = description;
+        this.time = new Date();
+        this.noteID = UUID.randomUUID().toString();
     }
 
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
+    public Note(String title, String description, String noteID) {
         this.title = title;
+        this.description = description;
+        this.noteID = noteID;
+        this.time = new Date();
     }
 
-    public String getNote() {
-        return note;
-    }
+    public String getTitle() { return this.title; }
 
-    public void setNote(String note) {
-        this.note = note;
-    }
+    public void setTitle(String title) { this.title = title; }
 
-    public long getTime() {
-        return time;
-    }
+    public String getDescription() { return this.description; }
 
-    public void setTime(long time) {
-        this.time = time;
-    }
+    public void setDescription(String description) { this.description = description; }
+
+    public Date getTime() { return time; }
+
+    public void setTime(Date time) { this.time = time; }
 }
