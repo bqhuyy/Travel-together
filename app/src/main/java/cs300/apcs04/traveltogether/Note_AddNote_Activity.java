@@ -9,6 +9,9 @@ import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 import java.util.List;
 
 public class Note_AddNote_Activity extends AppCompatActivity {
@@ -21,6 +24,8 @@ public class Note_AddNote_Activity extends AppCompatActivity {
     long time;
 
     boolean editingNote;
+    FirebaseDatabase database = FirebaseDatabase.getInstance();
+    DatabaseReference myRef = database.getReference("note");
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -67,7 +72,9 @@ public class Note_AddNote_Activity extends AppCompatActivity {
                 if (!editingNote){
                     Log.d("Note", "Saving");
                     Note note = new Note(newTitle, newDesc, newTime);
-                    note.save();
+                    //note.save();
+                    myRef.child(note.GetAnoteID()).setValue(note);
+
                 } else {
                     Log.d("Note", "Updating");
                     List<Note> notes = Note.find(Note.class, "title = ?", title);
@@ -78,7 +85,8 @@ public class Note_AddNote_Activity extends AppCompatActivity {
                         note.title = newTitle;
                         note.note = newDesc;
                         note.time = newTime;
-                        note.save();
+                        //note.save();
+                        myRef.child(note.GetAnoteID()).setValue(note);
                     }
                 }
                 finish();

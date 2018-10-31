@@ -2,18 +2,24 @@ package cs300.apcs04.traveltogether;
 
 import com.orm.SugarRecord;
 
+import java.util.UUID;
+
 public class Note extends SugarRecord  {
-    String title, note;
+    String title, note, AnoteID;
     long time;
 
     public Note() {
     }
 
+    public String GetAnoteID(){
+        return this.AnoteID;
+    }
 
     public Note(String title, String note, long time) {
         this.title = title;
         this.note = note;
         this.time = time;
+        this.AnoteID = UUID.randomUUID().toString();
     }
 
     public String getTitle() {

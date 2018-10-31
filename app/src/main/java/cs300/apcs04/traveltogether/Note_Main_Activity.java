@@ -15,6 +15,8 @@ import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
 import android.view.View;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.orm.SugarContext;
 
 import java.text.SimpleDateFormat;
@@ -29,6 +31,8 @@ public class Note_Main_Activity extends AppCompatActivity {
 
     NotesAdapter adapter;
     List<Note> notes = new ArrayList<>();
+    FirebaseDatabase database = FirebaseDatabase.getInstance();
+    DatabaseReference myRef = database.getReference("note");
 
     long initialCount;
     int modifyPos = -1;
@@ -41,6 +45,7 @@ public class Note_Main_Activity extends AppCompatActivity {
         Log.d("Main", "onCreate");
         recyclerView = findViewById(R.id.main_list);
         fab = findViewById(R.id.fab);
+
 
         StaggeredGridLayoutManager gridLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
         gridLayoutManager.setGapStrategy(StaggeredGridLayoutManager.GAP_HANDLING_MOVE_ITEMS_BETWEEN_SPANS);
@@ -94,7 +99,8 @@ public class Note_Main_Activity extends AppCompatActivity {
                         .setAction("UNDO", new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                note.save();
+                                //note.save();
+                                myRef.child(note.GetAnoteID()).setValue(note);
                                 notes.add(position, note);
                                 adapter.notifyItemInserted(position);
                                 initialCount += 1;
@@ -136,6 +142,7 @@ public class Note_Main_Activity extends AppCompatActivity {
     protected void onResume(){
         super.onResume();
         final long newCount = Note.count(Note.class);
+        Log.d("SIZE", "onResume: " + notes.size());
         if (newCount > initialCount){
             //a note is added
             Log.d("Main", "Adding new note");
@@ -143,7 +150,7 @@ public class Note_Main_Activity extends AppCompatActivity {
             // Just load the last added note (new)
             Note note = Note.last(Note.class);
 
-            notes.add(note);
+           // notes.add(note);
             adapter.notifyItemInserted((int) newCount);
 
             initialCount = newCount;
