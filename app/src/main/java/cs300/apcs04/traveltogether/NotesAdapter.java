@@ -36,9 +36,7 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NoteVH>{
     }
 
     @Override
-    public int getItemCount() {
-        return notes.size();
-    }
+    public int getItemCount() { return notes.size(); }
 
     class NoteVH extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView title, note;
@@ -59,7 +57,7 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NoteVH>{
     }
 
     public interface OnItemClickListener {
-        public void onItemClick(View view, int position);
+        void onItemClick(View view, int position);
     }
 
     public void SetOnItemClickListener(final OnItemClickListener itemClickListener) {

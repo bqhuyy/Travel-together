@@ -14,8 +14,11 @@ import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
 import android.view.View;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -28,7 +31,7 @@ public class Note_Main_Activity extends AppCompatActivity {
     FloatingActionButton fab;
 
     NotesAdapter adapter;
-    List<Note> list_of_notes = new ArrayList<>();
+    List<Note> list_of_notes;
     FirebaseDatabase database = FirebaseDatabase.getInstance();
     DatabaseReference myRef = database.getReference("note");
 
@@ -36,7 +39,7 @@ public class Note_Main_Activity extends AppCompatActivity {
     //int modifyPos = -1;
     Date tempDate;
     String tempID;
-    final static int REQUEST_CODE_MODIFY = 1234;
+    final static int REQUEST_CODE_MODIFY_AND_ADD = 1234;
     int callback = 0;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -56,7 +59,22 @@ public class Note_Main_Activity extends AppCompatActivity {
         adapter = new NotesAdapter(Note_Main_Activity.this, list_of_notes);
         recyclerView.setAdapter(adapter);
 
-        // Re****************************ad data in firebase and insert to list
+        // Read data in firebase and insert to list ***********************
+        myRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot postSnapshot: dataSnapshot.getChildren()) {
+                    Note post = postSnapshot.getValue(Note.class);
+                    list_of_notes.add(post);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.d("Retreving database", "Read database failed ");
+            }
+        });
+
 
         //if (savedInstanceState != null)
             //modifyPos = savedInstanceState.getInt("modify");
@@ -71,7 +89,7 @@ public class Note_Main_Activity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent addNoteIntent = new Intent(Note_Main_Activity.this, Note_AddNote_Activity.class);
-                startActivity(addNoteIntent);
+                startActivityForResult(addNoteIntent, REQUEST_CODE_MODIFY_AND_ADD);
             }
         });
 
@@ -91,7 +109,7 @@ public class Note_Main_Activity extends AppCompatActivity {
                 adapter.notifyItemRemoved(position);
 
                 // remove on firease*********************************
-                if ()
+                myRef.child(note.getNoteID()).removeValue();
 
                 Snackbar.make(recyclerView, "Note deleted.", Snackbar.LENGTH_SHORT)
                         .setAction("UNDO", new View.OnClickListener() {
@@ -125,7 +143,7 @@ public class Note_Main_Activity extends AppCompatActivity {
                 i.putExtra("note_description", tempNote.getDescription());
                 i.putExtra("note_ID", tempNote.getNoteID());
 
-                startActivityForResult(i, REQUEST_CODE_MODIFY);
+                startActivityForResult(i, REQUEST_CODE_MODIFY_AND_ADD);
             }
         });
     }
@@ -133,7 +151,7 @@ public class Note_Main_Activity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == REQUEST_CODE_MODIFY && resultCode == RESULT_OK){
+        if(requestCode == REQUEST_CODE_MODIFY_AND_ADD && resultCode == RESULT_OK){
             callback = data.getIntExtra("callback", 0);
         }
     }
@@ -154,7 +172,7 @@ public class Note_Main_Activity extends AppCompatActivity {
             list_of_notes.add(newNote);
 
            // list_of_notes.add(note);
-            adapter.notifyDataSetChanged();
+                adapter.notifyDataSetChanged();
         }
 
         if (callback == 1){

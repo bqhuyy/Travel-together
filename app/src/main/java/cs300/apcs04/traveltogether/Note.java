@@ -8,7 +8,7 @@ public class Note implements  Serializable {
     private String title, description, noteID;
     private Date time;
 
-    //public Note() {}
+    public Note() {}
 
     public String getNoteID(){ return this.noteID; }
 
