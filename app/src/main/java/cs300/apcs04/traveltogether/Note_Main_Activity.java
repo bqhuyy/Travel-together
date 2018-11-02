@@ -60,13 +60,15 @@ public class Note_Main_Activity extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
 
         // Read data in firebase and insert to list ***********************
-        myRef.addValueEventListener(new ValueEventListener() {
+        myRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for (DataSnapshot postSnapshot: dataSnapshot.getChildren()) {
                     Note post = postSnapshot.getValue(Note.class);
                     list_of_notes.add(post);
+                    adapter.notifyDataSetChanged();
                 }
+                Log.d("Retreving database", "Read database successfully ");
             }
 
             @Override
@@ -77,10 +79,7 @@ public class Note_Main_Activity extends AppCompatActivity {
 
 
         //if (savedInstanceState != null)
-            //modifyPos = savedInstanceState.getInt("modify");
-
-        if (list_of_notes.isEmpty())
-            Snackbar.make(recyclerView, "No list_of_notes added.", Snackbar.LENGTH_LONG).show();
+        //modifyPos = savedInstanceState.getInt("modify");
 
 
 
@@ -152,7 +151,38 @@ public class Note_Main_Activity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if(requestCode == REQUEST_CODE_MODIFY_AND_ADD && resultCode == RESULT_OK){
+
             callback = data.getIntExtra("callback", 0);
+            Note newNote = (Note) data.getSerializableExtra("NewNote");
+
+            Log.d("SIZE", "onResume: " + list_of_notes.size());
+            ;
+            if (callback == 2){
+                //a note is added
+                Log.d("Main", "Adding new note");
+
+                // Just load the last added note (new)
+                list_of_notes.add(newNote);
+
+                // list_of_notes.add(note);
+                adapter.notifyDataSetChanged();
+            }
+
+            if (callback == 1){
+                //list_of_notes.set(modifyPos, Note.listAll(Note.class).get(modifyPos));
+                Note note = null;
+                for(int i = 0; i < list_of_notes.size(); i++){
+                    Note tmpNote =  list_of_notes.get(i);
+                    if(tmpNote.getNoteID().equals(tempID) && tempDate.compareTo(tmpNote.getTime()) == 0){
+                        note = tmpNote;
+                        list_of_notes.add(i, newNote);
+                        list_of_notes.remove(note);
+                        adapter.notifyDataSetChanged();
+                        break;
+                    }
+                }
+
+            }
         }
     }
 
@@ -160,33 +190,7 @@ public class Note_Main_Activity extends AppCompatActivity {
     protected void onResume(){
         super.onResume();
         //final long newCount = Note.count(Note.class);
-        Log.d("SIZE", "onResume: " + list_of_notes.size());
-        Intent i = new Intent();
-        callback = i.getIntExtra("callback", 0);
-        if (callback == 2){
-            //a note is added
-            Log.d("Main", "Adding new note");
 
-            Note newNote = (Note) i.getSerializableExtra("NewNote");
-            // Just load the last added note (new)
-            list_of_notes.add(newNote);
-
-           // list_of_notes.add(note);
-                adapter.notifyDataSetChanged();
-        }
-
-        if (callback == 1){
-            //list_of_notes.set(modifyPos, Note.listAll(Note.class).get(modifyPos));
-            Note newnote = null;
-            for(Note tmpNote : list_of_notes){
-                if(tmpNote.getNoteID().equals(tempID) && tempDate.compareTo(tmpNote.getTime()) == 0){
-                    newnote = tmpNote;
-                    break;
-                }
-            }
-            list_of_notes.remove(newnote);
-            adapter.notifyDataSetChanged();
-        }
     }
 
     @SuppressLint("SimpleDateFormat")
