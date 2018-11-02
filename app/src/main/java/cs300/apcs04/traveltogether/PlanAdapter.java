@@ -116,8 +116,8 @@ public class PlanAdapter extends RecyclerView.Adapter<PlanAdapter.ViewHolder> im
 
 		public ViewHolder(View itemView){
 			super(itemView);
-			title = (TextView) itemView.findViewById(R.id.plan_title);
-			date = (TextView) itemView.findViewById(R.id.plan_added_date);
+			title = (TextView) itemView.findViewById(R.id.PlanItem_plan_title);
+			date = (TextView) itemView.findViewById(R.id.PlanItem_plan_added_date);
 			itemView.setOnClickListener(this);
 			itemView.setOnLongClickListener(this);
 		}

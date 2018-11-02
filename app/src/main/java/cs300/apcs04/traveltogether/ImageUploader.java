@@ -1,10 +1,13 @@
 package cs300.apcs04.traveltogether;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.util.Base64;
 import android.util.Log;
 import android.widget.Toast;
@@ -29,7 +32,7 @@ public class ImageUploader extends AsyncTask<Bitmap, Void, String> {
 	private String mImgdata;
 	private Context mContext;
 	private Handler mHandler;
-	private static final String URLAPI = "https://us-central1-serverapi-57ed2.cloudfunctions.net/processImage";
+	private static final String URLAPI = "http://mockbin.com/request?foo=bar&foo=baz";
 	public ImageUploader(Context context){
 
 		mContext = context;
@@ -38,66 +41,83 @@ public class ImageUploader extends AsyncTask<Bitmap, Void, String> {
 	}
 
 	private void comPressBitmap(Bitmap mBitmap){
-		mbos = new ByteArrayOutputStream();
-		mBitmap.compress(Bitmap.CompressFormat.JPEG, 100, mbos);
-		mBitmapdata = mbos.toByteArray();
-		mImgdata = Base64.encodeToString(mBitmapdata, Base64.DEFAULT);
+		if(mBitmap != null) {
+			mbos = new ByteArrayOutputStream();
+			mBitmap.compress(Bitmap.CompressFormat.JPEG, 100, mbos);
+			mBitmapdata = mbos.toByteArray();
+			mImgdata = Base64.encodeToString(mBitmapdata, Base64.DEFAULT);
+		}
 	}
 
 	@Override
 	protected String doInBackground(Bitmap... bitmaps) {
 
 		Bitmap mBitmap = bitmaps[0];
-		new Thread(new Runnable() {
-			@Override
-			public void run() {
-				mHandler.post(new Runnable() {
-					@Override
-					public void run() {
-						mProgressDialog.setMessage("Uploading, please wait...");
-						mProgressDialog.show();
-					}
-				});
-			}
-		}).start();
-
-		comPressBitmap(mBitmap);
-
 		//sending image to server
-		StringRequest request = new StringRequest(Request.Method.POST, URLAPI, new Response.Listener<String>(){
-			@Override
-			public void onResponse(String s) {
-				mProgressDialog.dismiss();
-				Toast.makeText(mContext, "Uploaded successfully " + s, Toast.LENGTH_LONG).show();
+		if(mBitmap != null) {
+
+			new Thread(new Runnable() {
+				@Override
+				public void run() {
+					mHandler.post(new Runnable() {
+						@Override
+						public void run() {
+							mProgressDialog.setMessage("Uploading, please wait...");
+							mProgressDialog.show();
+						}
+					});
+				}
+			}).start();
+
+			comPressBitmap(mBitmap);
+
+			StringRequest request = new StringRequest(Request.Method.POST, URLAPI, new Response.Listener<String>() {
+				@Override
+				public void onResponse(String s) {
+					mProgressDialog.dismiss();
+					Toast.makeText(mContext, "Uploaded successfully " + s, Toast.LENGTH_LONG).show();
 				/*Intent intent = new Intent(mContext, PlaceInfoActivity.class);
 				intent.putExtra("placeID", s);
 				startActivity(intent);*/
-			}
-		},new Response.ErrorListener(){
-			@Override
-			public void onErrorResponse(VolleyError volleyError) {
-				mProgressDialog.dismiss();
-				Toast.makeText(mContext, "Some error occurred -> "+volleyError, Toast.LENGTH_LONG).show();
-			}
-		}) {
-			//adding parameters to send
-			@Override
-			protected Map<String, String> getParams() throws AuthFailureError {
-				Map<String, String> parameters = new HashMap<String, String>();
-				parameters.put("img", mImgdata);
-				return parameters;
-			}
-		};
+				}
+			}, new Response.ErrorListener() {
+				@Override
+				public void onErrorResponse(VolleyError volleyError) {
+					mProgressDialog.dismiss();
+					Toast.makeText(mContext, "Some error occurred -> " + volleyError, Toast.LENGTH_LONG).show();
+				}
+			}) {
+				//adding parameters to send
+				@Override
+				protected Map<String, String> getParams() throws AuthFailureError {
+					if (mImgdata != null) {
+						Map<String, String> parameters = new HashMap<String, String>();
+						parameters.put("img", mImgdata);
+						return parameters;
+					}
+					return null;
+				}
+			};
 
-		RequestQueue rQueue = Volley.newRequestQueue(mContext);
-		rQueue.add(request);
-		Integer tmp = mImgdata.length();
-		Log.d("quyen", String.valueOf(tmp));
+			RequestQueue rQueue = Volley.newRequestQueue(mContext);
+			rQueue.add(request);
+		/*Integer tmp = mImgdata.length();
+		Log.d("quyen", String.valueOf(tmp));*/
+		}
+
 		return mImgdata;
 	}
 
 	@Override
 	protected void onPostExecute(String s) {
 		super.onPostExecute(s);
+		if(mImgdata == null){
+			new Handler(Looper.getMainLooper()).post(new Runnable() {
+				@Override
+				public void run() {
+					Toast.makeText(mContext, "Please choose or capture your image", Toast.LENGTH_SHORT).show();
+				}
+			});
+		}
 	}
 }

@@ -11,7 +11,7 @@ public class PlaceShortDataViewHolder extends ChildViewHolder {
 
 	public PlaceShortDataViewHolder(View itemView) {
 		super(itemView);
-		mContent = (TextView) itemView.findViewById(R.id.place_sub_content);
+		mContent = (TextView) itemView.findViewById(R.id.PlaceSubItem_place_sub_content);
 	}
 
 	public void setmContent(String address) {mContent.setText(address);}

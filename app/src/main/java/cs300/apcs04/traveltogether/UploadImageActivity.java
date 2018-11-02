@@ -2,6 +2,7 @@ package cs300.apcs04.traveltogether;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
@@ -20,10 +21,16 @@ public class UploadImageActivity extends AppCompatActivity {
 
 	private ImageButton mButtonLoadImage;
 	private LinearLayout mLayoutChooseImage;
-	private Bitmap mBitmap;
-	private static int RESULT_LOAD_IMAGE = 1;
-
 	private ImageView mCaptureView;
+
+	private Bitmap mBitmap;
+
+	private ImageButton mButtonCaptureImg;
+	private LinearLayout mLayoutCaptureImage;
+
+	private static int RESULT_LOAD_IMAGE = 1;
+	private static int REQUEST_CAPTURE_IMAGE = 2;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -35,6 +42,13 @@ public class UploadImageActivity extends AppCompatActivity {
 			@Override
 			public void onClick(View view) {
 				chooseImageFromDevice();
+			}
+		});
+
+		mLayoutCaptureImage.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				takeImageFromCamera(view);
 			}
 		});
 
@@ -58,9 +72,19 @@ public class UploadImageActivity extends AppCompatActivity {
 	}
 
 	public void init(){
-		mButtonLoadImage = (ImageButton) findViewById(R.id.buttonLoadPicture);
-		mLayoutChooseImage = (LinearLayout) findViewById(R.id.layout_chooseImg);
-		mCaptureView = (ImageView) findViewById(R.id.LoadedImage);
+		mButtonLoadImage = (ImageButton) findViewById(R.id.UploadImageActivity_buttonLoadPicture);
+		mLayoutChooseImage = (LinearLayout) findViewById(R.id.UploadImageActivity_layout_chooseImg);
+
+		mButtonCaptureImg = (ImageButton) findViewById(R.id.UploadActivity_buttonCaptureImage);
+		mLayoutCaptureImage = (LinearLayout) findViewById(R.id.UploadActivity_layout_captureImg);
+
+		mCaptureView = (ImageView) findViewById(R.id.UploadActivity_LoadedImage);
+
+	}
+
+	public void takeImageFromCamera(View view){
+		Intent intent = new Intent(this, CameraActivity.class);
+		startActivityForResult(intent, REQUEST_CAPTURE_IMAGE);
 	}
 
 	public void chooseImageFromDevice(){
@@ -91,7 +115,14 @@ public class UploadImageActivity extends AppCompatActivity {
 			}catch(IOException ioe){
 				Log.d("error", "Cannot choose image");
 			}
+		}
+		else if(requestCode == REQUEST_CAPTURE_IMAGE && resultCode == RESULT_OK && data != null){
 
+			String image_file_path = data.getStringExtra("Image_file_location");
+			BitmapFactory.Options bmOptions = new BitmapFactory.Options();
+			mBitmap = BitmapFactory.decodeFile(image_file_path, bmOptions);
+			mCaptureView.setImageBitmap(mBitmap);
+			new ImageUploader(this).execute(mBitmap);
 		}
 	}
 }

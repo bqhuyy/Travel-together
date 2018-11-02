@@ -10,7 +10,7 @@
 
     <ImageView
         android:layout_marginTop="20dp"
-        android:id="@+id/LoadedImage"
+        android:id="@+id/UploadActivity_LoadedImage"
         android:layout_width="match_parent"
         android:layout_height="250dp"
         android:layout_gravity="center"
@@ -18,7 +18,7 @@
         />
 
     <LinearLayout
-        android:id="@+id/layout_chooseImg"
+        android:id="@+id/UploadImageActivity_layout_chooseImg"
         android:layout_marginTop="20dp"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
@@ -29,7 +29,7 @@
         >
 
         <ImageButton
-            android:id="@+id/buttonLoadPicture"
+            android:id="@+id/UploadImageActivity_buttonLoadPicture"
             android:layout_marginLeft="20dp"
             android:layout_width="35dp"
             android:layout_height="35dp"
@@ -49,7 +49,7 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/layout_captureImg"
+        android:id="@+id/UploadActivity_layout_captureImg"
         android:layout_marginTop="10dp"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
@@ -60,7 +60,7 @@
         >
 
         <ImageButton
-            android:id="@+id/btnCapture"
+            android:id="@+id/UploadActivity_buttonCaptureImage"
             android:layout_marginLeft="20dp"
             android:layout_width="35dp"
             android:layout_height="35dp"

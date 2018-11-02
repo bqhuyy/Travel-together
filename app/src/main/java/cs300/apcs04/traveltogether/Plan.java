@@ -10,13 +10,35 @@ public class Plan {
 	private String mTitle;
 	private Date mDateAdded;
 	private String mNote;
-	private ArrayList<Place> mPlaceList;
+	private ArrayList<String> mPlaceList;
+	private ArrayList<String> mMemberList;
 
-	public Plan(String title, Date dateAdded) {
-		mTitle = title;
-		mDateAdded = dateAdded;
-		mPlanID = UUID.randomUUID().toString();
+	public Plan() {
+
 	}
+
+	public Plan(String title) {
+		mTitle = title;
+		mDateAdded = new Date();
+		mPlanID = UUID.randomUUID().toString();
+		mNote = null;
+		mPlaceList = null;
+		mMemberList = null;
+	}
+
+	public ArrayList<String> getmMemberList() {
+		return mMemberList;
+	}
+
+	public void setmMemberList(ArrayList<String> mMemberList) {
+		if(mMemberList != null){
+			this.mMemberList = new ArrayList<>();
+			for(String id : mMemberList){
+				this.mMemberList.add(id);
+			}
+		}
+	}
+
 
 	public String getmPlanID() {
 		return mPlanID;
@@ -46,11 +68,16 @@ public class Plan {
 		this.mNote = note;
 	}
 
-	public ArrayList<Place> getmPlaceList() {
+	public ArrayList<String> getmPlaceList() {
 		return mPlaceList;
 	}
 
-	public void setmPlaceList(ArrayList<Place> mPlaceList) {
-		this.mPlaceList = mPlaceList;
+	public void setmPlaceList(ArrayList<String> mPlaceList) {
+		if(mPlaceList != null){
+			this.mPlaceList = new ArrayList<>();
+			for(String place : mPlaceList){
+				this.mPlaceList.add(place);
+			}
+		}
 	}
 }
