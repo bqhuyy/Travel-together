@@ -23,6 +23,22 @@
           }
         },
         {
+          "client_id": "896099730571-v1lf7f8u2enpqk0pk05u90jvh7d8fjst.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "cs300.apcs04.traveltogether",
+            "certificate_hash": "62308c71250fef997ebd7fa3979f99ffd765b83a"
+          }
+        },
+        {
+          "client_id": "896099730571-m454uret86gr4fpn6orqbbg5gnph33u8.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "cs300.apcs04.traveltogether",
+            "certificate_hash": "65024af930bbed5032157eed7e6a21e9a94186e5"
+          }
+        },
+        {
           "client_id": "896099730571-at9pgkkuvm19cppu68kfuaf3ebl5t44m.apps.googleusercontent.com",
           "client_type": 3
         }
