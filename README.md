@@ -16,3 +16,5 @@ implementation 'com.thoughtbot:expandablerecyclerview:1.3'
 implementation 'com.thoughtbot:expandablecheckrecyclerview:1.4'
 ```
 
+##Khanh Note:
+- I incidentally delete the git of Quyen while figuring out how to solve conflict
