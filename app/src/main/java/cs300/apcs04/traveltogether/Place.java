@@ -2,10 +2,11 @@ package cs300.apcs04.traveltogether;
 
 import com.thoughtbot.expandablerecyclerview.models.ExpandableGroup;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Place extends ExpandableGroup<PlaceShortData> {
+public class Place extends ExpandableGroup<PlaceShortData> implements Serializable{
 
 	private String mPlaceId;
 	private String mName;
@@ -13,7 +14,7 @@ public class Place extends ExpandableGroup<PlaceShortData> {
 	private String mAddress;
 	private String mPhone;
 	private String mWebsiteURL;
-	private boolean mIsOpen;
+	private Boolean mIsOpen;
 	private ArrayList<String> mWeek_time;
 	private ArrayList<String> mType;
 
@@ -91,11 +92,11 @@ public class Place extends ExpandableGroup<PlaceShortData> {
 		this.mWebsiteURL = mWebsiteURL;
 	}
 
-	public boolean ismIsOpen() {
+	public Boolean ismIsOpen() {
 		return mIsOpen;
 	}
 
-	public void setmIsOpen(boolean mIsOpen) {
+	public void setmIsOpen(Boolean mIsOpen) {
 		this.mIsOpen = mIsOpen;
 	}
 

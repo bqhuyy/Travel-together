@@ -42,7 +42,7 @@ public class PlaceAdapter extends ExpandableRecyclerViewAdapter<PlaceViewHolder,
 		holder.setItemClickListener(new ItemClickListener() {
 			@Override
 			public void onClick(View view, int position, boolean isLongClick) {
-				Intent i = new Intent(mContext, TestActivity.class);
+				Intent i = new Intent(mContext, PlaceDetailActivity.class);
 				mContext.startActivity(i);
 			}
 		});

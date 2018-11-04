@@ -37,7 +37,8 @@
         </provider>
 
         <activity android:name=".CameraActivity" />
-        <activity android:name=".TestActivity"></activity>
+        <activity android:name=".TestActivity" />
+        <activity android:name=".PlaceDetailActivity"></activity>
     </application>
 
 </manifest>
