@@ -22,6 +22,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 
 public class PlanListActivity extends AppCompatActivity {
 
@@ -45,7 +46,7 @@ public class PlanListActivity extends AppCompatActivity {
 	// Firebase databsase
 	FirebaseDatabase mDatabase = FirebaseDatabase.getInstance();
 	//DatabaseReference mRef = mDatabase.getReference("user").child("abcde123");
-	DatabaseReference mRefPlan = mDatabase.getReference("plan").child("abcde123");
+	DatabaseReference mRefPlan = mDatabase.getReference("plan");
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -148,9 +149,13 @@ public class PlanListActivity extends AppCompatActivity {
 				String title = edittext.getText().toString();
 				if(!title.trim().equals("")){
 					Plan plan = new Plan(edittext.getText().toString());
+					HashMap<String, String> map = new HashMap<>();
+					map.put("abcde", "abcde");
+					map.put("ghjkl", "ghjkl");
+					plan.setmMemberList(map);
 					String id = plan.getmPlanID();
-					mRefPlan.child(id).setValue(id);
 					mRefPlan.child(id).setValue(plan);
+
 					mArrayList.add(plan);
 					mAdapter.notifyDataSetChanged();
 					edittext.setText("");

@@ -11,17 +11,23 @@ import com.thoughtbot.expandablerecyclerview.viewholders.GroupViewHolder;
 
 import static android.view.animation.Animation.RELATIVE_TO_SELF;
 
-public class PlaceViewHolder extends GroupViewHolder {
+public class PlaceViewHolder extends GroupViewHolder{
 
 	private TextView mName;
 	private RatingBar mRating;
 	private ImageView mArrow;
+	public Boolean isExpand = false;
+
+	public ImageView getmArrow(){
+		return this.mArrow;
+	}
 
 	public PlaceViewHolder(View itemView) {
 		super(itemView);
 		mName = itemView.findViewById(R.id.PlaceItem_place_name);
 		mRating = itemView.findViewById(R.id.PlaceItem_place_rating);
 		mArrow = itemView.findViewById(R.id.PlaceItem_arrow_expand);
+
 	}
 
 	public void setPlaceName(ExpandableGroup place){
@@ -33,11 +39,13 @@ public class PlaceViewHolder extends GroupViewHolder {
 	@Override
 	public void expand() {
 		animateExpand();
+		isExpand = true;
 	}
 
 	@Override
 	public void collapse() {
 		animateCollapse();
+		isExpand = false;
 	}
 
 	public void animateExpand(){
@@ -55,4 +63,5 @@ public class PlaceViewHolder extends GroupViewHolder {
 		rotate.setFillAfter(true);
 		mArrow.setAnimation(rotate);
 	}
+
 }

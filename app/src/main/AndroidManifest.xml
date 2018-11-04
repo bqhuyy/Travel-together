@@ -36,7 +36,8 @@
                 android:resource="@xml/filepaths" />
         </provider>
 
-        <activity android:name=".CameraActivity"></activity>
+        <activity android:name=".CameraActivity" />
+        <activity android:name=".TestActivity"></activity>
     </application>
 
 </manifest>

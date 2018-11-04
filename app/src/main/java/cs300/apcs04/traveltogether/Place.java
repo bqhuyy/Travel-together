@@ -43,7 +43,6 @@ public class Place extends ExpandableGroup<PlaceShortData> {
 	}
 
 
-
 	public String getmPlaceId() {
 		return mPlaceId;
 	}

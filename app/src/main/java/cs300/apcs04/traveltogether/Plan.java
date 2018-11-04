@@ -2,16 +2,17 @@ package cs300.apcs04.traveltogether;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.UUID;
 
 public class Plan {
 
 	private String mPlanID;
 	private String mTitle;
-	private Date mDateAdded;
+	private long mDateAdded;
 	private String mNote;
-	private ArrayList<String> mPlaceList;
-	private ArrayList<String> mMemberList;
+	private HashMap<String, String> mPlaceList;
+	private HashMap<String, String> mMemberList;
 
 	public Plan() {
 
@@ -19,22 +20,22 @@ public class Plan {
 
 	public Plan(String title) {
 		mTitle = title;
-		mDateAdded = new Date();
+		mDateAdded = new Date().getTime();
 		mPlanID = UUID.randomUUID().toString();
 		mNote = null;
 		mPlaceList = null;
 		mMemberList = null;
 	}
 
-	public ArrayList<String> getmMemberList() {
+	public HashMap<String, String> getmMemberList() {
 		return mMemberList;
 	}
 
-	public void setmMemberList(ArrayList<String> mMemberList) {
+	public void setmMemberList(HashMap<String, String> mMemberList) {
 		if(mMemberList != null){
-			this.mMemberList = new ArrayList<>();
-			for(String id : mMemberList){
-				this.mMemberList.add(id);
+			this.mMemberList = new HashMap<>();
+			for(String id : mMemberList.keySet()){
+				this.mMemberList.put(id, mMemberList.get(id));
 			}
 		}
 	}
@@ -52,11 +53,11 @@ public class Plan {
 		mTitle = title;
 	}
 
-	public Date getDateAdded() {
+	public long getDateAdded() {
 		return mDateAdded;
 	}
 
-	public void setDateAdded(Date dateAdded) {
+	public void setDateAdded(long dateAdded) {
 		mDateAdded = dateAdded;
 	}
 
@@ -68,15 +69,15 @@ public class Plan {
 		this.mNote = note;
 	}
 
-	public ArrayList<String> getmPlaceList() {
+	public HashMap<String, String> getmPlaceList() {
 		return mPlaceList;
 	}
 
-	public void setmPlaceList(ArrayList<String> mPlaceList) {
+	public void setmPlaceList(HashMap<String, String> mPlaceList) {
 		if(mPlaceList != null){
-			this.mPlaceList = new ArrayList<>();
-			for(String place : mPlaceList){
-				this.mPlaceList.add(place);
+			this.mPlaceList = new HashMap<>();
+			for(String place : mPlaceList.keySet()){
+				this.mPlaceList.put(place, mPlaceList.get(place));
 			}
 		}
 	}

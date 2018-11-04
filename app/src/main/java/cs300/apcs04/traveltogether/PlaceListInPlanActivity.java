@@ -1,12 +1,26 @@
 package cs300.apcs04.traveltogether;
 
+import android.content.Intent;
+import android.os.AsyncTask;
+import android.os.Handler;
+import android.support.annotation.NonNull;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
+import android.view.View;
+
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class PlaceListInPlanActivity extends AppCompatActivity {
@@ -17,6 +31,13 @@ public class PlaceListInPlanActivity extends AppCompatActivity {
 	private LinearLayoutManager mLayoutManager;
 	private ArrayList<PlaceShortData> mPlaceShortDataList;
 	private String mPlanID = "";
+	private FloatingActionButton mFabAddPlace;
+	private FloatingActionButton mFabChat;
+
+	private ArrayList<String> mMemList;
+	private FirebaseDatabase mDatabase;
+	private DatabaseReference mRef = mDatabase.getInstance().getReference("plan").child("07b097ea-1aec-4be5-aa0d-863fad22a1ff");
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -32,6 +53,8 @@ public class PlaceListInPlanActivity extends AppCompatActivity {
 			((DefaultItemAnimator) animator).setSupportsChangeAnimations(false);
 		}
 
+
+		init();
 		getDataFromPlanID(mPlanID);
 		setUpRecylerView();
 	}
@@ -56,9 +79,74 @@ public class PlaceListInPlanActivity extends AppCompatActivity {
 
 	public void setUpRecylerView(){
 
-		mAdapter= new PlaceAdapter(mPlaceList);
+		mAdapter= new PlaceAdapter(mPlaceList, this);
 		mRecylerview.setLayoutManager(mLayoutManager);
 		mRecylerview.setAdapter(mAdapter);
 
 	}
+
+	public void init(){
+
+		mMemList = new ArrayList<>();
+
+		mFabAddPlace = (FloatingActionButton) findViewById(R.id.place_list_fab_add_place);
+		mFabChat = (FloatingActionButton) findViewById(R.id.place_list_fab_chat);
+
+		mFabChat.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				//new PutUserID(PlaceListInPlanActivity.this).execute(mRef);
+				mRef.addListenerForSingleValueEvent(new ValueEventListener() {
+					@Override
+					public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+						long date = (long) dataSnapshot.child("dateAdded").getValue();
+						String planid = (String) dataSnapshot.child("mPlanID").getValue();
+						String title = (String) dataSnapshot.child("title").getValue();
+						HashMap<String, String> map = (HashMap<String, String>) dataSnapshot.child("mMemberList").getValue();
+						if(map == null)
+							Log.d("qwerty", "nulllll");
+						for(String id : map.keySet()){
+							mMemList.add(id);
+						}
+
+						Intent intent = new Intent(getApplicationContext(), TestActivity.class);
+						/*Bundle extras = new Bundle();
+						extras.putStringArrayList("listMem", mMemList);
+						intent.putExtras(extras);
+						startActivity(intent);
+						finish();*/
+						intent.putStringArrayListExtra("listMem", mMemList);
+						startActivity(intent);
+
+					}
+
+					@Override
+					public void onCancelled(@NonNull DatabaseError databaseError) {
+
+					}
+				});
+				/*final Handler handler = new Handler();
+				final int delay = 1000; //milliseconds
+
+
+				handler.postDelayed(new Runnable(){
+					public void run(){
+						if(!mMemList.isEmpty())//checking if the data is loaded or not
+						{
+							Intent intent = new Intent(getApplicationContext(), TestActivity.class);
+							Bundle extras = new Bundle();
+							extras.putStringArrayList("listMem", mMemList);
+							intent.putExtras(extras);
+							startActivity(intent);
+							finish();
+						}
+						else
+							handler.postDelayed(this, delay);
+					}
+				}, delay);*/
+			}
+		});
+	}
+
 }
