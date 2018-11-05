@@ -6,7 +6,7 @@ import java.util.UUID;
 
 public class Note implements  Serializable {
     private String title, description, noteID;
-    private Date time;
+    private long time;
 
     public Note() {}
 
@@ -15,7 +15,7 @@ public class Note implements  Serializable {
     public Note(String title, String description) {
         this.title = title;
         this.description = description;
-        this.time = new Date();
+        this.time = System.currentTimeMillis();
         this.noteID = UUID.randomUUID().toString();
     }
 
@@ -23,7 +23,7 @@ public class Note implements  Serializable {
         this.title = title;
         this.description = description;
         this.noteID = noteID;
-        this.time = new Date();
+        this.time = System.currentTimeMillis();
     }
 
     public String getTitle() { return this.title; }
@@ -34,7 +34,7 @@ public class Note implements  Serializable {
 
     public void setDescription(String description) { this.description = description; }
 
-    public Date getTime() { return time; }
+    public long getTime() { return time; }
 
-    public void setTime(Date time) { this.time = time; }
+    public void setTime(long time) { this.time = time; }
 }

@@ -37,7 +37,7 @@ public class Note_Main_Activity extends AppCompatActivity {
 
     //long initialCount;
     //int modifyPos = -1;
-    Date tempDate;
+    long tempDate;
     String tempID;
     final static int REQUEST_CODE_MODIFY_AND_ADD = 1234;
     int callback = 0;
@@ -173,7 +173,7 @@ public class Note_Main_Activity extends AppCompatActivity {
                 Note note = null;
                 for(int i = 0; i < list_of_notes.size(); i++){
                     Note tmpNote =  list_of_notes.get(i);
-                    if(tmpNote.getNoteID().equals(tempID) && tempDate.compareTo(tmpNote.getTime()) == 0){
+                    if(tmpNote.getNoteID().equals(tempID) && tempDate==tmpNote.getTime()){
                         note = tmpNote;
                         list_of_notes.add(i, newNote);
                         list_of_notes.remove(note);
@@ -191,10 +191,5 @@ public class Note_Main_Activity extends AppCompatActivity {
         super.onResume();
         //final long newCount = Note.count(Note.class);
 
-    }
-
-    @SuppressLint("SimpleDateFormat")
-    public static String getDateFormat(long date) {
-        return new SimpleDateFormat("dd MMM yyyy").format(new Date(date));
     }
 }
