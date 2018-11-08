@@ -11,13 +11,13 @@ import java.util.List;
 
 public class PlaceJSONParser {
 
+	private Place place;
+
 	public PlaceJSONParser(){
 
 	}
 
 	public Place parse(String sb){
-
-		Place place = null;
 
 		try {
 			String address = "None";

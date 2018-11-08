@@ -36,7 +36,7 @@ public class PlaceListInPlanActivity extends AppCompatActivity {
 
 	private ArrayList<String> mMemList;
 	private FirebaseDatabase mDatabase;
-	private DatabaseReference mRef = mDatabase.getInstance().getReference("plan").child("07b097ea-1aec-4be5-aa0d-863fad22a1ff");
+	private DatabaseReference mRef = mDatabase.getInstance().getReference("plan").child("07b097ea-1aec-4be5-aa0d-863fad22a1ff"); // change this to planID later
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {

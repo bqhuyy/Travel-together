@@ -43,6 +43,7 @@ public class PlaceAdapter extends ExpandableRecyclerViewAdapter<PlaceViewHolder,
 			@Override
 			public void onClick(View view, int position, boolean isLongClick) {
 				Intent i = new Intent(mContext, PlaceDetailActivity.class);
+				i.putExtra("placeID", "ChIJUSTY5jcvdTERRVvtbJNZT-g");
 				mContext.startActivity(i);
 			}
 		});

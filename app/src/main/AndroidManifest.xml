@@ -38,7 +38,12 @@
 
         <activity android:name=".CameraActivity" />
         <activity android:name=".TestActivity" />
-        <activity android:name=".PlaceDetailActivity"></activity>
+        <activity android:name=".PlaceDetailActivity" />
+        <activity android:name=".ImageFullscreenActivity"></activity>
+
+        <meta-data android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyB83QGQwOxKEiC2KMOKLiGK4nw5gMnXC14"/>
     </application>
+
 
 </manifest>

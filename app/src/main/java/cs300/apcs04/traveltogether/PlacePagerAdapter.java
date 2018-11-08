@@ -11,13 +11,17 @@ import java.util.ArrayList;
 
 public class PlacePagerAdapter extends FragmentPagerAdapter {
 
-	private Place placedata;
-	private ArrayList<String> arrayListFavID;
+	private Place mPlacedata;
+	private ArrayList<String> mArrayListFavID;
+	private ArrayList<ReviewData> mArrayListReviews;
+	private float mAverageRating;
 
-	public PlacePagerAdapter(FragmentManager fm, Place placedata, ArrayList<String> arrayListFavID) {
+	public PlacePagerAdapter(FragmentManager fm, Place placedata, ArrayList<String> arrayListFavID, ArrayList<ReviewData> reviewsData, float rating) {
 		super(fm);
-		this.placedata = placedata;
-		this.arrayListFavID = arrayListFavID;
+		this.mPlacedata = placedata;
+		this.mArrayListFavID = arrayListFavID;
+		this.mArrayListReviews = reviewsData;
+		this.mAverageRating = rating;
 		Log.d("kkkk", placedata.getmName());
 	}
 
@@ -30,19 +34,23 @@ public class PlacePagerAdapter extends FragmentPagerAdapter {
 		switch (i){
 			case 0:
 				frag = new PlaceInfoFragment();
-				bundle.putSerializable("placedata", placedata);
-				bundle.putStringArrayList("fav_id", arrayListFavID);
+				bundle.putSerializable("placedata", mPlacedata);
+				bundle.putStringArrayList("fav_id", mArrayListFavID);
 				frag.setArguments(bundle);
 				break;
 			case 1:
 				frag = new PlaceImagesFragment();
-				bundle.putString("placeID", placedata.getmPlaceId());
+				bundle.putString("placeid", mPlacedata.getmPlaceId());
 				frag.setArguments(bundle);
 				break;
 			case 2:
+				frag = new PlaceReviewsFragment();
+				bundle.putSerializable("reviewdata", mArrayListReviews);
+				bundle.putFloat("average_rating", mAverageRating);
+				frag.setArguments(bundle);
 				break;
 		}
-		return null;
+		return frag;
 	}
 
 	@Override

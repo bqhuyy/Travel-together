@@ -23,7 +23,6 @@ public class PlaceInfoFragment extends Fragment{
 	private TextView mopenHours;
 	private ImageView mphoneicon;
 	private ImageButton mbtnLove;
-	private Place mplace;
 	private TextView mname;
 
 	@Nullable
@@ -33,7 +32,7 @@ public class PlaceInfoFragment extends Fragment{
 		View v = inflater.inflate(R.layout.fragment_place_info, container, false);
 
 		final Place place = (Place) getArguments().getSerializable("placedata");
-		final ArrayList<String> arr_fav_id = (ArrayList<String>) getArguments().getSerializable("fav_id");
+		final ArrayList<String> arr_fav_id = (ArrayList<String>) getArguments().getStringArrayList("fav_id");
 
 		mname = (TextView) v.findViewById(R.id.place_name);
 		mphone = (TextView) v.findViewById(R.id.Phone);
@@ -43,11 +42,11 @@ public class PlaceInfoFragment extends Fragment{
 		mweek_time_txt = (TextView) v.findViewById(R.id.week_time);
 		mbtnLove = (ImageButton) v.findViewById(R.id.btnLove);
 
-		if(mplace != null) {
-			mname.setText(mplace.getmName());
-			mAddress.setText(mplace.getmAddress());
-			mphone.setText(mplace.getmPhone());
-			ArrayList<String> weektime = mplace.getmWeek_time();
+		if(place != null) {
+			mname.setText(place.getmName());
+			mAddress.setText(place.getmAddress());
+			mphone.setText(place.getmPhone());
+			ArrayList<String> weektime = place.getmWeek_time();
 			if (weektime != null) {
 				StringBuilder s = new StringBuilder();
 				s.append("\n");
@@ -59,7 +58,7 @@ public class PlaceInfoFragment extends Fragment{
 			} else {
 				mweek_time_txt.setText("None");
 			}
-			Boolean isOpen = mplace.ismIsOpen();
+			Boolean isOpen = place.ismIsOpen();
 			if (isOpen == null) {
 				mopenHours.setText("None");
 				mopenHours.setTextColor(Color.RED);
@@ -71,7 +70,7 @@ public class PlaceInfoFragment extends Fragment{
 				mopenHours.setTextColor(Color.GREEN);
 			}
 			LinearLayout linearLayout = (LinearLayout) v.findViewById(R.id.type);
-			ArrayList<String> type = mplace.getmType();
+			ArrayList<String> type = place.getmType();
 			if (type != null) {
 				for (int i = 0; i < type.size(); i++) {
 					TextView txt_type = new TextView(getContext());
@@ -88,7 +87,7 @@ public class PlaceInfoFragment extends Fragment{
 			}
 
 			// set if user clicked button favorite
-			if (arr_fav_id != null && arr_fav_id.contains(mplace.getmPlaceId())) {
+			if (arr_fav_id != null && arr_fav_id.contains(place.getmPlaceId())) {
 				mbtnLove.setBackgroundResource(R.drawable.heart);
 			}
 		}
