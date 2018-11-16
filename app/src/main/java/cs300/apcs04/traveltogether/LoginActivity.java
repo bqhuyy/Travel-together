@@ -21,31 +21,23 @@ import com.google.firebase.auth.FirebaseUser;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private static final String TAG = "EmailPassword";
+    private static final String TAG = "LoginEmailPassword";
 
     private FirebaseAuth mAuth;
 
-    private TextView mStatusTextView;
-    private TextView mDetailTextView;
     private EditText mEmailField;
     private EditText mPasswordField;
-
-    private ProgressDialog mProgressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        mStatusTextView = findViewById(R.id.status);
-        mDetailTextView = findViewById(R.id.detail);
-        mEmailField = findViewById(R.id.fieldEmail);
-        mPasswordField = findViewById(R.id.fieldPassword);
+        mEmailField = findViewById(R.id.login_email);
+        mPasswordField = findViewById(R.id.login_password);
 
-        findViewById(R.id.emailSignInButton).setOnClickListener(this);
-        findViewById(R.id.emailCreateAccountButton).setOnClickListener(this);
-        findViewById(R.id.signOutButton).setOnClickListener(this);
-        findViewById(R.id.verifyEmailButton).setOnClickListener(this);
+        findViewById(R.id.login_button_login).setOnClickListener(this);
+        findViewById(R.id.login_signup_activity).setOnClickListener(this);
 
         mAuth = FirebaseAuth.getInstance();
     }
@@ -58,63 +50,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         updateUI(currentUser);
     }
 
-    public void GoToMainActivity(View v){
-        FirebaseUser currentUser = mAuth.getCurrentUser();
-        if(currentUser!=null){
+    private void updateUI(FirebaseUser user) {
+        if (user != null) {
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
         }
-    }
-
-    private void updateUI(FirebaseUser user) {
-        hideProgressDialog();
-        if (user != null) {
-            mStatusTextView.setText(getString(R.string.emailpassword_status_fmt,
-                    user.getEmail(), user.isEmailVerified()));
-            mDetailTextView.setText(getString(R.string.firebase_status_fmt, user.getUid()));
-
-            findViewById(R.id.emailPasswordButtons).setVisibility(View.GONE);
-            findViewById(R.id.emailPasswordFields).setVisibility(View.GONE);
-            findViewById(R.id.signedInButtons).setVisibility(View.VISIBLE);
-
-            findViewById(R.id.verifyEmailButton).setEnabled(!user.isEmailVerified());
-        } else {
-            mStatusTextView.setText(R.string.signed_out);
-            mDetailTextView.setText(null);
-
-            findViewById(R.id.emailPasswordButtons).setVisibility(View.VISIBLE);
-            findViewById(R.id.emailPasswordFields).setVisibility(View.VISIBLE);
-            findViewById(R.id.signedInButtons).setVisibility(View.GONE);
-        }
-    }
-
-    private void createAccount(String email, String password) {
-        Log.d(TAG, "createAccount: " + email);
-        if (!validateForm()) {
-            return;
-        }
-
-        showProgressDialog();
-
-        mAuth.createUserWithEmailAndPassword(email, password)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            //Sign in success, update UI with the signed-in user's information
-                            Log.d(TAG, "createAccountWithEmail:success");
-                            FirebaseUser user = mAuth.getCurrentUser();
-                            updateUI(user);
-                        } else {
-                            //If sign in fail, display a message to the user
-                            Log.w(TAG, "createUserWithEmail:failure", task.getException());
-                            Toast.makeText(LoginActivity.this, "Authentication failed", Toast.LENGTH_SHORT).show();
-                            updateUI(null);
-                        }
-
-                        hideProgressDialog();
-                    }
-                });
     }
 
     private void signIn(String email, String password) {
@@ -122,8 +62,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         if (!validateForm()) {
             return;
         }
-
-        showProgressDialog();
 
         mAuth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
@@ -140,57 +78,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                     Toast.LENGTH_SHORT).show();
                             updateUI(null);
                         }
-                        if (!task.isSuccessful()) {
-                            mStatusTextView.setText(R.string.auth_failed);
-                        }
-                        hideProgressDialog();
                     }
                 });
-    }
-
-    private void signOut() {
-        mAuth.signOut();
-        updateUI(null);
-    }
-
-    private void sendEmailVerification() {
-        //disable button
-        findViewById(R.id.verifyEmailButton).setEnabled(false);
-
-        //send verification email
-        final FirebaseUser user = mAuth.getCurrentUser();
-        user.sendEmailVerification()
-                .addOnCompleteListener(this, new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        findViewById(R.id.verifyEmailButton).setEnabled(true);
-
-                        if (task.isSuccessful()) {
-                            Toast.makeText(LoginActivity.this,
-                                    "Verification email sent to " + user.getEmail(),
-                                    Toast.LENGTH_SHORT).show();
-                        } else {
-                            Log.e(TAG, "sendEmailVerification", task.getException());
-                            Toast.makeText(LoginActivity.this,
-                                    "Failed to send verification email.",
-                                    Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                });
-    }
-
-    private void showProgressDialog() {
-        if (mProgressDialog == null) {
-            mProgressDialog = new ProgressDialog(this);
-            mProgressDialog.setMessage(getString(R.string.loading));
-            mProgressDialog.setIndeterminate(true);
-        }
-        mProgressDialog.show();
-    }
-
-    private void hideProgressDialog() {
-        if (mProgressDialog != null && mProgressDialog.isShowing())
-            mProgressDialog.dismiss();
     }
 
     private boolean validateForm() {
@@ -219,14 +108,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     @Override
     public void onClick(View v) {
         int i = v.getId();
-        if (i == R.id.emailCreateAccountButton) {
-            createAccount(mEmailField.getText().toString(), mPasswordField.getText().toString());
-        } else if (i == R.id.emailSignInButton) {
+        if (i == R.id.login_button_login) {
             signIn(mEmailField.getText().toString(), mPasswordField.getText().toString());
-        } else if (i == R.id.signOutButton) {
-            signOut();
-        } else if (i == R.id.verifyEmailButton) {
-            sendEmailVerification();
+        } else if (i == R.id.login_signup_activity) {
+            Intent intent = new Intent(this, SignupActivity.class);
+            startActivity(intent);
         }
     }
 }
