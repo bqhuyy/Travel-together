@@ -16,41 +16,46 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
-public class SignupActivity extends AppCompatActivity implements View.OnClickListener {
+public class SignupActivity extends AppCompatActivity {
 
     private static final String TAG = "SignupEmailPassword";
 
     private FirebaseAuth mAuth;
-
+    private FirebaseDatabase database;
     private EditText mUsernameField;
     private EditText mEmailField;
     private EditText mPasswordField;
+    private DatabaseReference userRef;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
-
+        database = FirebaseDatabase.getInstance();
         mUsernameField = findViewById(R.id.signup_username);
         mEmailField = findViewById(R.id.signup_email);
         mPasswordField = findViewById(R.id.signup_password);
-        findViewById(R.id.signup_button_signup).setOnClickListener(this);
-        findViewById(R.id.signup_login_activity).setOnClickListener(this);
+        mAuth = FirebaseAuth.getInstance();
+        findViewById(R.id.signup_button_signup).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                createAccount(mUsernameField.getText().toString(), mEmailField.getText().toString(), mPasswordField.getText().toString());
+            }
+        });
+        findViewById(R.id.signup_login_activity).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(SignupActivity.this, LoginActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
     }
 
-    @Override
-    public void onClick(View view) {
-        if(view == findViewById(R.id.signup_button_signup)){
-            createAccount(mUsernameField.getText().toString(), mEmailField.getText().toString(), mPasswordField.getText().toString());
-        }
-        if(view == findViewById(R.id.signup_login_activity)){
-            Intent intent = new Intent(this, LoginActivity.class);
-            startActivity(intent);
-        }
-    }
-
-    private void createAccount(final String username, String email, String password) {
+    private void createAccount(final String username, final String email, final String password) {
         Log.d(TAG, "createAccount: " + email);
         if (!validateForm()) {
             return;
@@ -63,6 +68,15 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
                         if (task.isSuccessful()) {
                             //Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "createAccountWithEmail:success");
+                            FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+                            UserProfileChangeRequest profileChangeRequest = new UserProfileChangeRequest.Builder()
+                                    .setDisplayName(username)
+                                    .build();
+                            currentUser.updateProfile(profileChangeRequest);
+//                            Toast.makeText(SignupActivity.this,currentUser.getUid(),Toast.LENGTH_LONG).show();
+                            userRef = database.getReference("user");
+                            userRef.child(currentUser.getUid()).setValue(new User(username,email));
+                            goToMainActivity();
                         } else {
                             //If sign in fail, display a message to the user
                             Log.w(TAG, "createUserWithEmail:failure", task.getException());
@@ -70,14 +84,8 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
                         }
                     }
                 });
-        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
-        if(currentUser!=null){
-            UserProfileChangeRequest profileChangeRequest = new UserProfileChangeRequest.Builder()
-                    .setDisplayName(username)
-                    .build();
-            currentUser.updateProfile(profileChangeRequest);
-            goToMainActivity();
-        }
+
+
     }
 
     private void goToMainActivity() {
@@ -85,6 +93,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
         if(currentUser!=null){
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
+            finish();
         }
     }
 
