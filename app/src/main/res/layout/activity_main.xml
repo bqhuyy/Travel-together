@@ -12,5 +12,10 @@
         android:layout_height="wrap_content"
         android:text="@string/edit_account"
         android:onClick="OnAccountButton"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Sign Out"
+        android:onClick="OnSignOutButton"/>
 
 </LinearLayout>
