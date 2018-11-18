@@ -19,7 +19,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 
-public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
+public class LoginActivity extends AppCompatActivity{
 
     private static final String TAG = "LoginEmailPassword";
 
@@ -27,6 +27,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     private EditText mEmailField;
     private EditText mPasswordField;
+    private ProgressDialog mProgressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,8 +37,20 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         mEmailField = findViewById(R.id.login_email);
         mPasswordField = findViewById(R.id.login_password);
 
-        findViewById(R.id.login_button_login).setOnClickListener(this);
-        findViewById(R.id.login_signup_activity).setOnClickListener(this);
+        findViewById(R.id.login_button_login).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                signIn(mEmailField.getText().toString(), mPasswordField.getText().toString());
+            }
+        });
+        findViewById(R.id.login_signup_activity).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(LoginActivity.this, SignupActivity.class);
+                startActivity(intent);
+                overridePendingTransition(R.anim.slide_in_right,R.anim.slide_out_left);
+            }
+        });
 
         mAuth = FirebaseAuth.getInstance();
     }
@@ -54,6 +67,24 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         if (user != null) {
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
+//            overridePendingTransition(R.anim.slide_in_right,R.anim.slide_out_left);
+            finish();
+        }
+    }
+
+    private void showProgressDialog() {
+        if (mProgressDialog == null) {
+            mProgressDialog = new ProgressDialog(this);
+            mProgressDialog.setMessage(getString(R.string.loading));
+            mProgressDialog.setIndeterminate(true);
+        }
+
+        mProgressDialog.show();
+    }
+
+    private void hideProgressDialog() {
+        if (mProgressDialog != null && mProgressDialog.isShowing()) {
+            mProgressDialog.dismiss();
         }
     }
 
@@ -62,6 +93,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         if (!validateForm()) {
             return;
         }
+
+        showProgressDialog();
 
         mAuth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
@@ -74,7 +107,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "signInWithEmail:failure", task.getException());
-                            Toast.makeText(LoginActivity.this, "Authentication failed.",
+                            hideProgressDialog();
+                            Toast.makeText(LoginActivity.this, "Incorrect email or password",
                                     Toast.LENGTH_SHORT).show();
                             updateUI(null);
                         }
@@ -102,17 +136,5 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         }
 
         return valid;
-    }
-
-
-    @Override
-    public void onClick(View v) {
-        int i = v.getId();
-        if (i == R.id.login_button_login) {
-            signIn(mEmailField.getText().toString(), mPasswordField.getText().toString());
-        } else if (i == R.id.login_signup_activity) {
-            Intent intent = new Intent(this, SignupActivity.class);
-            startActivity(intent);
-        }
     }
 }

@@ -1,5 +1,6 @@
 package cs300.apcs04.traveltogether;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -29,6 +30,7 @@ public class SignupActivity extends AppCompatActivity {
     private EditText mEmailField;
     private EditText mPasswordField;
     private DatabaseReference userRef;
+    private ProgressDialog mProgressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,11 +50,26 @@ public class SignupActivity extends AppCompatActivity {
         findViewById(R.id.signup_login_activity).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(SignupActivity.this, LoginActivity.class);
-                startActivity(intent);
                 finish();
+                overridePendingTransition(R.anim.slide_in_left,R.anim.slide_out_right);
             }
         });
+    }
+
+    private void showProgressDialog() {
+        if (mProgressDialog == null) {
+            mProgressDialog = new ProgressDialog(this);
+            mProgressDialog.setMessage(getString(R.string.loading));
+            mProgressDialog.setIndeterminate(true);
+        }
+
+        mProgressDialog.show();
+    }
+
+    private void hideProgressDialog() {
+        if (mProgressDialog != null && mProgressDialog.isShowing()) {
+            mProgressDialog.dismiss();
+        }
     }
 
     private void createAccount(final String username, final String email, final String password) {
@@ -60,7 +77,7 @@ public class SignupActivity extends AppCompatActivity {
         if (!validateForm()) {
             return;
         }
-
+        showProgressDialog();
         mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
@@ -80,7 +97,8 @@ public class SignupActivity extends AppCompatActivity {
                         } else {
                             //If sign in fail, display a message to the user
                             Log.w(TAG, "createUserWithEmail:failure", task.getException());
-                            Toast.makeText(SignupActivity.this, "Authentication failed", Toast.LENGTH_SHORT).show();
+                            hideProgressDialog();
+                            Toast.makeText(SignupActivity.this, "Please check your information again", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
@@ -93,6 +111,7 @@ public class SignupActivity extends AppCompatActivity {
         if(currentUser!=null){
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
+            overridePendingTransition(R.anim.slide_in_right,R.anim.slide_out_left);
             finish();
         }
     }
@@ -116,6 +135,20 @@ public class SignupActivity extends AppCompatActivity {
             mPasswordField.setError(null);
         }
 
+        String username = mUsernameField.getText().toString();
+        if (TextUtils.isEmpty(username)) {
+            mUsernameField.setError("Required!");
+            valid = false;
+        } else {
+            mUsernameField.setError(null);
+        }
+
         return valid;
+    }
+
+    @Override
+    public void onBackPressed() {
+        overridePendingTransition(R.anim.slide_in_left,R.anim.slide_out_right);
+        super.onBackPressed();
     }
 }

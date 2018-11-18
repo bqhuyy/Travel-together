@@ -130,22 +130,24 @@
 <!--</LinearLayout>-->
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-android:layout_width="fill_parent"
-android:layout_height="fill_parent"
-android:fitsSystemWindows="true">
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:fitsSystemWindows="true"
+    android:background="@drawable/gradient_screen">
 
 <LinearLayout
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingTop="56dp"
+    android:paddingTop="100dp"
     android:paddingLeft="24dp"
     android:paddingRight="24dp">
 
-    <ImageView android:src="@drawable/ic_launcher_background"
+    <ImageView android:src="@drawable/appname"
         android:layout_width="wrap_content"
         android:layout_height="72dp"
-        android:layout_marginBottom="24dp"
+        android:layout_marginBottom="36dp"
         android:layout_gravity="center_horizontal" />
 
     <!-- Email Label -->
@@ -153,12 +155,14 @@ android:fitsSystemWindows="true">
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp">
+        android:layout_marginBottom="8dp"
+        android:theme="@style/TextInputLayoutAppearance">
         <EditText android:id="@+id/login_email"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textEmailAddress"
-            android:hint="Email" />
+            android:hint="Email"
+            android:textColor="@color/white"/>
     </android.support.design.widget.TextInputLayout>
 
     <!-- Password Label -->
@@ -166,12 +170,14 @@ android:fitsSystemWindows="true">
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp">
+        android:layout_marginBottom="8dp"
+        android:theme="@style/TextInputLayoutAppearance">
         <EditText android:id="@+id/login_password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textPassword"
-            android:hint="Password"/>
+            android:hint="Password"
+            android:textColor="@color/white"/>
     </android.support.design.widget.TextInputLayout>
 
     <android.support.v7.widget.AppCompatButton
@@ -181,7 +187,9 @@ android:fitsSystemWindows="true">
         android:layout_marginTop="24dp"
         android:layout_marginBottom="24dp"
         android:padding="12dp"
-        android:text="Login"/>
+        android:text="Login"
+        android:background="@color/colorAccent"
+        android:textColor="@color/white"/>
 
     <TextView android:id="@+id/login_signup_activity"
         android:layout_width="fill_parent"
@@ -189,7 +197,8 @@ android:fitsSystemWindows="true">
         android:layout_marginBottom="24dp"
         android:text="No account yet? Create one"
         android:gravity="center"
-        android:textSize="16dip"/>
+        android:textSize="16dip"
+        android:textColor="@color/white"/>
 
 </LinearLayout>
 </RelativeLayout>
