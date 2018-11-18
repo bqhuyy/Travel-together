@@ -1,14 +1,21 @@
 package cs300.apcs04.traveltogether;
 
 public class User {
-    String name;
-    String email;
-    User() {
+    private String name;
+    private String email;
+    public User() {
         name = "";
         email = "";
     }
-    User(String name, String email) {
+    public User(String name, String email) {
         this.name = name;
         this.email = email;
+    }
+    public String getName() {
+        return name;
+    }
+
+    public String getEmail() {
+        return email;
     }
 }
