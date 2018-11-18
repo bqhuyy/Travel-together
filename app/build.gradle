@@ -42,7 +42,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-messaging:17.3.4'
     implementation 'com.firebaseui:firebase-ui:0.6.2'
     implementation 'com.github.shrikanth7698:ChatView:v0.1.2'
-
+    implementation 'de.hdodenhof:circleimageview:2.2.0'
 }
 
 apply plugin: 'com.google.gms.google-services'

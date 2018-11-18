@@ -20,8 +20,8 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".MainActivity"
-            android:parentActivityName=".LoginActivity" />
+            android:name=".MainActivity">
+        </activity>
         <activity android:name=".ManageAccountActivity" />
         <activity android:name=".EmergencyCallActivity" />
         <activity android:name=".SignupActivity"

@@ -89,4 +89,7 @@
     <string name="police">Police</string>
     <string name="ambulance">Ambulance</string>
     <string name="firefighter">Firefighter</string>
+
+    <string name="open">Open</string>
+    <string name="close">Close</string>
 </resources>
