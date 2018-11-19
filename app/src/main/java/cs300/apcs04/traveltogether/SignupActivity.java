@@ -50,8 +50,10 @@ public class SignupActivity extends AppCompatActivity {
         findViewById(R.id.signup_login_activity).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                finish();
+                Intent intent = new Intent(SignupActivity.this,LoginActivity.class);
+                startActivity(intent);
                 overridePendingTransition(R.anim.slide_in_left,R.anim.slide_out_right);
+                finish();
             }
         });
     }

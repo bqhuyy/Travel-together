@@ -41,8 +41,9 @@ public class MainActivity extends AppCompatActivity {
                         break;
                     case R.id.main_nav_signout:
                         FirebaseAuth.getInstance().signOut();
-//                        Intent intent = new Intent(MainActivity.this,SignInActivity.class);
-//                        startActivity(intent);
+                        Intent intent = new Intent(MainActivity.this,LoginActivity.class);
+                        startActivity(intent);
+                        overridePendingTransition(R.anim.slide_in_left,R.anim.slide_out_right);
                         finish();
                         break;
                 }
