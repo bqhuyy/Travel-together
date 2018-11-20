@@ -20,7 +20,8 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".MainActivity">
+            android:name=".MainActivity"
+            android:theme="@style/ThemeOverlay.MainActivity">
         </activity>
         <activity android:name=".ManageAccountActivity" />
         <activity android:name=".EmergencyCallActivity" />
