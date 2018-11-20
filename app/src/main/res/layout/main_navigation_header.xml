@@ -12,15 +12,17 @@
         android:layout_height="75dp"
         android:background="@drawable/user"/>
     <TextView
+        android:id="@+id/main_navigation_header_username"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Bui Quoc Huy"
+        android:text="No name"
         android:textColor="@color/white"
         android:textStyle="bold"
         android:layout_marginTop="5dp"/>
     <TextView
+        android:id="@+id/main_navigation_header_mail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="bqhuy@apcs.vn"
+        android:text="no mail"
         android:textColor="@color/white" />
 </LinearLayout>
