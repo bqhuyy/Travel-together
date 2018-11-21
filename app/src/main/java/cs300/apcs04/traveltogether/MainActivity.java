@@ -7,9 +7,11 @@ import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.ToolbarWidgetWrapper;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toolbar;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -24,8 +26,8 @@ public class MainActivity extends AppCompatActivity {
     private NavigationView mNavigationView;
     private FirebaseAuth mFirebaseAuth;
     private FirebaseUser mUser;
-    private TextView mMainNavHeaderUsername;
-    private TextView mMainNavHeaderMail;
+    private android.support.v7.widget.Toolbar mToolbar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,12 +38,12 @@ public class MainActivity extends AppCompatActivity {
         mFirebaseAuth = FirebaseAuth.getInstance();
         mUser = mFirebaseAuth.getCurrentUser();
 
+        mToolbar = (android.support.v7.widget.Toolbar) findViewById(R.id.main_toolbar);
+        setSupportActionBar(mToolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         mDrawerLayout.addDrawerListener(mActionBarDrawerToggle);
         mActionBarDrawerToggle.syncState();
-
-//        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-
 
         mNavigationView = (NavigationView)findViewById(R.id.main_nav_view);
         View mNavigationHeader = mNavigationView.getHeaderView(0);
