@@ -2,6 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="cs300.apcs04.traveltogether">
 
+    <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.CALL_PHONE" />
 
     <application
@@ -19,6 +20,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".Note_Main_Activity"></activity>
+        <activity android:name=".Note_AddNote_Activity"></activity>
         <activity
             android:name=".MainActivity"
             android:theme="@style/ThemeOverlay.MainActivity">
