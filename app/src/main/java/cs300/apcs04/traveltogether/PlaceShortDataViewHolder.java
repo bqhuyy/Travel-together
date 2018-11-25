@@ -10,6 +10,7 @@ public class PlaceShortDataViewHolder extends ChildViewHolder implements  View.O
 	private TextView mContent;
 	private ItemClickListener mitemClickListener;
 
+
 	public PlaceShortDataViewHolder(View itemView) {
 		super(itemView);
 		mContent = (TextView) itemView.findViewById(R.id.PlaceSubItem_place_sub_content);

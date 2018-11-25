@@ -18,9 +18,8 @@ public class Place extends ExpandableGroup<PlaceShortData> implements Serializab
 	private ArrayList<String> mWeek_time;
 	private ArrayList<String> mType;
 
-
 	public Place(String placeId, String name, float rating, String address, String phone, String websiteURL
-			, boolean isOpen, ArrayList<String> week_time, ArrayList<String> type, List<PlaceShortData> items) {
+			, Boolean isOpen, ArrayList<String> week_time, ArrayList<String> type, List<PlaceShortData> items) {
 		super(name, items);
 		this.mPlaceId = placeId;
 		this.mName = name;

@@ -88,7 +88,7 @@ public class PlaceJSONParser {
 				week_time_txt = "None";
 			}
 
-			List<PlaceShortData> PlaceExpandData = new ArrayList<>();
+			ArrayList<PlaceShortData> PlaceExpandData = new ArrayList<>();
 			PlaceShortData ExpandAddress = new PlaceShortData(address);
 			PlaceShortData ExpandWeekTime = new PlaceShortData(week_time_txt);
 			PlaceExpandData.add(ExpandAddress);
@@ -96,9 +96,14 @@ public class PlaceJSONParser {
 
 			place = new Place(placeID, name, rating, address, phone, website, open_now, week_day_time, type, PlaceExpandData);
 
+			Log.d("place_not_null", place.getmPlaceId());
+			return place;
 		} catch (JSONException je) {
 			Log.d("ssss", "null goyy");
+		} catch (Exception e){
+			Log.d("sth", e.toString());
+			throw e;
 		}
-		return place;
+		return null;
 	}
 }

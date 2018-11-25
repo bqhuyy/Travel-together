@@ -29,6 +29,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
@@ -164,7 +165,7 @@ public class PlaceDetailActivity extends AppCompatActivity implements OnMapReady
 
 				JSONObject jsonObject = new JSONObject(sb.toString());
 
-				JSONObject result = jsonObject.getJSONObject("result");
+				/*JSONObject result = jsonObject.getJSONObject("result");
 
 				if (result.has("website")) {
 					mPlaceWebsite.append(result.getString("website"));
@@ -172,15 +173,16 @@ public class PlaceDetailActivity extends AppCompatActivity implements OnMapReady
 				else{
 					mPlaceWebsite.append("None");
 				}
-				mPlaceName.append(result.getString("name"));
+				mPlaceName.append(result.getString("name"));*/
 				Log.d("jda", sb.toString());
 				return sb;
 			} catch (MalformedURLException me) {
 				Log.d("123", "Malformed");
 			} catch (IOException ioe) {
 				Log.d("456", "IOE");
-			}  catch (Exception e) {
-				Log.d("789", "igisdo");
+			}
+			catch (Exception e) {
+				Log.d("789", e.toString());
 			}
 			return null;
 		}

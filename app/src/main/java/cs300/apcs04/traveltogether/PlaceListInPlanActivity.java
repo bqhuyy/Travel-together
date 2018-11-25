@@ -4,23 +4,45 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Handler;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
+import android.support.v7.widget.Toolbar;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
+import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
+import com.google.android.gms.common.GooglePlayServicesRepairableException;
+import com.google.android.gms.common.api.Status;
+import com.google.android.gms.location.places.ui.PlaceAutocomplete;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 
 public class PlaceListInPlanActivity extends AppCompatActivity {
@@ -34,10 +56,20 @@ public class PlaceListInPlanActivity extends AppCompatActivity {
 	private FloatingActionButton mFabAddPlace;
 	private FloatingActionButton mFabChat;
 
+	private ItemTouchHelper.SimpleCallback mSimpleItemTouchCallback;
+	private ItemTouchHelper mItemTouchHelper;
+
 	private ArrayList<String> mMemList;
 	private FirebaseDatabase mDatabase;
 	private DatabaseReference mRef = mDatabase.getInstance().getReference("plan").child("07b097ea-1aec-4be5-aa0d-863fad22a1ff"); // change this to planID later
+	private DatabaseReference mRefPlace = mDatabase.getInstance().getReference("place");
 
+	private static int PLACE_AUTOCOMPLETE_REQUEST_CODE = 1;
+
+	private String mAPI_KEY = "AIzaSyB83QGQwOxKEiC2KMOKLiGK4nw5gMnXC14";
+	private String mPlaceDetailURL = "https://maps.googleapis.com/maps/api/place/details/json?placeid=";
+
+	private PlaceJSONParser mPlaceParser = new PlaceJSONParser();
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -47,6 +79,13 @@ public class PlaceListInPlanActivity extends AppCompatActivity {
 		/*Intent intent = getIntent();
 		mPlanID = intent.getStringExtra("planID");*/
 
+		Toolbar toolbar = findViewById(R.id.toolbar_placelist);
+		setSupportActionBar(toolbar);
+
+		// toolbar fancy stuff
+		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+		getSupportActionBar().setTitle("");
+
 		mRecylerview = (RecyclerView) findViewById(R.id.place_list_in_plan);
 		RecyclerView.ItemAnimator animator = mRecylerview.getItemAnimator();
 		if (animator instanceof DefaultItemAnimator) {
@@ -55,29 +94,87 @@ public class PlaceListInPlanActivity extends AppCompatActivity {
 
 
 		init();
-		getDataFromPlanID(mPlanID);
+		setGestureForItemInRecylerview();
 		setUpRecylerView();
+		getDataFromPlanID(mPlanID);
 	}
 
 	public void getDataFromPlanID(String PlanID){
-		mPlaceList = new ArrayList<>();
-		mPlaceShortDataList = new ArrayList();
-		mLayoutManager = new LinearLayoutManager(this);
 
-		// this is data of address, weektime. It will be displayed when clicking on arrow down button in one item
-		PlaceShortData placeshort = new PlaceShortData("eqweqweq");
-		PlaceShortData placeshort2 = new PlaceShortData("vdsfsfsdf");
-		mPlaceShortDataList.add(placeshort);
-		mPlaceShortDataList.add(placeshort2);
 
-		// Main Place data
-		Place place = new Place("wqeqweqsadas", "Truong Gia Dinh", 4, "dsdqqweq", "012587998", "wqeqweqw", false, null, null, mPlaceShortDataList);
-		mPlaceList.add(place);
-		place = new Place("eherhhfbdb", "Truong Le Hong Phong", 4, "dsdqqweq", "012587998", "wqeqweqw", false, null, null, mPlaceShortDataList);
-		mPlaceList.add(place);
+		ValueEventListener placeListener = new ValueEventListener() {
+			@Override
+			public void onDataChange(DataSnapshot dataSnapshot) {
+				// Get Post object and use the values to update the UI
+
+				DataSnapshot PlaceIDDataList = dataSnapshot.child("mPlaceList");
+
+				final HashMap<String, String> placeIDMap = (HashMap<String, String>) PlaceIDDataList.getValue();
+
+				mRefPlace.addChildEventListener(new ChildEventListener() {
+					@Override
+					public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+						String address = dataSnapshot.child("items").child("0").child("mContent").getValue(String.class);
+						String week_time_txt = dataSnapshot.child("items").child("1").child("mContent").getValue(String.class);
+
+						String mPlaceID = dataSnapshot.child("mPlaceId").getValue(String.class);
+						String mName = dataSnapshot.child("mName").getValue(String.class);
+						float mRating = dataSnapshot.child("mRating").getValue(Float.class);
+						String mAddress = dataSnapshot.child("mAddress").getValue(String.class);
+						String mPhone = dataSnapshot.child("mPhone").getValue(String.class);
+						String mWebsiteURL = dataSnapshot.child("mWebsiteURL").getValue(String.class);
+						Boolean mIsOpen = dataSnapshot.child("mIsOpen").getValue(Boolean.class);
+						ArrayList<String> mWeektime = (ArrayList<String>) dataSnapshot.child("mWeek_time").getValue();
+						ArrayList<String> mType = (ArrayList<String>) dataSnapshot.child("mType").getValue();
+
+						ArrayList<PlaceShortData> PlaceExpandData = new ArrayList<>();
+						PlaceShortData ExpandAddress = new PlaceShortData(address);
+						PlaceShortData ExpandWeekTime = new PlaceShortData(week_time_txt);
+						PlaceExpandData.add(ExpandAddress);
+						PlaceExpandData.add(ExpandWeekTime);
+
+						Place p = new Place(mPlaceID, mName, mRating, mAddress, mPhone, mWebsiteURL, mIsOpen, mWeektime, mType, PlaceExpandData);
+						mAdapter.add(p);
+					}
+
+					@Override
+					public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+					}
+
+					@Override
+					public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+					}
+
+					@Override
+					public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+					}
+
+					@Override
+					public void onCancelled(@NonNull DatabaseError databaseError) {
+
+					}
+				});
+			}
+
+			@Override
+			public void onCancelled(DatabaseError databaseError) {
+				// Getting Post failed, log a message
+
+				// ...
+			}
+		};
+		mRef.addListenerForSingleValueEvent(placeListener);
 	}
 
 	public void setUpRecylerView(){
+
+		mPlaceList = new ArrayList<>();
+		mPlaceShortDataList = new ArrayList();
+		mLayoutManager = new LinearLayoutManager(this);
 
 		mAdapter= new PlaceAdapter(mPlaceList, this);
 		mRecylerview.setLayoutManager(mLayoutManager);
@@ -111,11 +208,6 @@ public class PlaceListInPlanActivity extends AppCompatActivity {
 						}
 
 						Intent intent = new Intent(getApplicationContext(), TestActivity.class);
-						/*Bundle extras = new Bundle();
-						extras.putStringArrayList("listMem", mMemList);
-						intent.putExtras(extras);
-						startActivity(intent);
-						finish();*/
 						intent.putStringArrayListExtra("listMem", mMemList);
 						startActivity(intent);
 
@@ -126,27 +218,160 @@ public class PlaceListInPlanActivity extends AppCompatActivity {
 
 					}
 				});
-				/*final Handler handler = new Handler();
-				final int delay = 1000; //milliseconds
+			}
+		});
 
-
-				handler.postDelayed(new Runnable(){
-					public void run(){
-						if(!mMemList.isEmpty())//checking if the data is loaded or not
-						{
-							Intent intent = new Intent(getApplicationContext(), TestActivity.class);
-							Bundle extras = new Bundle();
-							extras.putStringArrayList("listMem", mMemList);
-							intent.putExtras(extras);
-							startActivity(intent);
-							finish();
-						}
-						else
-							handler.postDelayed(this, delay);
-					}
-				}, delay);*/
+		mFabAddPlace.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				try {
+					Intent intent =
+							new PlaceAutocomplete.IntentBuilder(PlaceAutocomplete.MODE_OVERLAY)
+									.build(PlaceListInPlanActivity.this);
+					startActivityForResult(intent, PLACE_AUTOCOMPLETE_REQUEST_CODE);
+				} catch (GooglePlayServicesRepairableException e) {
+					// TODO: Handle the error.
+				} catch (GooglePlayServicesNotAvailableException e) {
+					// TODO: Handle the error.
+				}
 			}
 		});
 	}
 
+	public void setGestureForItemInRecylerview(){
+		mSimpleItemTouchCallback = new ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP|ItemTouchHelper.DOWN, ItemTouchHelper.LEFT) {
+
+			@Override
+			public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
+				mAdapter.onItemMove(viewHolder.getAdapterPosition(), target.getAdapterPosition());
+				return true;
+			}
+
+			@Override
+			public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDir) {
+				Toast.makeText(PlaceListInPlanActivity.this, "on Swiped ", Toast.LENGTH_SHORT).show();
+				//Remove swiped item from list and notify the RecyclerView
+				/*int position = viewHolder.getAdapterPosition();
+				arrayList.remove(position);
+				adapter.notifyDataSetChanged();*/
+				Place place = (Place) mAdapter.getGroups().get(viewHolder.getAdapterPosition());
+				mRefPlace.child(place.getmPlaceId()).removeValue();
+				mRef.child("mPlaceList").child(place.getmPlaceId()).removeValue();
+				mAdapter.onItemRemove(viewHolder.getAdapterPosition());
+
+			}
+		};
+
+		mItemTouchHelper = new ItemTouchHelper(mSimpleItemTouchCallback);
+		mItemTouchHelper.attachToRecyclerView(mRecylerview);
+	}
+
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		if (requestCode == PLACE_AUTOCOMPLETE_REQUEST_CODE) {
+			if (resultCode == RESULT_OK) {
+				com.google.android.gms.location.places.Place place = PlaceAutocomplete.getPlace(this, data);
+				Log.i("place_auto", "Place: " + place.getName());
+				new DataGetter().execute(mPlaceDetailURL + place.getId() + "&language=en" + "&key=" + mAPI_KEY);
+			} else if (resultCode == PlaceAutocomplete.RESULT_ERROR) {
+				Status status = PlaceAutocomplete.getStatus(this, data);
+				// TODO: Handle the error.
+				Log.i("place_auto", status.getStatusMessage());
+
+			} else if (resultCode == RESULT_CANCELED) {
+				// The user canceled the operation.
+			}
+		}
+	}
+
+	public class DataGetter extends AsyncTask<String , Void , Place> {
+
+		@Override
+		protected Place doInBackground(String... params) {
+
+			String link = params[0];
+
+			try {
+				Log.e("tryyyy", "rrrrrrrrrrrrr");
+				URL url = new URL(link);
+				HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
+				InputStreamReader inputStreamReader = new InputStreamReader(httpURLConnection.getInputStream());
+				BufferedReader br = new BufferedReader(inputStreamReader);
+				StringBuilder sb = new StringBuilder();
+				String line = br.readLine();
+
+				while (line != null) {
+					sb.append(line);
+					line = br.readLine();
+				}
+
+				JSONObject jsonObject = new JSONObject(sb.toString());
+
+				Place place= mPlaceParser.parse(sb.toString());
+				Log.d("data: ", place.getmName());
+				return place;
+
+			} catch (MalformedURLException me) {
+				Log.d("123", "Malformed");
+			} catch (IOException ioe) {
+				Log.d("456", "IOE");
+			}  catch (Exception e) {
+				Log.d("789", e.toString());
+			}
+			return null;
+		}
+
+		@Override
+		protected void onPostExecute(Place p) {
+
+			super.onPostExecute(p);
+			final Place place = p;
+			if(p != null){
+				mAdapter.add(p);
+				final String id = p.getmPlaceId();
+				mRef.child("mPlaceList").child(id).setValue(id);
+				mRefPlace.addListenerForSingleValueEvent(new ValueEventListener() {
+					@Override
+					public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+						if(!dataSnapshot.hasChild(id)){
+							mRefPlace.child(id).setValue(place);
+						}
+					}
+
+					@Override
+					public void onCancelled(@NonNull DatabaseError databaseError) {
+
+					}
+				});
+			}
+			else{
+				Toast.makeText(PlaceListInPlanActivity.this, "Can not add this place!", Toast.LENGTH_SHORT).show();
+			}
+		}
+	}
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.search_menu, menu);
+
+		MenuItem searchItem = menu.findItem(R.id.action_search);
+		SearchView searchView = (SearchView) searchItem.getActionView();
+
+		searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+			@Override
+			public boolean onQueryTextSubmit(String s) {
+				mAdapter.getFilter().filter(s);
+				return false;
+			}
+
+			@Override
+			public boolean onQueryTextChange(String s) {
+				mAdapter.getFilter().filter(s);
+				return false;
+			}
+		});
+
+		return true;
+	}
 }

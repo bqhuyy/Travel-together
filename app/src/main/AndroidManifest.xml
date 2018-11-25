@@ -39,11 +39,12 @@
         <activity android:name=".CameraActivity" />
         <activity android:name=".TestActivity" />
         <activity android:name=".PlaceDetailActivity" />
-        <activity android:name=".ImageFullscreenActivity"></activity>
+        <activity android:name=".ImageFullscreenActivity" />
 
-        <meta-data android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyB83QGQwOxKEiC2KMOKLiGK4nw5gMnXC14"/>
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyB83QGQwOxKEiC2KMOKLiGK4nw5gMnXC14" />
+
     </application>
-
 
 </manifest>

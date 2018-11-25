@@ -8,6 +8,8 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -16,16 +18,19 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
-public class PlanAdapter extends RecyclerView.Adapter<PlanAdapter.ViewHolder> implements ItemTouchHelperAdapter{
+public class PlanAdapter extends RecyclerView.Adapter<PlanAdapter.ViewHolder> implements ItemTouchHelperAdapter, Filterable{
 
 	private ArrayList<Plan> mPlanList;
+	private ArrayList<Plan> mPlanListFiltered;
 	private Context mContext;
 	private PopupMenu mPopupMenu;
 
 	public PlanAdapter(ArrayList<Plan> data, Context context){
 		this.mPlanList = data;
 		this.mContext = context;
+		this.mPlanListFiltered = data;
 	}
 
 	@NonNull
@@ -38,7 +43,7 @@ public class PlanAdapter extends RecyclerView.Adapter<PlanAdapter.ViewHolder> im
 
 	@Override
 	public void onBindViewHolder(@NonNull final ViewHolder viewHolder, int i) {
-		final Plan plan = mPlanList.get(i);
+		final Plan plan = mPlanListFiltered.get(i);
 		viewHolder.title.setText(plan.getTitle());
 		DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm");
 		viewHolder.date.setText(dateFormat.format(plan.getDateAdded()));
@@ -79,7 +84,7 @@ public class PlanAdapter extends RecyclerView.Adapter<PlanAdapter.ViewHolder> im
 
 	@Override
 	public int getItemCount() {
-		return mPlanList.size();
+		return mPlanListFiltered.size();
 	}
 
 	@Override
@@ -90,12 +95,12 @@ public class PlanAdapter extends RecyclerView.Adapter<PlanAdapter.ViewHolder> im
 
 		if(orgigin < target){
 			for(int i = orgigin; i < target; i++){
-				Collections.swap(mPlanList, i, i + 1);
+				Collections.swap(mPlanListFiltered, i, i + 1);
 			}
 		}
 		else{
 			for(int i = orgigin; i > target; i--){
-				Collections.swap(mPlanList, i, i - 1);
+				Collections.swap(mPlanListFiltered, i, i - 1);
 			}
 		}
 		notifyItemMoved(orgigin, target);
@@ -104,7 +109,7 @@ public class PlanAdapter extends RecyclerView.Adapter<PlanAdapter.ViewHolder> im
 
 	@Override
 	public void onItemRemove(int pos) {
-		mPlanList.remove(pos);
+		mPlanListFiltered.remove(pos);
 		notifyItemRemoved(pos);
 	}
 
@@ -137,4 +142,40 @@ public class PlanAdapter extends RecyclerView.Adapter<PlanAdapter.ViewHolder> im
 			return true;
 		}
 	}
+
+	@Override
+	public Filter getFilter() {
+		return planFilter;
+	}
+
+	private Filter planFilter = new Filter() {
+		@Override
+		protected FilterResults performFiltering(CharSequence charSequence) {
+
+			if(charSequence == null || charSequence.length() == 0){
+				mPlanListFiltered = mPlanList;
+			}
+			else{
+				ArrayList<Plan> filteredList = new ArrayList<>();
+				String filterPattern = charSequence.toString().toLowerCase().trim();
+
+				for(Plan plan : mPlanList){
+					if(plan.getTitle().toLowerCase().contains(filterPattern)){
+						filteredList.add(plan);
+					}
+				}
+				mPlanListFiltered = filteredList;
+			}
+			FilterResults results = new FilterResults();
+			results.values = mPlanListFiltered;
+
+			return results;
+		}
+
+		@Override
+		protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
+			mPlanListFiltered = (ArrayList<Plan>) filterResults.values;
+			notifyDataSetChanged();
+		}
+	};
 }
