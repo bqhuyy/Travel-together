@@ -1,6 +1,5 @@
 package cs300.apcs04.traveltogether;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -20,9 +19,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 public class Note_Main_Activity extends AppCompatActivity {
@@ -33,12 +30,10 @@ public class Note_Main_Activity extends AppCompatActivity {
     NotesAdapter adapter;
     List<Note> list_of_notes;
     FirebaseDatabase database = FirebaseDatabase.getInstance();
-    DatabaseReference myRef = database.getReference("note");
+    DatabaseReference myRef;
 
-    //long initialCount;
-    //int modifyPos = -1;
     long tempDate;
-    String tempID;
+    String tempID, childnode;
     final static int REQUEST_CODE_MODIFY_AND_ADD = 1234;
     int callback = 0;
     @Override
@@ -49,6 +44,11 @@ public class Note_Main_Activity extends AppCompatActivity {
         recyclerView = findViewById(R.id.main_list);
         fab = findViewById(R.id.fab);
 
+        Intent intent = getIntent();
+        Bundle bundle = intent.getExtras();
+        if (bundle != null) childnode = (String) bundle.get("plan_ID");
+        else childnode = "BlankID";
+        myRef = database.getReference("note/"+childnode);
 
         StaggeredGridLayoutManager gridLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
         gridLayoutManager.setGapStrategy(StaggeredGridLayoutManager.GAP_HANDLING_MOVE_ITEMS_BETWEEN_SPANS);
@@ -88,6 +88,7 @@ public class Note_Main_Activity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent addNoteIntent = new Intent(Note_Main_Activity.this, Note_AddNote_Activity.class);
+                addNoteIntent.putExtra("plan_ID", childnode);
                 startActivityForResult(addNoteIntent, REQUEST_CODE_MODIFY_AND_ADD);
             }
         });
@@ -107,7 +108,7 @@ public class Note_Main_Activity extends AppCompatActivity {
                 list_of_notes.remove(viewHolder.getAdapterPosition());
                 adapter.notifyItemRemoved(position);
 
-                // remove on firease*********************************
+                // remove on firebbase*********************************
                 myRef.child(note.getNoteID()).removeValue();
 
                 Snackbar.make(recyclerView, "Note deleted.", Snackbar.LENGTH_SHORT)
@@ -141,6 +142,7 @@ public class Note_Main_Activity extends AppCompatActivity {
                 i.putExtra("note_title", tempNote.getTitle());
                 i.putExtra("note_description", tempNote.getDescription());
                 i.putExtra("note_ID", tempNote.getNoteID());
+                i.putExtra("plan_ID", childnode);
 
                 startActivityForResult(i, REQUEST_CODE_MODIFY_AND_ADD);
             }
@@ -156,7 +158,7 @@ public class Note_Main_Activity extends AppCompatActivity {
             Note newNote = (Note) data.getSerializableExtra("NewNote");
 
             Log.d("SIZE", "onResume: " + list_of_notes.size());
-            ;
+
             if (callback == 2){
                 //a note is added
                 Log.d("Main", "Adding new note");
@@ -169,7 +171,6 @@ public class Note_Main_Activity extends AppCompatActivity {
             }
 
             if (callback == 1){
-                //list_of_notes.set(modifyPos, Note.listAll(Note.class).get(modifyPos));
                 Note note = null;
                 for(int i = 0; i < list_of_notes.size(); i++){
                     Note tmpNote =  list_of_notes.get(i);
@@ -189,7 +190,5 @@ public class Note_Main_Activity extends AppCompatActivity {
     @Override
     protected void onResume(){
         super.onResume();
-        //final long newCount = Note.count(Note.class);
-
     }
 }

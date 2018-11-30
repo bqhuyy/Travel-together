@@ -9,6 +9,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -24,7 +25,7 @@ public class Note_AddNote_Activity extends AppCompatActivity {
 
     boolean editingNote;
     FirebaseDatabase database = FirebaseDatabase.getInstance();
-    DatabaseReference myRef = database.getReference("note");
+    DatabaseReference myRef;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -49,6 +50,7 @@ public class Note_AddNote_Activity extends AppCompatActivity {
         fab = findViewById(R.id.addnote_fab);
 
         //handle intent
+        myRef = database.getReference("note/" + getIntent().getStringExtra("plan_ID"));
         editingNote = getIntent().getBooleanExtra("isEditing", false);
         if (editingNote){
             title = getIntent().getStringExtra("note_title");
@@ -64,30 +66,34 @@ public class Note_AddNote_Activity extends AppCompatActivity {
                 // Add note to Database
                 String newTitle = etTitle.getText().toString();
                 String newDesc = etDesc.getText().toString();
-                //long newTime = System.currentTimeMillis();
                 int callback = 0;
                 Intent data = new Intent(Note_AddNote_Activity.this, Note_Main_Activity.class);
-                //TO DO: Check if note exists before saving
                 if (!editingNote){
-                    Log.d("Note", "Saving new note");
-                    Note note = new Note(newTitle, newDesc);
-                    myRef.child(note.getNoteID()).setValue(note);
-                    data.putExtra("NewNote", note);
-                    callback = 2;
+                    if (!(newTitle.isEmpty() || newDesc.isEmpty())){
+                        Log.d("Note", "Saving new note");
+                        Note note = new Note(newTitle, newDesc);
+                        myRef.child(note.getNoteID()).setValue(note);
+                        data.putExtra("NewNote", note);
+                        callback = 2;
+                    } else {
+                        Toast.makeText(Note_AddNote_Activity.this, "You need to fill in both Title and Description", Toast.LENGTH_SHORT).show();
+                    }
                 } else {
                     Log.d("Note", "Updating a note");
-                    if (!(newTitle.equals(title) && newDesc.equals(description))){
+                    if (!(newTitle.equals(title) && newDesc.equals(description)) && !(newTitle.isEmpty() || newDesc.isEmpty())){
                         Note newNote = new Note(newTitle, newDesc, noteID);
                         myRef.child(noteID).setValue(newNote);
                         callback = 1;
                         data.putExtra("NewNote", newNote);
+                    } else {
+                        Toast.makeText(Note_AddNote_Activity.this, "You need to fill in both Title and Description", Toast.LENGTH_SHORT).show();
                     }
-
                 }
-
-                data.putExtra("callback", callback);
-                setResult(RESULT_OK, data);
-                finish();
+                if (callback != 0) {
+                    data.putExtra("callback", callback);
+                    setResult(RESULT_OK, data);
+                    finish();
+                }
             }
         });
     }
