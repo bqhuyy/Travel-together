@@ -1,7 +1,6 @@
 package cs300.apcs04.traveltogether;
 
 import java.io.Serializable;
-import java.util.Date;
 import java.util.UUID;
 
 public class Note implements  Serializable {

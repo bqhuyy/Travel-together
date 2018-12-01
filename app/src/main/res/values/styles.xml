@@ -78,6 +78,7 @@
         <item name="android:textSize">36sp</item>
     </style>
 
+    <!-- Note -->
     <style name="NoteTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>

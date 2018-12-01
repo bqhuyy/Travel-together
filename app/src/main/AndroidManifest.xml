@@ -49,8 +49,11 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyB83QGQwOxKEiC2KMOKLiGK4nw5gMnXC14" />
 
-        <activity android:name=".Note_Main_Activity"></activity>
-        <activity android:name=".Note_AddNote_Activity"></activity>
+        <activity android:name=".Note_Main_Activity"
+            android:theme="@style/NoteTheme"></activity>
+        <activity android:name=".Note_AddNote_Activity"
+            android:theme="@style/NoteTheme"></activity>
+
         <activity
             android:name=".MainActivity"
             android:theme="@style/ThemeOverlay.MainActivity">
@@ -62,6 +65,8 @@
 
         </activity>
         <activity android:name=".GroupChatActivity"></activity>
+        <activity android:name=".Author_Main_Activity"
+            android:theme="@style/ThemeOverlay.MyNoTitleActivity"></activity>
     </application>
 
 </manifest>
