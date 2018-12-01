@@ -51,6 +51,7 @@ public class PlaceDetailActivity extends AppCompatActivity implements OnMapReady
 
 	private String mAPI_KEY = "AIzaSyB83QGQwOxKEiC2KMOKLiGK4nw5gMnXC14";
 	private String mPlaceDetailURL = "https://maps.googleapis.com/maps/api/place/details/json?placeid=";
+	private String HostAPI = "http://210.245.20.101:8000/place?placeid=";
 
 	private CollapsingToolbarLayout mCollapsingToolbarLayout;
 
@@ -67,10 +68,12 @@ public class PlaceDetailActivity extends AppCompatActivity implements OnMapReady
 		setContentView(R.layout.activity_place_detail);
 
 		mCollapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.toolbar_layout);
-		mCollapsingToolbarLayout.setTitle(" ");
+		mCollapsingToolbarLayout.setTitle("sadasdasda");
+
 
 		Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 		setSupportActionBar(toolbar);
+		toolbar.setTitle("sdaasda");
 
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
@@ -92,7 +95,7 @@ public class PlaceDetailActivity extends AppCompatActivity implements OnMapReady
 		String placeid = intent.getStringExtra("placeID");
 		mPlaceID = new String(placeid);
 		Log.d("url", mPlaceDetailURL + mPlaceID + "&language=en" + "&key=" + mAPI_KEY);
-		new DataGetter().execute(mPlaceDetailURL + mPlaceID + "&language=en" + "&key=" + mAPI_KEY);
+		new DataGetter().execute(HostAPI + mPlaceID + "&language=en" + "&key=" + mAPI_KEY);
 
 	}
 

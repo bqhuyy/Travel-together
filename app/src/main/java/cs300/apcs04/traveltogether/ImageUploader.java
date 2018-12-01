@@ -32,7 +32,7 @@ public class ImageUploader extends AsyncTask<Bitmap, Void, String> {
 	private String mImgdata;
 	private Context mContext;
 	private Handler mHandler;
-	private static final String URLAPI = "http://mockbin.com/request?foo=bar&foo=baz";
+	private static final String URLAPI = "http://210.245.20.101:8000/predict";
 	public ImageUploader(Context context){
 
 		mContext = context;

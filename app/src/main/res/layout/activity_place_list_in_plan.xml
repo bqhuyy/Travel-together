@@ -39,16 +39,31 @@
             android:layout_gravity="bottom|end"
             android:layout_margin="16dp"
             android:src="@drawable/ic_add_24dp"
-            android:tint="@android:color/white"/>
+            android:tint="@android:color/white"
+            android:onClick="onFabButtonClicked"
+            />
 
         <android.support.design.widget.FloatingActionButton
+            android:backgroundTint="@color/colorPrimaryDark"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/place_list_fab_note"
+            android:layout_gravity="center|bottom"
+            android:layout_margin="16dp"
+            android:src="@drawable/noteplan"
+            android:onClick="onFabButtonClicked"
+            />
+
+        <android.support.design.widget.FloatingActionButton
+            android:backgroundTint="@color/slightlyGreen"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/place_list_fab_chat"
             android:layout_gravity="bottom|end|left"
             android:layout_margin="16dp"
-            android:src="@drawable/mail_icon"
-            android:tint="@android:color/white"/>
+            android:src="@drawable/chatplan"
+            android:onClick="onFabButtonClicked"
+            />
 
     </FrameLayout>
 

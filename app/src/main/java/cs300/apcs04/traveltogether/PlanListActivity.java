@@ -5,10 +5,12 @@ import android.app.AlertDialog;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.util.Pair;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -25,6 +27,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -55,9 +58,11 @@ public class PlanListActivity extends AppCompatActivity {
 	private StringBuilder mPlanTitle = new StringBuilder();
 
 	// Firebase databsase
-	FirebaseDatabase mDatabase = FirebaseDatabase.getInstance();
-	//DatabaseReference mRef = mDatabase.getReference("user").child("abcde123");
-	DatabaseReference mRefPlan = mDatabase.getReference("plan");
+	private FirebaseDatabase mDatabase = FirebaseDatabase.getInstance();
+	private DatabaseReference mRef = mDatabase.getReference("user");
+	private DatabaseReference mRefPlan = mDatabase.getReference("plan");
+
+	private String mUserID = "";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -70,6 +75,9 @@ public class PlanListActivity extends AppCompatActivity {
 		// toolbar fancy stuff
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		getSupportActionBar().setTitle("");
+
+		Intent intent = getIntent();
+		mUserID = intent.getStringExtra("userid");
 
 		init();
 
@@ -105,22 +113,59 @@ public class PlanListActivity extends AppCompatActivity {
 
 	public void getDataFromFireBase(){
 
-		mRefPlan.addListenerForSingleValueEvent(new ValueEventListener() {
-			@Override
-			public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-				for(DataSnapshot PostSnapShot : dataSnapshot.getChildren()){
-					Plan plan = PostSnapShot.getValue(Plan.class);
-					mArrayList.add(plan);
-					mAdapter.notifyDataSetChanged();
-				}
-				Log.d("Retreving database", "Read database successfully ");
-			}
+		if(mUserID != null){
+			mRef.child(mUserID).addListenerForSingleValueEvent(new ValueEventListener() {
+				@Override
+				public void onDataChange(DataSnapshot dataSnapshot) {
+					DataSnapshot plansSnapshot = dataSnapshot.child("mPlans");
+					final HashMap<String, String> plans = (HashMap<String, String>) plansSnapshot.getValue();
+					mRefPlan.addChildEventListener(new ChildEventListener() {
+						@Override
+						public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+							String planID = dataSnapshot.child("mPlanID").getValue(String.class);
 
-			@Override
-			public void onCancelled(@NonNull DatabaseError databaseError) {
-				Log.d("Retreving database", "Read database failed ");
-			}
-		});
+							if(plans != null && plans.containsKey(planID)){
+								String title = dataSnapshot.child("title").getValue(String.class);
+								long DateAdded = dataSnapshot.child("dateAdded").getValue(Long.class);
+								String NoteID = dataSnapshot.child("mNote").getValue(String.class);
+								HashMap<String, String> PlaceList = (HashMap<String, String>) dataSnapshot.child("mPlaceList").getValue();
+								HashMap<String, String> MemberList = (HashMap<String, String>) dataSnapshot.child("mMemberList").getValue();
+								Plan p = new Plan(planID, title, DateAdded, NoteID, PlaceList, MemberList);
+								mArrayList.add(p);
+								mAdapter.notifyDataSetChanged();
+							}
+						}
+
+						@Override
+						public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+						}
+
+						@Override
+						public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+						}
+
+						@Override
+						public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+						}
+
+						@Override
+						public void onCancelled(DatabaseError databaseError) {
+
+						}
+					});
+					Log.d("Retreving database", "Read database successfully ");
+				}
+
+				@Override
+				public void onCancelled(DatabaseError databaseError) {
+					Log.d("Retreving database", "Read database failed ");
+				}
+			});
+		}
+
 	}
 
 	public void setUpRecylerView(){
@@ -157,7 +202,9 @@ public class PlanListActivity extends AppCompatActivity {
 				arrayList.remove(position);
 				adapter.notifyDataSetChanged();*/
 				Plan plan = mArrayList.get(viewHolder.getAdapterPosition());
-				mRefPlan.child(plan.getmPlanID()).removeValue();
+				String id = plan.getmPlanID();
+				mRefPlan.child(id).removeValue();
+				mRef.child(mUserID).child("mPlans").child(id).removeValue();
 				mAdapter.onItemRemove(viewHolder.getAdapterPosition());
 
 			}
@@ -191,14 +238,11 @@ public class PlanListActivity extends AppCompatActivity {
 				//What ever you want to do with the value
 				String title = edittext.getText().toString();
 				if(!title.trim().equals("")){
-					Plan plan = new Plan(edittext.getText().toString());
-					HashMap<String, String> map = new HashMap<>();
-					map.put("abcde", "abcde");
-					map.put("ghjkl", "ghjkl");
-					plan.setmMemberList(map);
+					Plan plan = new Plan(edittext.getText().toString(), mUserID);
 					String id = plan.getmPlanID();
 					mRefPlan.child(id).setValue(plan);
 
+					mRef.child(mUserID).child("mPlans").child(id).setValue(id);
 					mArrayList.add(plan);
 					mAdapter.notifyDataSetChanged();
 					edittext.setText("");

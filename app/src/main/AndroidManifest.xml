@@ -7,6 +7,8 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.CALL_PHONE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.CALL_PHONE" />
 
     <application
         android:allowBackup="true"
@@ -15,13 +17,15 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity">
+        <activity android:name=".LoginActivity"
+            android:theme="@style/ThemeOverlay.MyNoTitleActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity android:name=".PlanListActivity" />
         <activity android:name=".PlaceListInPlanActivity" />
         <activity android:name=".UploadImageActivity" />
@@ -45,6 +49,19 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyB83QGQwOxKEiC2KMOKLiGK4nw5gMnXC14" />
 
+        <activity android:name=".Note_Main_Activity"></activity>
+        <activity android:name=".Note_AddNote_Activity"></activity>
+        <activity
+            android:name=".MainActivity"
+            android:theme="@style/ThemeOverlay.MainActivity">
+        </activity>
+        <activity android:name=".ManageAccountActivity" />
+        <activity android:name=".EmergencyCallActivity" />
+        <activity android:name=".SignupActivity"
+            android:theme="@style/ThemeOverlay.MyNoTitleActivity">
+
+        </activity>
+        <activity android:name=".GroupChatActivity"></activity>
     </application>
 
 </manifest>

@@ -18,13 +18,23 @@ public class Plan {
 
 	}
 
-	public Plan(String title) {
+	public Plan(String planID, String title, long dateAdded, String noteID, HashMap<String, String> placeList, HashMap<String, String> memList){
+		this.mPlanID = planID;
+		this.mTitle = title;
+		this.mDateAdded = dateAdded;
+		this.mNote = noteID;
+		this.mPlaceList = placeList;
+		this.mMemberList = memList;
+	}
+
+	public Plan(String title, String userID) {
 		mTitle = title;
 		mDateAdded = new Date().getTime();
 		mPlanID = UUID.randomUUID().toString();
-		mNote = null;
+		mNote = UUID.randomUUID().toString();
 		mPlaceList = null;
-		mMemberList = null;
+		mMemberList = new HashMap<>();
+		mMemberList.put(userID, userID);
 	}
 
 	public HashMap<String, String> getmMemberList() {
