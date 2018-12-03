@@ -36,32 +36,31 @@
 
                 />
 
-            <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
                 <android.support.v7.widget.Toolbar
                     android:id="@+id/toolbar"
                     android:layout_width="match_parent"
                     android:layout_height="?attr/actionBarSize"
                     app:layout_collapseMode="pin"
-                    app:popupTheme="@style/AppTheme.PopupOverlay" />
-
-                <ImageButton
-                    android:id="@+id/share_fb_button"
-                    android:onClick="shareFBButtonClicked"
-                    android:layout_width="35dp"
-                    android:layout_height="35dp"
-                    android:background="@drawable/share"
-                    android:layout_gravity="right|center"
-                    android:layout_marginRight="5dp"
+                    app:popupTheme="@style/AppTheme.PopupOverlay"
+                    app:theme="@style/ThemeOverlay.AppCompat.Light"
                     />
-            </FrameLayout>
-
 
         </android.support.design.widget.CollapsingToolbarLayout>
 
     </android.support.design.widget.AppBarLayout>
 
     <include layout="@layout/content_place_detail" />
+
+    <android.support.design.widget.TabLayout
+        android:id="@+id/tab_layout_place_info"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        app:tabSelectedTextColor="@color/colorAccent"
+        android:background="@color/colorPrimaryDark"
+        app:tabTextColor="@android:color/white"
+        android:layout_gravity="bottom"
+        >
+
+    </android.support.design.widget.TabLayout>
 
 </android.support.design.widget.CoordinatorLayout>

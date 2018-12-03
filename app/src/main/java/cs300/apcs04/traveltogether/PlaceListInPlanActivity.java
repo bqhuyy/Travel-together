@@ -121,8 +121,8 @@ public class PlaceListInPlanActivity extends AppCompatActivity {
 
 						String mPlaceID = dataSnapshot.child("mPlaceId").getValue(String.class);
 						if(placeIDMap != null && placeIDMap.containsKey(mPlaceID)){
-							String address = dataSnapshot.child("items").child("0").child("mContent").getValue(String.class);
-							String week_time_txt = dataSnapshot.child("items").child("1").child("mContent").getValue(String.class);
+							/*String address = dataSnapshot.child("items").child("0").child("mContent").getValue(String.class);
+							String week_time_txt = dataSnapshot.child("items").child("1").child("mContent").getValue(String.class);*/
 
 
 							String mName = dataSnapshot.child("mName").getValue(String.class);
@@ -134,14 +134,15 @@ public class PlaceListInPlanActivity extends AppCompatActivity {
 							ArrayList<String> mWeektime = (ArrayList<String>) dataSnapshot.child("mWeek_time").getValue();
 							ArrayList<String> mType = (ArrayList<String>) dataSnapshot.child("mType").getValue();
 
-							ArrayList<PlaceShortData> PlaceExpandData = new ArrayList<>();
+							/*ArrayList<PlaceShortData> PlaceExpandData = new ArrayList<>();
 							PlaceShortData ExpandAddress = new PlaceShortData(address);
 							PlaceShortData ExpandWeekTime = new PlaceShortData(week_time_txt);
 							PlaceExpandData.add(ExpandAddress);
-							PlaceExpandData.add(ExpandWeekTime);
+							PlaceExpandData.add(ExpandWeekTime);*/
 
-							Place p = new Place(mPlaceID, mName, mRating, mAddress, mPhone, mWebsiteURL, mIsOpen, mWeektime, mType, PlaceExpandData);
-							mAdapter.add(p);
+							Place p = new Place(mPlaceID, mName, mRating, mAddress, mPhone, mWebsiteURL, mIsOpen, mWeektime, mType);
+							mPlaceList.add(p);
+							mAdapter.notifyDataSetChanged();
 						}
 					}
 
@@ -183,13 +184,13 @@ public class PlaceListInPlanActivity extends AppCompatActivity {
 		mPlaceShortDataList = new ArrayList();
 		mLayoutManager = new LinearLayoutManager(this);
 
-		mAdapter= new PlaceAdapter(mPlaceList, this);
+		mAdapter= new PlaceAdapter(this, mPlaceList);
 		mRecylerview.setLayoutManager(mLayoutManager);
 		mRecylerview.setAdapter(mAdapter);
 
-		DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(mRecylerview.getContext(),
+		/*DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(mRecylerview.getContext(),
 				mLayoutManager.getOrientation());
-		mRecylerview.addItemDecoration(dividerItemDecoration);
+		mRecylerview.addItemDecoration(dividerItemDecoration);*/
 
 	}
 
@@ -260,8 +261,13 @@ public class PlaceListInPlanActivity extends AppCompatActivity {
 
 		int id = view.getId();
 
-		if(id == R.id.place_list_fab_chat || id == R.id.place_list_fab_note){
+		if(id == R.id.place_list_fab_chat){
 			Intent intent = new Intent(PlaceListInPlanActivity.this, GroupChatActivity.class);
+			intent.putExtra("planID", mPlanID);
+			startActivity(intent);
+		}
+		else if(id == R.id.place_list_fab_note){
+			Intent intent = new Intent(PlaceListInPlanActivity.this, Note_Main_Activity.class);
 			intent.putExtra("planID", mPlanID);
 			startActivity(intent);
 		}
@@ -295,8 +301,8 @@ public class PlaceListInPlanActivity extends AppCompatActivity {
 				/*int position = viewHolder.getAdapterPosition();
 				arrayList.remove(position);
 				adapter.notifyDataSetChanged();*/
-				Place place = (Place) mAdapter.getGroups().get(viewHolder.getAdapterPosition());
-				mRefPlace.child(place.getmPlaceId()).removeValue();
+				Place place = (Place) mPlaceList.get(viewHolder.getAdapterPosition());
+
 				mRef.child(mPlanID).child("mPlaceList").child(place.getmPlaceId()).removeValue();
 				mAdapter.onItemRemove(viewHolder.getAdapterPosition());
 
@@ -368,7 +374,8 @@ public class PlaceListInPlanActivity extends AppCompatActivity {
 			super.onPostExecute(p);
 			final Place place = p;
 			if(p != null){
-				mAdapter.add(p);
+				mPlaceList.add(p);
+				mAdapter.notifyDataSetChanged();
 				final String id = p.getmPlaceId();
 				mRef.child(mPlanID).child("mPlaceList").child(id).setValue(id);
 				mRefPlace.addListenerForSingleValueEvent(new ValueEventListener() {

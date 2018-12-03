@@ -2,131 +2,180 @@ package cs300.apcs04.traveltogether;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.support.annotation.NonNull;
+import android.support.v7.widget.RecyclerView;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Filter;
 import android.widget.Filterable;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
+import android.widget.RatingBar;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
-import com.thoughtbot.expandablerecyclerview.ExpandableListUtils;
-import com.thoughtbot.expandablerecyclerview.ExpandableRecyclerViewAdapter;
-import com.thoughtbot.expandablerecyclerview.models.ExpandableGroup;
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class PlaceAdapter extends ExpandableRecyclerViewAdapter<PlaceViewHolder, PlaceShortDataViewHolder> implements Filterable{
+public class PlaceAdapter extends RecyclerView.Adapter<PlaceAdapter.ViewHolder> implements ItemTouchHelperAdapter, Filterable{
 
 	private Context mContext;
-	private List<ExpandableGroup> mPlaceFilteredList;
+	private List<Place> mPlaceList;
+	private List<Place> mPlaceListFiltered;
 
-	public PlaceAdapter(List<? extends ExpandableGroup> groups, Context context) {
-		super(groups);
+	public PlaceAdapter(Context context, List<Place> PlaceList){
 		this.mContext = context;
-		mPlaceFilteredList = new ArrayList<>(groups);
+		this.mPlaceList = PlaceList;
+		this.mPlaceListFiltered = PlaceList;
+	}
+
+	@NonNull
+	@Override
+	public ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
+		LayoutInflater inflater = LayoutInflater.from(this.mContext);
+		View v = inflater.inflate(R.layout.place_item, viewGroup, false);
+		return new ViewHolder(v);
 	}
 
 	@Override
-	public PlaceViewHolder onCreateGroupViewHolder(ViewGroup parent, int viewType) {
-		LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-		View view = inflater.inflate(R.layout.place_item, parent, false);
-		return new PlaceViewHolder(view);
-	}
+	public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
 
-	@Override
-	public PlaceShortDataViewHolder onCreateChildViewHolder(ViewGroup parent, int viewType) {
-		LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-		View view = inflater.inflate(R.layout.place_sub_data_item, parent, false);
-		return new PlaceShortDataViewHolder(view);
-	}
+		final Place place = mPlaceListFiltered.get(i);
 
-	@Override
-	public void onBindChildViewHolder(PlaceShortDataViewHolder holder, int flatPosition, ExpandableGroup group, int childIndex) {
-		final PlaceShortData placeShortData = ((Place) group).getItems().get(childIndex);
-		final Place place = (Place) group;
-		holder.setmContent(placeShortData.getmContent());
-		holder.setItemClickListener(new ItemClickListener() {
+		//int index =  (int) (Math.random()*5);
+		viewHolder.mImageChar.setBackgroundResource(viewHolder.getmCircleColors()[i%5]);
+		viewHolder.mFirstChar.setText(String.valueOf(place.getmName().charAt(0)));
+		viewHolder.mPlaceName.setText(place.getmName());
+		viewHolder.mAddess.setText(place.getmAddress());
+		viewHolder.mRating.setRating(place.getmRating());
+
+		viewHolder.setmItemClickListener(new ItemClickListener() {
 			@Override
 			public void onClick(View view, int position, boolean isLongClick) {
-				Intent i = new Intent(mContext, PlaceDetailActivity.class);
-				i.putExtra("placeID", place.getmPlaceId());
-				mContext.startActivity(i);
+				if(!isLongClick){
+					String placeID = place.getmPlaceId();
+					Intent intent = new Intent(view.getContext(), PlaceDetailActivity.class);
+					intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+					intent.putExtra("placeID", placeID);
+					mContext.startActivity(intent);
+				}
 			}
 		});
 	}
 
 	@Override
-	public void onBindGroupViewHolder(final PlaceViewHolder holder, int flatPosition, ExpandableGroup group) {
-		holder.setPlaceName(group);
+	public int getItemCount() {
+		return mPlaceListFiltered.size();
 	}
 
-	public void add(ExpandableGroup group) {
-		((List<ExpandableGroup>)getGroups()).add(group);
-		ExpandableListUtils.notifyGroupDataChanged(this);
-		notifyDataSetChanged();
-	}
-
+	@Override
 	public boolean onItemMove(int orgigin, int target) {
-
 
 		if(orgigin < target){
 			for(int i = orgigin; i < target; i++){
-				Collections.swap(getGroups(), i, i + 1);
+				Collections.swap(mPlaceListFiltered, i, i + 1);
 			}
 		}
 		else{
 			for(int i = orgigin; i > target; i--){
-				Collections.swap(getGroups(), i, i - 1);
+				Collections.swap(mPlaceListFiltered, i, i - 1);
 			}
 		}
 		notifyItemMoved(orgigin, target);
 		return true;
 	}
 
-
-
+	@Override
 	public void onItemRemove(int pos) {
-		getGroups().remove(pos);
+		mPlaceListFiltered.remove(pos);
 		notifyItemRemoved(pos);
+	}
+
+	public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener{
+
+		private TextView mPlaceName;
+		private TextView mAddess;
+		private RatingBar mRating;
+		private TextView mFirstChar;
+		private ImageView mImageChar;
+		private int[] mCircleColors = {R.drawable.circlebackgroundblue,
+								 R.drawable.circlebackgroundgreen,
+								 R.drawable.circlebackgroundpink,
+								 R.drawable.circlebackgroundpurple,
+								 R.drawable.circlebackgroundred,
+							     R.drawable.circlebackgroundyellow};
+		private ItemClickListener  mItemClickListener;
+
+		public ViewHolder(View itemView){
+			super(itemView);
+			mPlaceName = (TextView) itemView.findViewById(R.id.PlaceItem_place_name);
+			mAddess = (TextView) itemView.findViewById(R.id.PlaceItem_place_address);
+			mRating = (RatingBar) itemView.findViewById(R.id.PlaceItem_place_rating);
+			mImageChar = (ImageView) itemView.findViewById(R.id.PlaceItem_circular_image);
+			mFirstChar = (TextView) itemView.findViewById(R.id.PlaceItem_first_char_of_name);
+			itemView.setOnLongClickListener(this);
+			itemView.setOnClickListener(this);
+		}
+
+		public int[] getmCircleColors(){
+			return this.mCircleColors;
+		}
+
+		public void setmItemClickListener(ItemClickListener itemClickListener){
+			this.mItemClickListener = itemClickListener;
+		}
+
+		@Override
+		public void onClick(View view) {
+			mItemClickListener.onClick(view, getAdapterPosition(), false);
+		}
+
+		@Override
+		public boolean onLongClick(View view) {
+			mItemClickListener.onClick(view, getAdapterPosition(), true);
+			return true;
+		}
 	}
 
 	@Override
 	public Filter getFilter() {
-		return placeFilter;
+		return planFilter;
 	}
 
-	private Filter placeFilter = new Filter() {
+	private Filter planFilter = new Filter() {
 		@Override
 		protected FilterResults performFiltering(CharSequence charSequence) {
 
-			FilterResults results = new FilterResults();
-
 			if(charSequence == null || charSequence.length() == 0){
-				results.values = mPlaceFilteredList;
+				mPlaceListFiltered = mPlaceList;
 			}
 			else{
-				String patternFilter = charSequence.toString().toLowerCase().trim();
-				ArrayList<ExpandableGroup> filterResults = new ArrayList<>();
-				for(ExpandableGroup group : mPlaceFilteredList){
-					Place place = (Place) group;
-					if(place.getmName().toLowerCase().contains(patternFilter)){
-						filterResults.add(group);
+				ArrayList<Place> filteredList = new ArrayList<>();
+				String filterPattern = charSequence.toString().toLowerCase().trim();
+
+				for(Place place : mPlaceList){
+					if(place.getmName().toLowerCase().contains(filterPattern)){
+						filteredList.add(place);
 					}
 				}
-				results.values = filterResults;
+				mPlaceListFiltered = filteredList;
 			}
+			FilterResults results = new FilterResults();
+			results.values = mPlaceListFiltered;
+
 			return results;
 		}
 
 		@Override
 		protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
-			List<ExpandableGroup> list = (ArrayList<ExpandableGroup>)filterResults.values;
-
-			((List<ExpandableGroup>)getGroups()).clear();
-			for(ExpandableGroup group : list){
-				PlaceAdapter.this.add(group);
-			}
+			mPlaceListFiltered = (ArrayList<Place>) filterResults.values;
+			notifyDataSetChanged();
 		}
 	};
 }

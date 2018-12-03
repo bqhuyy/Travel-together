@@ -54,13 +54,11 @@ public class PlaceDetailActivity extends AppCompatActivity implements OnMapReady
 	private String HostAPI = "http://210.245.20.101:8000/place?placeid=";
 
 	private CollapsingToolbarLayout mCollapsingToolbarLayout;
+	private Toolbar mToolbar;
 
 	private String mPlaceID = "";
 	private ArrayList<String> mArrayListFavID;
 	private ArrayList<ReviewData> mArrayListReviews;
-
-	private StringBuilder mPlaceWebsite = new StringBuilder();
-	private StringBuilder mPlaceName = new StringBuilder();
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -68,12 +66,9 @@ public class PlaceDetailActivity extends AppCompatActivity implements OnMapReady
 		setContentView(R.layout.activity_place_detail);
 
 		mCollapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.toolbar_layout);
-		mCollapsingToolbarLayout.setTitle("sadasdasda");
 
-
-		Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-		setSupportActionBar(toolbar);
-		toolbar.setTitle("sdaasda");
+		mToolbar = (Toolbar) findViewById(R.id.toolbar);
+		setSupportActionBar(mToolbar);
 
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
@@ -84,9 +79,6 @@ public class PlaceDetailActivity extends AppCompatActivity implements OnMapReady
 		mGeoDataClient = Places.getGeoDataClient(this, null);
 
 		getDataFromAPI();
-	}
-
-	public void shareFBButtonClicked(View view) {
 	}
 
 	public void getDataFromAPI()
@@ -105,6 +97,8 @@ public class PlaceDetailActivity extends AppCompatActivity implements OnMapReady
 		ReviewJSONParser ReviewParser = new ReviewJSONParser();
 
 		mPlace = PlaceParser.parse(StringJSONData);
+		mToolbar.setTitle(mPlace.getmName());
+		mCollapsingToolbarLayout.setTitle(mPlace.getmName());
 		mArrayListReviews = ReviewParser.parse(StringJSONData);
 		float rating = ReviewParser.getRating();
 

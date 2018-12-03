@@ -9,7 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:orientation="horizontal"
-        android:gravity="center"
+        android:gravity="right"
         android:background="@android:color/background_light"
         >
         <ImageView
@@ -17,6 +17,7 @@
             android:layout_height="wrap_content"
             android:src="@drawable/yellowstar"
             android:layout_gravity="center"
+            android:layout_marginRight="5dp"
             />
 
         <TextView

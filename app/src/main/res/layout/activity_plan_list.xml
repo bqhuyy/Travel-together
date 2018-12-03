@@ -16,8 +16,10 @@
             android:id="@+id/toolbar_planlist"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="@android:color/holo_blue_light"
-            app:popupTheme="@style/AppTheme.PopupOverlay" />
+            android:background="@android:color/white"
+            app:popupTheme="@style/AppTheme.PopupOverlay"
+            app:theme="@style/ThemeOverlay.AppCompat.Light"
+            />
 
     </android.support.design.widget.AppBarLayout>
 
@@ -28,7 +30,9 @@
         <android.support.v7.widget.RecyclerView
             android:id="@+id/PlanListActivity_plan_list"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:layout_marginTop="10dp"
+            >
 
         </android.support.v7.widget.RecyclerView>
 

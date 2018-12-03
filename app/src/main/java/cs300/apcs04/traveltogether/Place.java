@@ -6,7 +6,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Place extends ExpandableGroup<PlaceShortData> implements Serializable{
+public class Place implements Serializable{
 
 	private String mPlaceId;
 	private String mName;
@@ -19,8 +19,8 @@ public class Place extends ExpandableGroup<PlaceShortData> implements Serializab
 	private ArrayList<String> mType;
 
 	public Place(String placeId, String name, float rating, String address, String phone, String websiteURL
-			, Boolean isOpen, ArrayList<String> week_time, ArrayList<String> type, List<PlaceShortData> items) {
-		super(name, items);
+			, Boolean isOpen, ArrayList<String> week_time, ArrayList<String> type) {
+
 		this.mPlaceId = placeId;
 		this.mName = name;
 		this.mRating = rating;
@@ -115,14 +115,4 @@ public class Place extends ExpandableGroup<PlaceShortData> implements Serializab
 		this.mType = mType;
 	}
 
-	@Override
-	public boolean equals(Object o) {
-		if (this == o) return true;
-		if (!(o instanceof Place)) return false;
-
-		Place place = (Place) o;
-
-		return getmPlaceId() == place.getmPlaceId();
-
-	}
 }

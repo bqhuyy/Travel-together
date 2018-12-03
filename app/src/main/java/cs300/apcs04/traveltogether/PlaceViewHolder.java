@@ -26,12 +26,13 @@ public class PlaceViewHolder extends GroupViewHolder{
 		super(itemView);
 		mName = itemView.findViewById(R.id.PlaceItem_place_name);
 		mRating = itemView.findViewById(R.id.PlaceItem_place_rating);
-		mArrow = itemView.findViewById(R.id.PlaceItem_arrow_expand);
+		//mArrow = itemView.findViewById(R.id.PlaceItem_arrow_expand);
 
 	}
 
 	public void setPlaceName(ExpandableGroup place){
-		Place p = (Place) place;
+		//Place p = (Place) place;
+		Place p = null;
 		mName.setText(place.getTitle());
 		mRating.setRating(p.getmRating());
 	}

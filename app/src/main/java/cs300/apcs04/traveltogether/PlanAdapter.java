@@ -2,6 +2,7 @@ package cs300.apcs04.traveltogether;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -10,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Filter;
 import android.widget.Filterable;
+import android.widget.LinearLayout;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -26,6 +28,7 @@ public class PlanAdapter extends RecyclerView.Adapter<PlanAdapter.ViewHolder> im
 	private ArrayList<Plan> mPlanListFiltered;
 	private Context mContext;
 	private PopupMenu mPopupMenu;
+
 
 	public PlanAdapter(ArrayList<Plan> data, Context context){
 		this.mPlanList = data;
@@ -47,6 +50,9 @@ public class PlanAdapter extends RecyclerView.Adapter<PlanAdapter.ViewHolder> im
 		viewHolder.title.setText(plan.getTitle());
 		DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm");
 		viewHolder.date.setText(dateFormat.format(plan.getDateAdded()));
+
+		//int index = (int) (Math.random()*5);
+		viewHolder.layout.setBackgroundColor(Color.parseColor(viewHolder.getBackgroundColor()[i%7]));
 
 		viewHolder.setItemClickListener(new ItemClickListener() {
 			@Override
@@ -117,12 +123,25 @@ public class PlanAdapter extends RecyclerView.Adapter<PlanAdapter.ViewHolder> im
 
 		private TextView title;
 		private TextView date;
+		private LinearLayout layout;
 		private ItemClickListener itemClickListener;
+		private String[] BackgroundColor = {"#7c4dff", "#E43F3F", "#3FAED3", "#09D07A", "#D81B60", "#23283a", "#9E9E9E", "#ffb300"};
+		/*private int[] BackgroundLayout = {R.drawable.custom_background_list_item_yellow,
+										 R.drawable.custom_background_list_item_deeppurple,
+										 R.drawable.custom_background_list_item_green,
+										 R.drawable.custom_background_list_item_primarydark,
+										 R.drawable.custom_background_list_item_red300,
+										 R.drawable.custom_background_list_item_redpink};*/
+
+		public String[] getBackgroundColor() {
+			return this.BackgroundColor;
+		}
 
 		public ViewHolder(View itemView){
 			super(itemView);
 			title = (TextView) itemView.findViewById(R.id.PlanItem_plan_title);
 			date = (TextView) itemView.findViewById(R.id.PlanItem_plan_added_date);
+			layout = (LinearLayout) itemView.findViewById(R.id.PlanItem_plan_layout);
 			itemView.setOnClickListener(this);
 			itemView.setOnLongClickListener(this);
 		}

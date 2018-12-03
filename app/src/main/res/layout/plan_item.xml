@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
+    android:id="@+id/PlanItem_plan_layout"
     xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
     android:layout_height="60dp"
     android:orientation="vertical"
-    android:background="@drawable/custom_list_item_layout"
-    android:layout_marginTop="10dp"
-    android:layout_marginBottom="5dp"
     >
 
     <TextView
@@ -13,9 +11,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="dsadad"
+        android:layout_gravity="center"
         android:textSize="25dp"
         android:layout_marginLeft="10dp"
-        android:textColor="@color/slightlyGreen"
+        android:textColor="@color/white"
         />
 
     <TextView

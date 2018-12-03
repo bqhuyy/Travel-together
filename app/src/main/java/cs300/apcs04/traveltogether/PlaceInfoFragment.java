@@ -22,8 +22,7 @@ public class PlaceInfoFragment extends Fragment{
 	private TextView mAddress;
 	private TextView mopenHours;
 	private ImageView mphoneicon;
-	private ImageButton mbtnLove;
-	private TextView mname;
+	private ImageButton mbtnShare;
 
 	@Nullable
 	@Override
@@ -34,16 +33,15 @@ public class PlaceInfoFragment extends Fragment{
 		final Place place = (Place) getArguments().getSerializable("placedata");
 		final ArrayList<String> arr_fav_id = (ArrayList<String>) getArguments().getStringArrayList("fav_id");
 
-		mname = (TextView) v.findViewById(R.id.place_name);
 		mphone = (TextView) v.findViewById(R.id.Phone);
 		mopenHours = (TextView) v.findViewById(R.id.openhours);
 		mphoneicon = (ImageView) v.findViewById(R.id.phoneicon);
 		mAddress = (TextView) v.findViewById(R.id.address);
 		mweek_time_txt = (TextView) v.findViewById(R.id.week_time);
-		mbtnLove = (ImageButton) v.findViewById(R.id.btnLove);
+		mbtnShare = (ImageButton) v.findViewById(R.id.btnShare);
 
 		if(place != null) {
-			mname.setText(place.getmName());
+
 			mAddress.setText(place.getmAddress());
 			mphone.setText(place.getmPhone());
 			ArrayList<String> weektime = place.getmWeek_time();
@@ -86,10 +84,7 @@ public class PlaceInfoFragment extends Fragment{
 				}
 			}
 
-			// set if user clicked button favorite
-			if (arr_fav_id != null && arr_fav_id.contains(place.getmPlaceId())) {
-				mbtnLove.setBackgroundResource(R.drawable.heart);
-			}
+
 		}
 		return v;
 	}
