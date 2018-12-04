@@ -95,9 +95,9 @@ public class Note_Main_Activity extends AppCompatActivity {
         setSupportActionBar(mToolbar);
 
         Intent intent = getIntent();
-        Bundle bundle = intent.getExtras();
-        if (bundle != null) childnode = (String) bundle.get("plan_ID");
-        else childnode = "BlankID";
+        childnode = intent.getStringExtra("planID");
+        if(childnode == null)
+        	childnode = "BlankID";
         myRef = database.getReference("note/"+childnode);
 
         StaggeredGridLayoutManager gridLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
