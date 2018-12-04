@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
+    <color name="slightlyBlack">#494647</color>
+    <color name="slightlyGreen">#09D07A</color>
+    <color name="moreRed">#E60D40</color>
+
     <color name="colorPrimary">#73C4DF</color>
     <color name="colorPrimaryDark">#3FAED3</color>
     <color name="colorAccent">#FF4081</color>
@@ -24,4 +29,7 @@
     <color name="pink">#fe104d</color>
 
     <color name="black_overlay">#66000000</color>
+
+    deeppurple, red_300, colorPrimaryDark, slightlyGreen, red_pink, darkblue
+    #7c4dff, #E43F3F, #3FAED3, #09D07A, #D81B60, #23283a, #9E9E9E, #ffb300
 </resources>

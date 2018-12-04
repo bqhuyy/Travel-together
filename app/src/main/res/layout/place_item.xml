@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:padding="15dp"
+    android:id="@+id/rv_RelativeLayout"
+    android:layoutDirection="ltr"
+    android:background="@color/white"
+    >
+
+    <FrameLayout
+        android:layout_width="90dp"
+        android:layout_height="90dp">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:layout_width="90dp"
+            android:layout_height="90dp"
+            android:id="@+id/PlaceItem_circular_image"
+            android:src="@drawable/circlebackgroundblue"/>
+
+        <TextView
+            android:id="@+id/PlaceItem_first_char_of_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="B"
+            android:textSize="35dp"
+            android:layout_gravity="center"
+            android:textColor="@color/white"
+            />
+
+
+    </FrameLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_toRightOf="@+id/PlaceItem_circular_image"
+        android:layout_marginLeft="15dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:gravity="center"
+            android:text="Ben Thanh market"
+            android:layout_toRightOf="@+id/rv_foodImage"
+            android:textColor="@android:color/black"
+            android:textStyle="bold"
+            android:textSize="17sp"
+            android:id="@+id/PlaceItem_place_name"
+            android:marqueeRepeatLimit="marquee_forever"
+            android:focusable="true"
+            android:ellipsize="marquee"
+            android:focusableInTouchMode="true"
+            android:scrollHorizontally="true"
+            android:singleLine="true" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:gravity="center"
+            android:text="Address"
+            android:layout_toRightOf="@+id/PlaceItem_circular_image"
+            android:textColor="@android:color/black"
+            android:textSize="15sp"
+            android:id="@+id/PlaceItem_place_address"
+            android:marqueeRepeatLimit="marquee_forever"
+            android:focusable="true"
+            android:ellipsize="marquee"
+            android:focusableInTouchMode="true"
+            android:scrollHorizontally="true"
+            android:singleLine="true"/>
+        <RatingBar
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:gravity="center"
+            style="?android:attr/ratingBarStyleSmall"
+            android:text="Food Type"
+            android:layout_toRightOf="@+id/PlaceItem_circular_image"
+            android:textColor="@android:color/black"
+            android:textSize="15sp"
+            android:id="@+id/PlaceItem_place_rating"
+            android:marqueeRepeatLimit="marquee_forever"
+            android:focusable="true"
+            android:ellipsize="marquee"
+            android:focusableInTouchMode="true"
+            android:scrollHorizontally="true"
+            android:singleLine="true"
+            android:layout_marginTop="2dp"
+            />
+    </LinearLayout>
+
+
+</LinearLayout>
+<!--
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:layout_marginTop="10dp"
+    android:layoutDirection="ltr"
+    android:background="@color/white"
+    >
+
+    <FrameLayout
+        android:id="@+id/PlaceItem_img_layout"
+        android:layout_width="70dp"
+        android:layout_height="110dp">
+
+        <ImageView
+
+            android:id="@+id/PlaceItem_circular_image"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:background="@drawable/circlebackgroundblue"
+            android:layout_gravity="center"
+            />
+        
+        <TextView
+            android:id="@+id/PlaceItem_first_char_of_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="B"
+            android:textSize="30dp"
+            android:layout_gravity="center"
+            android:textColor="@color/white"
+
+
+            />
+        
+    </FrameLayout>
+    
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layoutDirection="ltr"
+        android:layout_marginLeft="10dp"
+        >
+
+        <TextView
+            android:layout_marginLeft="5dp"
+            android:id="@+id/PlaceItem_place_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Ben Thanh market"
+            android:textSize="20dp"
+            android:textColor="@android:color/black"
+            android:layout_marginTop="10dp"
+            />
+
+        <RatingBar
+            android:layout_marginLeft="5dp"
+            android:id="@+id/PlaceItem_place_rating"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="?android:attr/ratingBarStyleSmall"
+            android:layout_marginTop="10dp"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/PlaceItem_place_address"
+            android:textSize="15dp"
+            android:text="ddddddddd"
+            android:layout_marginTop="10dp"
+            />
+
+    </LinearLayout>
+
+</LinearLayout>
+-->

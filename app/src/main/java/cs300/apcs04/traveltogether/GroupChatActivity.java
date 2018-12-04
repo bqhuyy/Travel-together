@@ -43,6 +43,9 @@ public class GroupChatActivity extends AppCompatActivity {
         // Write a message to the database
         activity_chat = (RelativeLayout)findViewById(R.id.activity_chat);
 
+        Intent intent = getIntent();
+        planID = intent.getStringExtra("planID");
+
         database = FirebaseDatabase.getInstance();
         messageRef = database.getReference("message/"+groupChatID);
         listOfMemberRef = database.getReference("plan/"+planID+"/listOfMember");
