@@ -1,5 +1,7 @@
 package cs300.apcs04.traveltogether;
 
+import android.app.SearchManager;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -8,9 +10,14 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.support.v7.widget.Toolbar;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 
 import com.google.firebase.database.DataSnapshot;
@@ -26,6 +33,7 @@ public class Note_Main_Activity extends AppCompatActivity {
 
     RecyclerView recyclerView;
     FloatingActionButton fab;
+    Toolbar mToolbar;
 
     NotesAdapter adapter;
     List<Note> list_of_notes;
@@ -36,6 +44,46 @@ public class Note_Main_Activity extends AppCompatActivity {
     String tempID, childnode;
     final static int REQUEST_CODE_MODIFY_AND_ADD = 1234;
     int callback = 0;
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater menuInflater = getMenuInflater();
+        menuInflater.inflate(R.menu.menu_search_note, menu);
+
+        MenuItem searchItem = menu.findItem(R.id.action_search);
+        SearchManager searchManager = (SearchManager) Note_Main_Activity.this.getSystemService(Context.SEARCH_SERVICE);
+        SearchView searchView = null;
+        if(searchItem !=null){
+            searchView = (SearchView) searchItem.getActionView();
+        }
+//        if(searchView != null) {
+//            searchView.setSearchableInfo(searchManager.getSearchableInfo(Note_Main_Activity.this.getComponentName()));
+//
+//        }
+        if(searchView!=null){
+            searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+                @Override
+                public boolean onQueryTextSubmit(String s) {
+                    return false;
+                }
+
+                @Override
+                public boolean onQueryTextChange(String s) {
+                    List<Note> filterList = new ArrayList<>();
+                    for(Note note: list_of_notes){
+                        if(note.getDescription().toLowerCase().contains(s.toLowerCase())
+                                || note.getTitle().toLowerCase().contains(s.toLowerCase())){
+                            filterList.add(note);
+                        }
+                    }
+                    adapter.setFilter(filterList);
+                    return true;
+                }
+            });
+        }
+        return super.onCreateOptionsMenu(menu);
+    }
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,6 +91,8 @@ public class Note_Main_Activity extends AppCompatActivity {
         Log.d("Main", "onCreate");
         recyclerView = findViewById(R.id.main_list);
         fab = findViewById(R.id.fab);
+        mToolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(mToolbar);
 
         Intent intent = getIntent();
         Bundle bundle = intent.getExtras();
