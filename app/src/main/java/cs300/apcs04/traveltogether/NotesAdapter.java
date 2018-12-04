@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NoteVH>{
@@ -62,5 +63,11 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NoteVH>{
 
     public void SetOnItemClickListener(final OnItemClickListener itemClickListener) {
         this.clickListener = itemClickListener;
+    }
+
+    public void setFilter(List<Note> newList){
+        notes = new ArrayList<>();
+        notes.addAll(newList);
+        notifyDataSetChanged();
     }
 }
