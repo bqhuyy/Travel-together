@@ -91,26 +91,26 @@ public class GroupChatActivity extends AppCompatActivity {
                     message.setBody((String)((DataSnapshot)iterator.next()).getValue()); //message body
                     message.setTime((String)(DateFormat.format("h:mm a, MMM d, yyyy",(Long)((DataSnapshot)iterator.next()).getValue())));
                     userId = (String)((DataSnapshot)iterator.next()).getValue();
-                    if (FirebaseAuth.getInstance().getCurrentUser().getUid().equals(userId)) {
-                        message.setType(Message.RightSimpleMessage); //message type
-                    }
-                    else {
-                        userRef = database.getReference("user/"+userId);
-                        userRef.addValueEventListener(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(DataSnapshot userSnapshot) {
+                    userRef = database.getReference("user/"+userId);
+                    final String finalUserId = userId;
+                    userRef.addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot userSnapshot) {
+                            if (FirebaseAuth.getInstance().getCurrentUser().getUid().equals(finalUserId)) {
+                                message.setType(Message.RightSimpleMessage); //message type
+                            }
+                            else {
                                 message.setUserName(userSnapshot.child("name").getValue(String.class));
                                 message.setType(Message.LeftSimpleMessage); //message type
-                                chatView.addMessage(message);
                             }
+                            chatView.addMessage(message);
+                        }
 
-                            @Override
-                            public void onCancelled(DatabaseError databaseError) {
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
 
-                            }
+                        }
                         });
-
-                    }
                 }
             }
 
