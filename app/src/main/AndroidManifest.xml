@@ -2,6 +2,12 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="cs300.apcs04.traveltogether">
 
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.CALL_PHONE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.CALL_PHONE" />
 
     <application
@@ -19,6 +25,35 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity android:name=".PlanListActivity" />
+        <activity android:name=".PlaceListInPlanActivity" />
+        <activity android:name=".UploadImageActivity" />
+
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="${applicationId}.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/filepaths" />
+        </provider>
+
+        <activity android:name=".CameraActivity" />
+        <activity android:name=".TestActivity" />
+        <activity android:name=".PlaceDetailActivity" />
+        <activity android:name=".ImageFullscreenActivity" />
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyB83QGQwOxKEiC2KMOKLiGK4nw5gMnXC14" />
+
+        <activity android:name=".Note_Main_Activity"
+            android:theme="@style/NoteTheme"></activity>
+        <activity android:name=".Note_AddNote_Activity"
+            android:theme="@style/NoteTheme"></activity>
+
         <activity
             android:name=".MainActivity"
             android:theme="@style/ThemeOverlay.MainActivity">
@@ -30,6 +65,8 @@
 
         </activity>
         <activity android:name=".GroupChatActivity"></activity>
+        <activity android:name=".Author_Main_Activity"
+            android:theme="@style/ThemeOverlay.MyNoTitleActivity"></activity>
     </application>
 
 </manifest>

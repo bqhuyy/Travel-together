@@ -39,6 +39,14 @@
           }
         },
         {
+          "client_id": "896099730571-0h3ret4salv6nd77t5d0q75vv66vutme.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "cs300.apcs04.traveltogether",
+            "certificate_hash": "fcc8896816c5f14d3ef52559963649d30beb99a6"
+          }
+        },
+        {
           "client_id": "896099730571-at9pgkkuvm19cppu68kfuaf3ebl5t44m.apps.googleusercontent.com",
           "client_type": 3
         }
