@@ -79,18 +79,4 @@
 
     </LinearLayout>
 
-
-    <Button
-        android:id="@+id/btntest"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="btnTest"
-        />
-
-    <Button
-        android:id="@+id/btntest2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="btnTest2"
-        />
 </LinearLayout>

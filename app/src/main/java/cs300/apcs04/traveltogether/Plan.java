@@ -10,7 +10,6 @@ public class Plan {
 	private String mPlanID;
 	private String mTitle;
 	private long mDateAdded;
-	private String mNote;
 	private HashMap<String, String> mPlaceList;
 	private HashMap<String, String> mMemberList;
 
@@ -18,11 +17,10 @@ public class Plan {
 
 	}
 
-	public Plan(String planID, String title, long dateAdded, String noteID, HashMap<String, String> placeList, HashMap<String, String> memList){
+	public Plan(String planID, String title, long dateAdded, HashMap<String, String> placeList, HashMap<String, String> memList){
 		this.mPlanID = planID;
 		this.mTitle = title;
 		this.mDateAdded = dateAdded;
-		this.mNote = noteID;
 		this.mPlaceList = placeList;
 		this.mMemberList = memList;
 	}
@@ -31,7 +29,6 @@ public class Plan {
 		mTitle = title;
 		mDateAdded = new Date().getTime();
 		mPlanID = UUID.randomUUID().toString();
-		mNote = UUID.randomUUID().toString();
 		mPlaceList = null;
 		mMemberList = new HashMap<>();
 		mMemberList.put(userID, userID);
@@ -69,14 +66,6 @@ public class Plan {
 
 	public void setDateAdded(long dateAdded) {
 		mDateAdded = dateAdded;
-	}
-
-	public String getNote() {
-		return mNote;
-	}
-
-	public void setNote(String note) {
-		this.mNote = note;
 	}
 
 	public HashMap<String, String> getmPlaceList() {

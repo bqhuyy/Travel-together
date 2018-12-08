@@ -51,6 +51,7 @@ dependencies {
     implementation 'com.firebaseui:firebase-ui:0.6.2'
     implementation 'com.github.shrikanth7698:ChatView:v0.1.2'
     implementation 'de.hdodenhof:circleimageview:2.2.0'
+    implementation 'com.rmtheis:tess-two:5.4.1'
 }
 
 apply plugin: 'com.google.gms.google-services'

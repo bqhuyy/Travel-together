@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/fab_link"
+        android:icon="@drawable/webicon"
+        android:title="website" />
+
+    <item
+        android:id="@+id/fab_sms"
+        android:icon="@drawable/smsicon"
+        android:title="send sms" />
+
+    <item
+        android:id="@+id/fab_phone"
+        android:icon="@drawable/phoneicon"
+        android:title="phone call" />
+
+</menu>

@@ -5,7 +5,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".PlaceListInPlanActivity">
+    tools:context=".PlaceListInPlanActivity"
+    android:background="@color/white"
+    >
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
