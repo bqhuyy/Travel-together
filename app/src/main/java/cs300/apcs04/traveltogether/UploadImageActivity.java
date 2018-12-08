@@ -14,6 +14,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import java.io.IOException;
 
@@ -52,23 +53,6 @@ public class UploadImageActivity extends AppCompatActivity {
 			}
 		});
 
-		Button button = (Button) findViewById(R.id.btntest);
-		button.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View view) {
-				Intent intent = new Intent(UploadImageActivity.this, PlanListActivity.class);
-				startActivity(intent);
-			}
-		});
-
-		Button button2 = (Button) findViewById(R.id.btntest2);
-		button2.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View view) {
-				Intent intent = new Intent(UploadImageActivity.this, PlaceListInPlanActivity.class);
-				startActivity(intent);
-			}
-		});
 	}
 
 	public void init(){
@@ -121,8 +105,13 @@ public class UploadImageActivity extends AppCompatActivity {
 			String image_file_path = data.getStringExtra("Image_file_location");
 			BitmapFactory.Options bmOptions = new BitmapFactory.Options();
 			mBitmap = BitmapFactory.decodeFile(image_file_path, bmOptions);
-			mCaptureView.setImageBitmap(mBitmap);
-			new ImageUploader(this).execute(mBitmap);
+			if(mBitmap != null){
+				mCaptureView.setImageBitmap(mBitmap);
+				new ImageUploader(this).execute(mBitmap);
+			}
+			else{
+				Toast.makeText(UploadImageActivity.this, "Please choose or capture your image", Toast.LENGTH_SHORT).show();
+			}
 		}
 	}
 }

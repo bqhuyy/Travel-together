@@ -76,6 +76,12 @@ public class PlanListActivity extends AppCompatActivity {
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		getSupportActionBar().setTitle("");
 
+		toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				PlanListActivity.this.finish();
+			}
+		});
 		Intent intent = getIntent();
 		mUserID = intent.getStringExtra("userid");
 
@@ -127,10 +133,9 @@ public class PlanListActivity extends AppCompatActivity {
 							if(plans != null && plans.containsKey(planID)){
 								String title = dataSnapshot.child("title").getValue(String.class);
 								long DateAdded = dataSnapshot.child("dateAdded").getValue(Long.class);
-								String NoteID = dataSnapshot.child("mNote").getValue(String.class);
 								HashMap<String, String> PlaceList = (HashMap<String, String>) dataSnapshot.child("mPlaceList").getValue();
 								HashMap<String, String> MemberList = (HashMap<String, String>) dataSnapshot.child("mMemberList").getValue();
-								Plan p = new Plan(planID, title, DateAdded, NoteID, PlaceList, MemberList);
+								Plan p = new Plan(planID, title, DateAdded, PlaceList, MemberList);
 								mArrayList.add(p);
 								mAdapter.notifyDataSetChanged();
 							}

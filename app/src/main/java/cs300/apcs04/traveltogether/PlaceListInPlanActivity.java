@@ -88,6 +88,12 @@ public class PlaceListInPlanActivity extends AppCompatActivity {
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		getSupportActionBar().setTitle("");
 
+		toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				PlaceListInPlanActivity.this.finish();
+			}
+		});
 		mRecylerview = (RecyclerView) findViewById(R.id.place_list_in_plan);
 		RecyclerView.ItemAnimator animator = mRecylerview.getItemAnimator();
 		if (animator instanceof DefaultItemAnimator) {
