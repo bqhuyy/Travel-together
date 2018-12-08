@@ -1,17 +1,33 @@
 package cs300.apcs04.traveltogether;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import com.google.android.gms.location.places.GeoDataClient;
+import com.google.android.gms.location.places.PlaceBufferResponse;
+import com.google.android.gms.location.places.Places;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapView;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 
 import java.util.ArrayList;
 
@@ -22,13 +38,23 @@ public class PlaceInfoFragment extends Fragment{
 	private TextView mAddress;
 	private TextView mopenHours;
 	private ImageView mphoneicon;
-	private ImageButton mbtnShare;
+	private ImageButton mbtnMap;
+
+	private MapView mMapView;
+	private GoogleMap googleMap;
+	private GoogleMap mMap;
+	private GeoDataClient mGeoDataClient;
+	private AlertDialog.Builder mAlert;
+	private AlertDialog mAlertDialog;
 
 	@Nullable
 	@Override
 	public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
 		View v = inflater.inflate(R.layout.fragment_place_info, container, false);
+
+
+		mGeoDataClient = Places.getGeoDataClient(getContext(), null);
 
 		final Place place = (Place) getArguments().getSerializable("placedata");
 		final ArrayList<String> arr_fav_id = (ArrayList<String>) getArguments().getStringArrayList("fav_id");
@@ -38,7 +64,8 @@ public class PlaceInfoFragment extends Fragment{
 		mphoneicon = (ImageView) v.findViewById(R.id.phoneicon);
 		mAddress = (TextView) v.findViewById(R.id.address);
 		mweek_time_txt = (TextView) v.findViewById(R.id.week_time);
-		mbtnShare = (ImageButton) v.findViewById(R.id.btnShare);
+		mbtnMap = (ImageButton) v.findViewById(R.id.btnMap);
+		mAlert = new AlertDialog.Builder(getContext());
 
 		if(place != null) {
 
@@ -84,8 +111,68 @@ public class PlaceInfoFragment extends Fragment{
 				}
 			}
 
+			alertConfigure(container, savedInstanceState, place.getmPlaceId());
 
+			mbtnMap.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View view) {
+					mAlertDialog.show();
+				}
+			});
 		}
 		return v;
+	}
+
+	private void alertConfigure(ViewGroup container, Bundle savedInstanceState, final String mPlaceID) {
+		LayoutInflater inflater = LayoutInflater.from(getContext());
+		View v = inflater.inflate(R.layout.dialog_food_map, container, false);
+
+		mMapView = new MapView(getContext());
+		mMapView.onCreate(savedInstanceState);
+		mMapView.onResume();
+
+		mMapView.getMapAsync(new OnMapReadyCallback() {
+			@Override
+			public void onMapReady(GoogleMap mMap) {
+				googleMap = mMap;
+
+				mGeoDataClient.getPlaceById(mPlaceID).addOnCompleteListener(new OnCompleteListener<PlaceBufferResponse>() {
+					@Override
+					public void onComplete(@NonNull Task<PlaceBufferResponse> task) {
+						if (task.isSuccessful()) {
+							PlaceBufferResponse places = task.getResult();
+							com.google.android.gms.location.places.Place myPlace = places.get(0);
+							Log.i("place_error", "Place found: " + myPlace.getName());
+							LatLng location = myPlace.getLatLng();
+
+							googleMap.addMarker(new MarkerOptions().title(myPlace.getAddress().toString())
+									.position(location));
+							googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(location, 15));
+							places.release();
+						} else {
+							Log.e("place_error", "Place not found.");
+						}
+					}
+				});
+			}
+		});
+
+		mAlert.setTitle(mAddress.getText().toString());
+
+		mAlert.setView(mMapView);
+
+		mAlert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int whichButton) {
+				//What ever you want to do with the value
+
+			}
+		});
+		mAlertDialog = mAlert.create();
+	}
+
+	@Override
+	public void onResume() {
+		super.onResume();
+		mMapView.onResume();
 	}
 }

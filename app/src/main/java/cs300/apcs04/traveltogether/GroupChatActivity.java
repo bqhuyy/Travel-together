@@ -7,9 +7,12 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.text.format.DateFormat;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import com.firebase.ui.auth.AuthUI;
@@ -30,8 +33,8 @@ import java.util.Iterator;
 
 public class GroupChatActivity extends AppCompatActivity {
     private static final int SIGN_IN_REQUEST_CODE = 1;
-    String planID = "6cdec0fc-bb4f-4302-9c7f-5cf10454aeed"; // get from plan intent
-    RelativeLayout activity_chat;
+    String planID;
+    LinearLayout activity_chat;
     FirebaseDatabase database;
     DatabaseReference messageRef, listOfMemberRef, userRef;
     ChatView chatView;
@@ -43,7 +46,7 @@ public class GroupChatActivity extends AppCompatActivity {
         setContentView(R.layout.activity_group_chat);
         chatView  = (ChatView) findViewById(R.id.chatView);
         // Write a message to the database
-        activity_chat = (RelativeLayout)findViewById(R.id.activity_chat);
+        activity_chat = (LinearLayout)findViewById(R.id.activity_chat);
 
         Intent intent = getIntent();
         planID = intent.getStringExtra("planID");
@@ -52,6 +55,20 @@ public class GroupChatActivity extends AppCompatActivity {
         messageRef = database.getReference("message/"+planID);
         listOfMemberRef = database.getReference("plan/"+planID+"/listOfMember");
         // Read from the database
+
+        Toolbar toolbar = findViewById(R.id.toolbar_groupchat);
+        setSupportActionBar(toolbar);
+
+        // toolbar fancy stuff
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setTitle("");
+
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                GroupChatActivity.this.finish();
+            }
+        });
 
         chatView.setOnClickSendButtonListener(new ChatView.OnClickSendButtonListener() {
             @Override
@@ -94,10 +111,6 @@ public class GroupChatActivity extends AppCompatActivity {
                         });
 
                     }
-
-//                  message.setUserName((String)((DataSnapshot)iterator.next()).getValue()); //sender name
-                    //sender icon
-
                 }
             }
 

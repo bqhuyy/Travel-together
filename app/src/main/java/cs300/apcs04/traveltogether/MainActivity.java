@@ -68,6 +68,8 @@ public class MainActivity extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
                 switch (menuItem.getItemId()) {
                     case R.id.main_nav_about:
+                        Intent intent1 = new Intent(MainActivity.this, Author_Main_Activity.class);
+                        startActivity(intent1);
                         break;
                     case R.id.main_nav_signout:
                         FirebaseAuth.getInstance().signOut();
@@ -94,6 +96,16 @@ public class MainActivity extends AppCompatActivity {
         if(mUser != null){
         	intent.putExtra("userid", mUser.getUid());
 		}
+        startActivity(intent);
+    }
+
+	public void onOCRItemClicked(View view) {
+        Intent intent = new Intent(MainActivity.this, OCRActivity.class);
+        startActivity(intent);
+	}
+
+    public void onLanmarkItemClicked(View view) {
+        Intent intent = new Intent(MainActivity.this, UploadImageActivity.class);
         startActivity(intent);
     }
 }
