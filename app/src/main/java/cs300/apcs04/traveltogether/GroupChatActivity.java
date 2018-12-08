@@ -128,7 +128,7 @@ public class GroupChatActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
     }
-    
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
