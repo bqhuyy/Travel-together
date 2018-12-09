@@ -111,6 +111,7 @@ public class Note_Main_Activity extends AppCompatActivity {
 			@Override
 			public void onClick(View view) {
 				Note_Main_Activity.this.finish();
+                overridePendingTransition(R.anim.slide_in_left,R.anim.slide_out_right); //finish
 			}
 		});
 
@@ -254,5 +255,11 @@ public class Note_Main_Activity extends AppCompatActivity {
     @Override
     protected void onResume(){
         super.onResume();
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        overridePendingTransition(R.anim.slide_in_left,R.anim.slide_out_right); //finish
     }
 }

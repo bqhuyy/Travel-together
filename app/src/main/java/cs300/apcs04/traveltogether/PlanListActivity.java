@@ -80,6 +80,7 @@ public class PlanListActivity extends AppCompatActivity {
 			@Override
 			public void onClick(View view) {
 				PlanListActivity.this.finish();
+				overridePendingTransition(R.anim.slide_in_left,R.anim.slide_out_right); //finish
 			}
 		});
 		Intent intent = getIntent();
@@ -90,6 +91,12 @@ public class PlanListActivity extends AppCompatActivity {
 		setUpRecylerView();
 
 		setGestureForItemInRecylerview();
+	}
+
+	@Override
+	public void onBackPressed() {
+		super.onBackPressed();
+		overridePendingTransition(R.anim.slide_in_left,R.anim.slide_out_right); //finish
 	}
 
 	@Override
