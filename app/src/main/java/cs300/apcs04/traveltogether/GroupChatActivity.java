@@ -49,8 +49,7 @@ public class GroupChatActivity extends AppCompatActivity {
         activity_chat = (LinearLayout)findViewById(R.id.activity_chat);
 
         Intent intent = getIntent();
-        //planID = intent.getStringExtra("planID");
-        planID = "6cdec0fc-bb4f-4302-9c7f-5cf10454aeed";
+        planID = intent.getStringExtra("planID");
 
         database = FirebaseDatabase.getInstance();
         messageRef = database.getReference("message/"+planID);
