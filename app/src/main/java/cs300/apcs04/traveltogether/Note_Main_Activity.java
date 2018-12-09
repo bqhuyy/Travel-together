@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -39,7 +40,8 @@ public class Note_Main_Activity extends AppCompatActivity {
     List<Note> list_of_notes;
     FirebaseDatabase database = FirebaseDatabase.getInstance();
     DatabaseReference myRef;
-
+    CollapsingToolbarLayout toolbarLayout;
+    String planTitle = "";
     long tempDate;
     String tempID, childnode;
     final static int REQUEST_CODE_MODIFY_AND_ADD = 1234;
@@ -91,11 +93,16 @@ public class Note_Main_Activity extends AppCompatActivity {
         Log.d("Main", "onCreate");
         recyclerView = findViewById(R.id.main_list);
         fab = findViewById(R.id.fab);
+        toolbarLayout = findViewById(R.id.collapsing_toolbar);
         mToolbar = findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
 
         Intent intent = getIntent();
         childnode = intent.getStringExtra("planID");
+       	planTitle = intent.getStringExtra("planTitle");
+
+       	toolbarLayout.setTitle(planTitle);
+
         if(childnode == null)
         	childnode = "BlankID";
         myRef = database.getReference("note/"+childnode);
