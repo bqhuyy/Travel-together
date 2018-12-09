@@ -49,6 +49,7 @@ public class CameraActivity extends AppCompatActivity {
 		setResult(Activity.RESULT_OK, image_data);
 
 		finish();
+		overridePendingTransition(R.anim.slide_in_left,R.anim.slide_out_right); //finish
 	}
 
 	@Override
@@ -104,6 +105,7 @@ public class CameraActivity extends AppCompatActivity {
 		Uri imageUri = FileProvider.getUriForFile(this, authorities, photoFile);
 		callCameraApplicationIntent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
 		startActivityForResult(callCameraApplicationIntent, ACTIVITY_START_CAMERA_APP);
+		overridePendingTransition(R.anim.slide_in_right,R.anim.slide_out_left); //start
 	}
 
 	private File createImageFile() throws IOException{
@@ -162,5 +164,6 @@ public class CameraActivity extends AppCompatActivity {
 		setResult(Activity.RESULT_OK, image_data);
 
 		finish();
+		overridePendingTransition(R.anim.slide_in_left,R.anim.slide_out_right); //finish
 	}
 }

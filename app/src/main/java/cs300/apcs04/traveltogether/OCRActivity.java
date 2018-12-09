@@ -52,6 +52,8 @@ public class OCRActivity extends AppCompatActivity {
 			public void onClick(View v) {
 				Intent intent = new Intent(OCRActivity.this, CameraActivity.class);
 				startActivityForResult(intent, REQUEST_CAPTURE_IMAGE);
+				overridePendingTransition(R.anim.slide_in_right,R.anim.slide_out_left); //start
+
 			}
 		});
 	}
@@ -110,6 +112,7 @@ public class OCRActivity extends AppCompatActivity {
 					Intent webIntent = new Intent(Intent.ACTION_VIEW);
 					webIntent.setData(Uri.parse("https://translate.google.com/#vi/en/" + urlEscape(result).trim()));
 					startActivity(webIntent);
+					overridePendingTransition(R.anim.slide_in_right,R.anim.slide_out_left); //start
 					deleteImage(image_file_path);
 				}
 			}
@@ -195,5 +198,11 @@ public class OCRActivity extends AppCompatActivity {
 				default: sb.append(character);//if it does not need to be escaped, add the character itself to the StringBuilder
 			}
 		return sb.toString();//build the string, and return
+	}
+
+	@Override
+	public void onBackPressed() {
+		super.onBackPressed();
+		overridePendingTransition(R.anim.slide_in_left,R.anim.slide_out_right); //finish
 	}
 }
