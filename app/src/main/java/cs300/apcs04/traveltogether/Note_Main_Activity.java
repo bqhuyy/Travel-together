@@ -100,6 +100,20 @@ public class Note_Main_Activity extends AppCompatActivity {
         	childnode = "BlankID";
         myRef = database.getReference("note/"+childnode);
 
+		Toolbar toolbar = findViewById(R.id.toolbar_note);
+		setSupportActionBar(toolbar);
+
+		// toolbar fancy stuff
+		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+		getSupportActionBar().setTitle("");
+
+		toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				Note_Main_Activity.this.finish();
+			}
+		});
+
         StaggeredGridLayoutManager gridLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
         gridLayoutManager.setGapStrategy(StaggeredGridLayoutManager.GAP_HANDLING_MOVE_ITEMS_BETWEEN_SPANS);
 

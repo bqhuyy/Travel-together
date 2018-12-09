@@ -67,14 +67,21 @@ public class PlaceDetailActivity extends AppCompatActivity implements OnMapReady
 
 		mCollapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.toolbar_layout);
 
+		/*SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+				.findFragmentById(R.id.map);
+		mapFragment.getMapAsync(this);*/
+
 		mToolbar = (Toolbar) findViewById(R.id.toolbar);
 		setSupportActionBar(mToolbar);
 
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-		SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-				.findFragmentById(R.id.map);
-		mapFragment.getMapAsync(this);
+		mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				PlaceDetailActivity.this.finish();
+			}
+		});
 
 		mGeoDataClient = Places.getGeoDataClient(this, null);
 

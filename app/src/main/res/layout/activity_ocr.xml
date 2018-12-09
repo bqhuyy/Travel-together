@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".OCRActivity"
+    android:orientation="vertical"
+    android:background="@color/slightlyBlack"
+    >
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            >
+            <ImageView
+                android:id="@+id/img_input"
+                android:layout_width="match_parent"
+                android:layout_height="300dp"
+                android:layout_gravity="center"
+                android:src="@drawable/unloadpicture"
+                />
+
+            <Button
+                android:layout_gravity="center"
+                android:id="@+id/btn_rec"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:text="Recognize"
+                android:layout_below="@id/img_input"
+                android:background="@drawable/custom_border_playout_ver3"
+                />
+
+            <TextView
+                android:layout_marginTop="20dp"
+                android:id="@+id/txt_result"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Result"
+                android:textSize="15dp"
+                android:textColor="@color/white"
+                android:layout_below="@id/btn_rec"/>
+        </LinearLayout>
+
+    </ScrollView>
+
+</LinearLayout>
