@@ -58,6 +58,7 @@ public class PlaceListInPlanActivity extends AppCompatActivity {
 	private LinearLayoutManager mLayoutManager;
 	private ArrayList<PlaceShortData> mPlaceShortDataList;
 	private String mPlanID = "";
+	private String mPlanTitle = "";
 	private FloatingActionButton mFabAddPlace;
 	private FloatingActionButton mFabChat;
 	private FloatingActionButton mFabNote;
@@ -112,7 +113,7 @@ public class PlaceListInPlanActivity extends AppCompatActivity {
 
 		Intent intent = getIntent();
 		mPlanID = intent.getStringExtra("planID");
-
+		mPlanTitle = intent.getStringExtra("planTitle");
 		init();
 		setGestureForItemInRecylerview();
 		setUpRecylerView();
@@ -337,6 +338,7 @@ public class PlaceListInPlanActivity extends AppCompatActivity {
 		else if(id == R.id.place_list_fab_note){
 			Intent intent = new Intent(PlaceListInPlanActivity.this, Note_Main_Activity.class);
 			intent.putExtra("planID", mPlanID);
+			intent.putExtra("planTitle", mPlanTitle);
 			startActivity(intent);
 		}
 		else{

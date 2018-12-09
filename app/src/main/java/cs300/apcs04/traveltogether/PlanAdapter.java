@@ -81,6 +81,7 @@ public class PlanAdapter extends RecyclerView.Adapter<PlanAdapter.ViewHolder> im
 					Intent intent = new Intent(view.getContext(), PlaceListInPlanActivity.class);
 					intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 					intent.putExtra("planID", planID);
+					intent.putExtra("planTitle", plan.getTitle());
 					mContext.startActivity(intent);
 
 				}
