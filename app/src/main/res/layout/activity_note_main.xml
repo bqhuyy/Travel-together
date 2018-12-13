@@ -16,20 +16,20 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:id="@+id/collapsing_toolbar"
-            android:fitsSystemWindows="true"
             app:contentScrim="?attr/colorPrimary"
             app:expandedTitleMarginBottom="32dp"
             app:expandedTitleMarginEnd="64dp"
             app:expandedTitleMarginStart="48dp"
             app:layout_scrollFlags="scroll|exitUntilCollapsed"
-            app:title="Note App">
+            app:title="Note">
 
             <android.support.v7.widget.Toolbar
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 android:id="@+id/toolbar_note"
                 android:background="?attr/colorPrimary"
-                app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+                app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+                app:layout_collapseMode="pin"/>
 
         </android.support.design.widget.CollapsingToolbarLayout>
 

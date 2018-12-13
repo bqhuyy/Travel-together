@@ -33,7 +33,7 @@ import java.util.Iterator;
 
 public class GroupChatActivity extends AppCompatActivity {
     private static final int SIGN_IN_REQUEST_CODE = 1;
-    String planID;
+    String planID, mUser;
     LinearLayout activity_chat;
     FirebaseDatabase database;
     DatabaseReference messageRef, listOfMemberRef, userRef;
@@ -50,7 +50,7 @@ public class GroupChatActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         planID = intent.getStringExtra("planID");
-
+        mUser = FirebaseAuth.getInstance().getCurrentUser().getUid();
         database = FirebaseDatabase.getInstance();
         messageRef = database.getReference("message/"+planID);
         listOfMemberRef = database.getReference("plan/"+planID+"/listOfMember");
@@ -97,14 +97,15 @@ public class GroupChatActivity extends AppCompatActivity {
                     userRef.addValueEventListener(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot userSnapshot) {
-                            if (FirebaseAuth.getInstance().getCurrentUser().getUid().equals(finalUserId)) {
-                                message.setType(Message.RightSimpleMessage); //message type
+                            if (mUser.equals(finalUserId)) {
+                                message.setType(Message.RightSimpleMessage); //message
+                                chatView.addMessage(message);
                             }
                             else {
                                 message.setUserName(userSnapshot.child("name").getValue(String.class));
                                 message.setType(Message.LeftSimpleMessage); //message type
+                                chatView.addMessage(message);
                             }
-                            chatView.addMessage(message);
                         }
 
                         @Override

@@ -7,6 +7,7 @@
     android:orientation="vertical"
     tools:context=".PlaceListInPlanActivity"
     android:background="@color/white"
+    android:fitsSystemWindows="true"
     >
 
     <android.support.design.widget.AppBarLayout

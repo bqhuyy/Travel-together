@@ -51,13 +51,11 @@
 
         <activity
             android:name=".Note_Main_Activity"
-            android:theme="@style/NoteTheme" />
+            android:theme="@style/NoteTheme"/>
         <activity
-            android:name=".Note_AddNote_Activity"
-            android:theme="@style/NoteTheme" />
+            android:name=".Note_AddNote_Activity" />
         <activity
-            android:name=".MainActivity"
-            android:theme="@style/ThemeOverlay.MainActivity"></activity>
+            android:name=".MainActivity"></activity>
         <activity android:name=".ManageAccountActivity" />
         <activity android:name=".EmergencyCallActivity" />
         <activity
