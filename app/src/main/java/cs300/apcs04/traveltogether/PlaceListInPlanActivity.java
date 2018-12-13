@@ -103,6 +103,7 @@ public class PlaceListInPlanActivity extends AppCompatActivity {
 			@Override
 			public void onClick(View view) {
 				PlaceListInPlanActivity.this.finish();
+				overridePendingTransition(R.anim.slide_in_left,R.anim.slide_out_right); //finish
 			}
 		});
 		mRecylerview = (RecyclerView) findViewById(R.id.place_list_in_plan);
@@ -334,12 +335,14 @@ public class PlaceListInPlanActivity extends AppCompatActivity {
 			Intent intent = new Intent(PlaceListInPlanActivity.this, GroupChatActivity.class);
 			intent.putExtra("planID", mPlanID);
 			startActivity(intent);
+			overridePendingTransition(R.anim.slide_in_right,R.anim.slide_out_left); //start
 		}
 		else if(id == R.id.place_list_fab_note){
 			Intent intent = new Intent(PlaceListInPlanActivity.this, Note_Main_Activity.class);
 			intent.putExtra("planID", mPlanID);
 			intent.putExtra("planTitle", mPlanTitle);
 			startActivity(intent);
+			overridePendingTransition(R.anim.slide_in_right,R.anim.slide_out_left); //start
 		}
 		else{
 			try {
@@ -491,5 +494,11 @@ public class PlaceListInPlanActivity extends AppCompatActivity {
 		});
 
 		return true;
+	}
+
+	@Override
+	public void onBackPressed() {
+		super.onBackPressed();
+		overridePendingTransition(R.anim.slide_in_left,R.anim.slide_out_right); //finish
 	}
 }

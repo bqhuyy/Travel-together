@@ -81,6 +81,7 @@ public class PlaceDetailActivity extends AppCompatActivity implements OnMapReady
 			@Override
 			public void onClick(View view) {
 				PlaceDetailActivity.this.finish();
+				overridePendingTransition(R.anim.slide_in_left,R.anim.slide_out_right); //finish
 			}
 		});
 
@@ -203,5 +204,11 @@ public class PlaceDetailActivity extends AppCompatActivity implements OnMapReady
 			super.onPostExecute(s);
 			createViewInfo(s.toString());
 		}
+	}
+
+	@Override
+	public void onBackPressed() {
+		super.onBackPressed();
+		overridePendingTransition(R.anim.slide_in_left,R.anim.slide_out_right); //finish
 	}
 }

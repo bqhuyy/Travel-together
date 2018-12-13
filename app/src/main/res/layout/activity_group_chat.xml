@@ -6,7 +6,8 @@
     android:layout_height="match_parent"
     tools:context=".GroupChatActivity"
     android:orientation="vertical"
-    android:id="@+id/activity_chat">
+    android:id="@+id/activity_chat"
+    android:fitsSystemWindows="true">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"

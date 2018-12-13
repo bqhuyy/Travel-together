@@ -70,12 +70,13 @@ public class MainActivity extends AppCompatActivity {
                     case R.id.main_nav_about:
                         Intent intent1 = new Intent(MainActivity.this, Author_Main_Activity.class);
                         startActivity(intent1);
+                        overridePendingTransition(R.anim.slide_in_right,R.anim.slide_out_left); //start
                         break;
                     case R.id.main_nav_signout:
                         FirebaseAuth.getInstance().signOut();
                         Intent intent = new Intent(MainActivity.this,LoginActivity.class);
                         startActivity(intent);
-                        overridePendingTransition(R.anim.slide_in_left,R.anim.slide_out_right);
+                        overridePendingTransition(R.anim.slide_in_left,R.anim.slide_out_right); //finish
                         finish();
                         break;
                 }
@@ -97,15 +98,18 @@ public class MainActivity extends AppCompatActivity {
         	intent.putExtra("userid", mUser.getUid());
 		}
         startActivity(intent);
+        overridePendingTransition(R.anim.slide_in_right,R.anim.slide_out_left); //start
     }
 
 	public void onOCRItemClicked(View view) {
         Intent intent = new Intent(MainActivity.this, OCRActivity.class);
         startActivity(intent);
+        overridePendingTransition(R.anim.slide_in_right,R.anim.slide_out_left); //start
 	}
 
     public void onLanmarkItemClicked(View view) {
         Intent intent = new Intent(MainActivity.this, UploadImageActivity.class);
         startActivity(intent);
+        overridePendingTransition(R.anim.slide_in_right,R.anim.slide_out_left); //start
     }
 }
