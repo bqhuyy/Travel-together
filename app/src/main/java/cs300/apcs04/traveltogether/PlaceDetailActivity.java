@@ -15,6 +15,7 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import com.google.android.gms.location.places.GeoDataClient;
 import com.google.android.gms.location.places.Place;
@@ -105,19 +106,25 @@ public class PlaceDetailActivity extends AppCompatActivity implements OnMapReady
 		ReviewJSONParser ReviewParser = new ReviewJSONParser();
 
 		mPlace = PlaceParser.parse(StringJSONData);
-		mToolbar.setTitle(mPlace.getmName());
-		mCollapsingToolbarLayout.setTitle(mPlace.getmName());
-		mArrayListReviews = ReviewParser.parse(StringJSONData);
-		float rating = ReviewParser.getRating();
+		if(mPlace != null){
+			mToolbar.setTitle(mPlace.getmName());
+			mCollapsingToolbarLayout.setTitle(mPlace.getmName());
+			mArrayListReviews = ReviewParser.parse(StringJSONData);
+			float rating = ReviewParser.getRating();
 
-		pager = (ViewPager) findViewById(R.id.view_pager_place_info);
-		tabLayout = (TabLayout) findViewById(R.id.tab_layout_place_info);
-		FragmentManager manager = getSupportFragmentManager();
-		PlacePagerAdapter adapter = new PlacePagerAdapter(manager, mPlace, mArrayListFavID, mArrayListReviews, rating);
-		pager.setAdapter(adapter);
-		tabLayout.setupWithViewPager(pager);
-		pager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
-		tabLayout.setTabsFromPagerAdapter(adapter);
+			pager = (ViewPager) findViewById(R.id.view_pager_place_info);
+			tabLayout = (TabLayout) findViewById(R.id.tab_layout_place_info);
+			FragmentManager manager = getSupportFragmentManager();
+			PlacePagerAdapter adapter = new PlacePagerAdapter(manager, mPlace, mArrayListFavID, mArrayListReviews, rating);
+			pager.setAdapter(adapter);
+			tabLayout.setupWithViewPager(pager);
+			pager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
+			tabLayout.setTabsFromPagerAdapter(adapter);
+		}
+		else{
+			Toast.makeText(this, "Cannot get information from this place", Toast.LENGTH_LONG).show();
+			this.finish();
+		}
 	}
 
 	@Override

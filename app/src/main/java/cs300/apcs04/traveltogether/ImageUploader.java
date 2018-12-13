@@ -3,6 +3,7 @@ package cs300.apcs04.traveltogether;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Handler;
@@ -76,9 +77,9 @@ public class ImageUploader extends AsyncTask<Bitmap, Void, String> {
 				public void onResponse(String s) {
 					mProgressDialog.dismiss();
 					Toast.makeText(mContext, "Uploaded successfully " + s, Toast.LENGTH_LONG).show();
-				/*Intent intent = new Intent(mContext, PlaceInfoActivity.class);
-				intent.putExtra("placeID", s);
-				startActivity(intent);*/
+					Intent intent = new Intent(mContext, PlaceDetailActivity.class);
+					intent.putExtra("placeID", s);
+					mContext.startActivity(intent);
 				}
 			}, new Response.ErrorListener() {
 				@Override

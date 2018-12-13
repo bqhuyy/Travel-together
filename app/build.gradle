@@ -52,6 +52,7 @@ dependencies {
     implementation 'com.github.shrikanth7698:ChatView:v0.1.2'
     implementation 'de.hdodenhof:circleimageview:2.2.0'
     implementation 'com.rmtheis:tess-two:5.4.1'
+    implementation 'com.getbase:floatingactionbutton:1.10.1'
 }
 
 apply plugin: 'com.google.gms.google-services'
