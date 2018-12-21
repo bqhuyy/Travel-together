@@ -26,20 +26,20 @@ public class SlideAdapter extends PagerAdapter {
 
     //list of titles
     public String[] list_titles = {
-            "OCCUPATION",
-            "OCCUPATION",
-            "OCCUPATION",
-            "OCCUPATION",
-            "OCCUPATION"
+            "Designer, Implementer",
+            "Team leader, Designer",
+            "Business Analyst, Implementer, Tester",
+            "Business Analyst, Implementer",
+            "Implementer, Tester"
     };
 
     //list of descriptions
     public String[] list_descriptions = {
-            "Description 1",
-            "Description 2",
-            "Description 3",
-            "Description 4",
-            "Description 5"
+            "Research interest: Cryptography",
+            "Research interest: Machine Learning, Deep learning",
+            "Research interest: Deep learning for computer vision",
+            "Research interest: Software engineering",
+            "Research interest: Deep learning for computer vision"
     };
 
     //list of background colours
