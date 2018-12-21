@@ -35,11 +35,11 @@ public class SlideAdapter extends PagerAdapter {
 
     //list of descriptions
     public String[] list_descriptions = {
-            "Research interest: Cryptography",
-            "Research interest: Machine Learning, Deep learning",
-            "Research interest: Deep learning for computer vision",
-            "Research interest: Software engineering",
-            "Research interest: Deep learning for computer vision"
+            "Research: Cryptography",
+            "Research: Machine Learning, Deep learning",
+            "Research: Deep learning for computer vision",
+            "Research: Software engineering",
+            "Research: Deep learning for computer vision"
     };
 
     //list of background colours
