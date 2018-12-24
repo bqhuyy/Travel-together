@@ -25,6 +25,7 @@ public class Author_Main_Activity extends AppCompatActivity {
                 if (lastpagechange && position == lastIdx){
                     Toast.makeText(Author_Main_Activity.this, "End of author section", Toast.LENGTH_SHORT).show();
                     finish();
+                    overridePendingTransition(R.anim.slide_in_left,R.anim.slide_out_right); //finish
                 }
             }
 
@@ -44,5 +45,11 @@ public class Author_Main_Activity extends AppCompatActivity {
 
             }
         });
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        overridePendingTransition(R.anim.slide_in_left,R.anim.slide_out_right); //finish
     }
 }

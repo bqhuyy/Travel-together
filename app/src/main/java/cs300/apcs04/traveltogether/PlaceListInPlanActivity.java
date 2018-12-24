@@ -114,6 +114,7 @@ public class PlaceListInPlanActivity extends AppCompatActivity {
 			@Override
 			public void onClick(View view) {
 				PlaceListInPlanActivity.this.finish();
+				overridePendingTransition(R.anim.slide_in_left,R.anim.slide_out_right); //finish
 			}
 		});
 		mRecylerview = (RecyclerView) findViewById(R.id.place_list_in_plan);
@@ -311,20 +312,20 @@ public class PlaceListInPlanActivity extends AppCompatActivity {
 		mSpeedDialView.setOnActionSelectedListener(new SpeedDialView.OnActionSelectedListener() {
 			@Override
 			public boolean onActionSelected(SpeedDialActionItem actionItem) {
-				switch(actionItem.getId()){
+				switch (actionItem.getId()) {
 					case R.id.fab_note:
 						Intent intent = new Intent(PlaceListInPlanActivity.this, Note_Main_Activity.class);
 						intent.putExtra("planID", mPlanID);
 						intent.putExtra("planTitle", mPlanTitle);
 						startActivity(intent);
-						overridePendingTransition(R.anim.slide_in_right,R.anim.slide_out_left);
+						overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
 						return true;
 
 					case R.id.fab_chat:
 						Intent intent_chat = new Intent(PlaceListInPlanActivity.this, GroupChatActivity.class);
 						intent_chat.putExtra("planID", mPlanID);
 						startActivity(intent_chat);
-						overridePendingTransition(R.anim.slide_in_right,R.anim.slide_out_left);
+						overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
 						return true;
 
 					case R.id.fab_add_place:
@@ -360,7 +361,7 @@ public class PlaceListInPlanActivity extends AppCompatActivity {
 
 			@Override
 			public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDir) {
-				Toast.makeText(PlaceListInPlanActivity.this, "on Swiped ", Toast.LENGTH_SHORT).show();
+				Toast.makeText(PlaceListInPlanActivity.this, "removed", Toast.LENGTH_SHORT).show();
 				//Remove swiped item from list and notify the RecyclerView
 				/*int position = viewHolder.getAdapterPosition();
 				arrayList.remove(position);
@@ -485,5 +486,11 @@ public class PlaceListInPlanActivity extends AppCompatActivity {
 		});
 
 		return true;
+	}
+
+	@Override
+	public void onBackPressed() {
+		super.onBackPressed();
+		overridePendingTransition(R.anim.slide_in_left,R.anim.slide_out_right); //finish
 	}
 }

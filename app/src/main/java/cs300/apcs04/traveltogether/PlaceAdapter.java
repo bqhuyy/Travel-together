@@ -1,5 +1,6 @@
 package cs300.apcs04.traveltogether;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -64,6 +65,7 @@ public class PlaceAdapter extends RecyclerView.Adapter<PlaceAdapter.ViewHolder> 
 					intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 					intent.putExtra("placeID", placeID);
 					mContext.startActivity(intent);
+					((Activity)mContext).overridePendingTransition(R.anim.slide_in_right,R.anim.slide_out_left); //start
 				}
 			}
 		});

@@ -69,6 +69,7 @@ public class UploadImageActivity extends AppCompatActivity {
 	public void takeImageFromCamera(View view){
 		Intent intent = new Intent(this, CameraActivity.class);
 		startActivityForResult(intent, REQUEST_CAPTURE_IMAGE);
+		overridePendingTransition(R.anim.slide_in_right,R.anim.slide_out_left); //start
 	}
 
 	public void chooseImageFromDevice(){
@@ -84,6 +85,7 @@ public class UploadImageActivity extends AppCompatActivity {
 		chooseitent.putExtra(Intent.EXTRA_INITIAL_INTENTS, new Intent[]{pickitent});
 
 		startActivityForResult(chooseitent, RESULT_LOAD_IMAGE);
+		overridePendingTransition(R.anim.slide_in_right,R.anim.slide_out_left); //start
 	}
 
 	@Override
@@ -113,5 +115,11 @@ public class UploadImageActivity extends AppCompatActivity {
 				Toast.makeText(UploadImageActivity.this, "Please choose or capture your image", Toast.LENGTH_SHORT).show();
 			}
 		}
+	}
+
+	@Override
+	public void onBackPressed() {
+		super.onBackPressed();
+		overridePendingTransition(R.anim.slide_in_left,R.anim.slide_out_right); //finish
 	}
 }

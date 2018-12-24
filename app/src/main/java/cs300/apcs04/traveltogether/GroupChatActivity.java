@@ -33,7 +33,7 @@ import java.util.Iterator;
 
 public class GroupChatActivity extends AppCompatActivity {
     private static final int SIGN_IN_REQUEST_CODE = 1;
-    String planID;
+    String planID, mUser;
     LinearLayout activity_chat;
     FirebaseDatabase database;
     DatabaseReference messageRef, listOfMemberRef, userRef;
@@ -49,9 +49,8 @@ public class GroupChatActivity extends AppCompatActivity {
         activity_chat = (LinearLayout)findViewById(R.id.activity_chat);
 
         Intent intent = getIntent();
-        //planID = intent.getStringExtra("planID");
-        planID = "6cdec0fc-bb4f-4302-9c7f-5cf10454aeed";
-
+        planID = intent.getStringExtra("planID");
+        mUser = FirebaseAuth.getInstance().getCurrentUser().getUid();
         database = FirebaseDatabase.getInstance();
         messageRef = database.getReference("message/"+planID);
         listOfMemberRef = database.getReference("plan/"+planID+"/listOfMember");
@@ -68,6 +67,7 @@ public class GroupChatActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 GroupChatActivity.this.finish();
+                overridePendingTransition(R.anim.slide_in_left,R.anim.slide_out_right); //finish
             }
         });
 
@@ -97,14 +97,15 @@ public class GroupChatActivity extends AppCompatActivity {
                     userRef.addValueEventListener(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot userSnapshot) {
-                            if (FirebaseAuth.getInstance().getCurrentUser().getUid().equals(finalUserId)) {
-                                message.setType(Message.RightSimpleMessage); //message type
+                            if (mUser.equals(finalUserId)) {
+                                message.setType(Message.RightSimpleMessage); //message
+                                chatView.addMessage(message);
                             }
                             else {
                                 message.setUserName(userSnapshot.child("name").getValue(String.class));
                                 message.setType(Message.LeftSimpleMessage); //message type
+                                chatView.addMessage(message);
                             }
-                            chatView.addMessage(message);
                         }
 
                         @Override
@@ -156,5 +157,11 @@ public class GroupChatActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         return true;
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        overridePendingTransition(R.anim.slide_in_left,R.anim.slide_out_right); //finish
     }
 }
