@@ -53,6 +53,7 @@ dependencies {
     implementation 'de.hdodenhof:circleimageview:2.2.0'
     implementation 'com.rmtheis:tess-two:5.4.1'
     implementation 'com.getbase:floatingactionbutton:1.10.1'
+    implementation 'com.leinardi.android:speed-dial:2.0.0'
 }
 
 apply plugin: 'com.google.gms.google-services'

@@ -1,13 +1,20 @@
 package cs300.apcs04.traveltogether;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
+import android.graphics.Color;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.content.res.ResourcesCompat;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
@@ -29,6 +36,8 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.leinardi.android.speeddial.SpeedDialActionItem;
+import com.leinardi.android.speeddial.SpeedDialView;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -40,6 +49,7 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.List;
 
 public class PlaceDetailActivity extends AppCompatActivity implements OnMapReadyCallback{
 
@@ -61,18 +71,19 @@ public class PlaceDetailActivity extends AppCompatActivity implements OnMapReady
 	private ArrayList<String> mArrayListFavID;
 	private ArrayList<ReviewData> mArrayListReviews;
 
+	private SpeedDialView mSpeedDialView;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_place_detail);
-
-		mCollapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.toolbar_layout);
 
 		/*SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
 				.findFragmentById(R.id.map);
 		mapFragment.getMapAsync(this);*/
 
 		mToolbar = (Toolbar) findViewById(R.id.toolbar);
+		mSpeedDialView = findViewById(R.id.place_detail_speed_dial);
 		setSupportActionBar(mToolbar);
 
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -83,6 +94,8 @@ public class PlaceDetailActivity extends AppCompatActivity implements OnMapReady
 				PlaceDetailActivity.this.finish();
 			}
 		});
+
+		setFabOptionOnClick();
 
 		mGeoDataClient = Places.getGeoDataClient(this, null);
 
@@ -107,7 +120,28 @@ public class PlaceDetailActivity extends AppCompatActivity implements OnMapReady
 		mPlace = PlaceParser.parse(StringJSONData);
 		if(mPlace != null){
 			mToolbar.setTitle(mPlace.getmName());
-			mCollapsingToolbarLayout.setTitle(mPlace.getmName());
+
+			mSpeedDialView.addActionItem(new SpeedDialActionItem.Builder(R.id.fab_phone, R.drawable.phoneicon2)
+					.setLabel("Phone call")
+					.setLabelColor(Color.WHITE)
+					.setLabelBackgroundColor(ResourcesCompat.getColor(getResources(), R.color.inbox_primary,
+					 getTheme()))
+					.create());
+
+			mSpeedDialView.addActionItem(new SpeedDialActionItem.Builder(R.id.fab_sms, R.drawable.smsicon2)
+					.setLabel("Send sms")
+					.setLabelColor(Color.WHITE)
+					.setLabelBackgroundColor(ResourcesCompat.getColor(getResources(), R.color.inbox_primary,
+							getTheme()))
+					.create());
+
+			mSpeedDialView.addActionItem(new SpeedDialActionItem.Builder(R.id.fab_web, R.drawable.webicon2)
+					.setLabel("Go to website")
+					.setLabelColor(Color.WHITE)
+					.setLabelBackgroundColor(ResourcesCompat.getColor(getResources(), R.color.inbox_primary,
+							getTheme()))
+					.create());
+
 			mArrayListReviews = ReviewParser.parse(StringJSONData);
 			float rating = ReviewParser.getRating();
 
@@ -126,6 +160,62 @@ public class PlaceDetailActivity extends AppCompatActivity implements OnMapReady
 		}
 	}
 
+	public void setFabOptionOnClick(){
+		mSpeedDialView.setOnActionSelectedListener(new SpeedDialView.OnActionSelectedListener() {
+			@Override
+			public boolean onActionSelected(SpeedDialActionItem actionItem) {
+				switch(actionItem.getId()){
+					case R.id.fab_phone:
+						if(!mPlace.getmPhone().equals("None")) {
+							Uri number = Uri.parse("tel:" + mPlace.getmPhone());
+
+							Intent callIntent = new Intent(Intent.ACTION_CALL, number);
+							if (ActivityCompat.checkSelfPermission(PlaceDetailActivity.this, Manifest.permission.CALL_PHONE)
+									!= PackageManager.PERMISSION_GRANTED) {
+								return true;
+							}
+							startActivity(callIntent);
+						}
+						else{
+							Toast.makeText(PlaceDetailActivity.this, "Not available for this place", Toast.LENGTH_SHORT).show();
+						}
+						return true;
+
+					case R.id.fab_sms:
+						if (!mPlace.getmPhone().equals("None")){
+							Intent smsIntent = new Intent(Intent.ACTION_VIEW);
+							smsIntent.setType("vnd.android-dir/mms-sms");
+							smsIntent.putExtra("sms_body", "Hi");
+							smsIntent.putExtra("address", mPlace.getmPhone());
+							startActivity(smsIntent);
+						}
+						else{
+							Toast.makeText(PlaceDetailActivity.this, "Not available for this place", Toast.LENGTH_SHORT).show();
+						}
+						return true;
+
+					case R.id.fab_web:
+						String url = mPlace.getmWebsiteURL();
+						Uri weburl = Uri.parse(url);
+						if (!url.equals("None")) {
+							Intent mapIntent = new Intent(Intent.ACTION_VIEW, weburl);
+							PackageManager packageManager = getPackageManager();
+							List<ResolveInfo> activities = packageManager.queryIntentActivities(mapIntent, 0);
+							boolean isIntentSafe = activities.size() > 0;
+							if (isIntentSafe) {
+								startActivity(mapIntent);
+							}
+						} else {
+							Toast.makeText(PlaceDetailActivity.this, "Not available for this place", Toast.LENGTH_SHORT).show();
+						}
+						return true;
+
+				}
+				return true;
+			}
+		});
+	}
+
 	@Override
 	public void onMapReady(GoogleMap googleMap) {
 		mMap = googleMap;
@@ -136,19 +226,19 @@ public class PlaceDetailActivity extends AppCompatActivity implements OnMapReady
 		mGeoDataClient.getPlaceById(mPlaceID).addOnCompleteListener(new OnCompleteListener<PlaceBufferResponse>() {
 			@Override
 			public void onComplete(@NonNull Task<PlaceBufferResponse> task) {
-				if (task.isSuccessful()) {
-					PlaceBufferResponse places = task.getResult();
-					Place myPlace = places.get(0);
-					Log.i("place_error", "Place found: " + myPlace.getName());
-					LatLng location = myPlace.getLatLng();
+			if (task.isSuccessful()) {
+				PlaceBufferResponse places = task.getResult();
+				Place myPlace = places.get(0);
+				Log.i("place_error", "Place found: " + myPlace.getName());
+				LatLng location = myPlace.getLatLng();
 
-					mMap.addMarker(new MarkerOptions().title(myPlace.getAddress().toString())
-							.position(location));
-					mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(location, 15));
-					places.release();
-				} else {
-					Log.e("place_error", "Place not found.");
-				}
+				mMap.addMarker(new MarkerOptions().title(myPlace.getAddress().toString())
+						.position(location));
+				mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(location, 15));
+				places.release();
+			} else {
+				Log.e("place_error", "Place not found.");
+			}
 			}
 		});
 	}

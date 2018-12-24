@@ -171,60 +171,9 @@
 
             </LinearLayout>
 
-            <com.getbase.floatingactionbutton.FloatingActionsMenu
-                android:id="@+id/floating_action_menu"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:fab_addButtonColorNormal="@color/red_pink"
-                app:fab_addButtonColorPressed="@color/pink"
-                app:fab_labelsPosition="left"
-                android:layout_marginTop="15dp"
-                android:layout_marginLeft="16dp"
-                android:layout_marginStart="16dp"
-                android:layout_gravity="right"
-                app:fab_expandDirection="up"
 
-                >
-
-                <com.getbase.floatingactionbutton.FloatingActionButton
-                    android:id="@+id/web_button"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:fab_colorNormal="#24c127"
-                    app:fab_icon="@drawable/webicon"
-                    app:fab_size="mini"
-                    app:fab_title="website"
-                    />
-
-                <com.getbase.floatingactionbutton.FloatingActionButton
-                    android:id="@+id/phone_button"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:fab_colorNormal="#2465c1"
-                    app:fab_icon="@drawable/phoneicon"
-                    app:fab_size="mini"
-                    app:fab_title="website"
-                    />
-
-                <com.getbase.floatingactionbutton.FloatingActionButton
-                    android:id="@+id/sms_button"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:fab_colorNormal="#e53939"
-                    app:fab_icon="@drawable/smsicon"
-                    app:fab_size="mini"
-                    app:fab_title="website"
-                    />
-
-            </com.getbase.floatingactionbutton.FloatingActionsMenu>
 
             </FrameLayout>
-
-
-
-
-
-
 
         </LinearLayout>
     </ScrollView>
