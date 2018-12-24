@@ -1,12 +1,19 @@
 package cs300.apcs04.traveltogether;
 
+import android.Manifest;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
+import android.graphics.Color;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -36,6 +43,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.leinardi.android.speeddial.SpeedDialActionItem;
+import com.leinardi.android.speeddial.SpeedDialView;
 
 import org.json.JSONObject;
 
@@ -81,6 +90,8 @@ public class PlaceListInPlanActivity extends AppCompatActivity {
 	private String HostAPI = "http://210.245.20.101:8000/place?placeid=";
 
 	private PlaceJSONParser mPlaceParser = new PlaceJSONParser();
+
+	private SpeedDialView mSpeedDialView;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -218,71 +229,41 @@ public class PlaceListInPlanActivity extends AppCompatActivity {
 
 		mMemList = new ArrayList<>();
 
-		mFabAddPlace = (FloatingActionButton) findViewById(R.id.place_list_fab_add_place);
-		mFabChat = (FloatingActionButton) findViewById(R.id.place_list_fab_chat);
-		mFabNote = (FloatingActionButton) findViewById(R.id.place_list_fab_note);
-		mFabAddMember = (FloatingActionButton) findViewById(R.id.place_list_fab_add_member);
+		mSpeedDialView = findViewById(R.id.place_list_in_plan_speed_dial);
+
+		setFabOptionOnClick();
+
+		mSpeedDialView.addActionItem(new SpeedDialActionItem.Builder(R.id.fab_note, R.drawable.noteplan)
+				.setLabel("My note")
+				.setLabelColor(Color.WHITE)
+				.setLabelBackgroundColor(ResourcesCompat.getColor(getResources(), R.color.inbox_primary,
+						getTheme()))
+				.create());
+
+		mSpeedDialView.addActionItem(new SpeedDialActionItem.Builder(R.id.fab_chat, R.drawable.chatplan)
+				.setLabel("My group chat")
+				.setLabelColor(Color.WHITE)
+				.setLabelBackgroundColor(ResourcesCompat.getColor(getResources(), R.color.inbox_primary,
+						getTheme()))
+				.create());
+
+		mSpeedDialView.addActionItem(new SpeedDialActionItem.Builder(R.id.fab_add_place, R.drawable.ic_add_24dp)
+				.setLabel("Add new place")
+				.setLabelColor(Color.WHITE)
+				.setLabelBackgroundColor(ResourcesCompat.getColor(getResources(), R.color.inbox_primary,
+						getTheme()))
+				.create());
+
+		mSpeedDialView.addActionItem(new SpeedDialActionItem.Builder(R.id.fab_add_mem, R.drawable.addmem)
+				.setLabel("Add new member")
+				.setLabelColor(Color.WHITE)
+				.setLabelBackgroundColor(ResourcesCompat.getColor(getResources(), R.color.inbox_primary,
+						getTheme()))
+				.create());
 
 		mAlert = new AlertDialog.Builder(this);
 		AlertConfigure();
-		mFabAddMember.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View view) {
-				mAlertDialog.show();
-			}
-		});
 
-		/*mFabChat.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View view) {
-				//new PutUserID(PlaceListInPlanActivity.this).execute(mRef);
-				mRef.addListenerForSingleValueEvent(new ValueEventListener() {
-					@Override
-					public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
-						/long date = (long) dataSnapshot.child("dateAdded").getValue();
-						String planid = (String) dataSnapshot.child("mPlanID").getValue();
-						String title = (String) dataSnapshot.child("title").getValue();
-						HashMap<String, String> map = (HashMap<String, String>) dataSnapshot.child("mMemberList").getValue();
-						if(map == null)
-							Log.d("qwerty", "nulllll");
-						for(String id : map.keySet()){
-							mMemList.add(id);
-						}
-
-						Intent intent = new Intent(getApplicationContext(), TestActivity.class);
-						intent.putStringArrayListExtra("listMem", mMemList);
-						startActivity(intent);
-
-					}
-
-					@Override
-					public void onCancelled(@NonNull DatabaseError databaseError) {
-
-					}
-				});
-				Intent intent = new Intent(PlaceListInPlanActivity.this, GroupChatActivity.class);
-				intent.putExtra("planID", mPlanID);
-				startActivity(intent);
-			}
-		});
-
-
-		mFabAddPlace.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View view) {
-				try {
-					Intent intent =
-							new PlaceAutocomplete.IntentBuilder(PlaceAutocomplete.MODE_OVERLAY)
-									.build(PlaceListInPlanActivity.this);
-					startActivityForResult(intent, PLACE_AUTOCOMPLETE_REQUEST_CODE);
-				} catch (GooglePlayServicesRepairableException e) {
-					// TODO: Handle the error.
-				} catch (GooglePlayServicesNotAvailableException e) {
-					// TODO: Handle the error.
-				}
-			}
-		});*/
 	}
 
 	private void AlertConfigure() {
@@ -327,35 +308,46 @@ public class PlaceListInPlanActivity extends AppCompatActivity {
 		});
 	}
 
-	public void onFabButtonClicked(View view) {
+	public void setFabOptionOnClick(){
+		mSpeedDialView.setOnActionSelectedListener(new SpeedDialView.OnActionSelectedListener() {
+			@Override
+			public boolean onActionSelected(SpeedDialActionItem actionItem) {
+				switch (actionItem.getId()) {
+					case R.id.fab_note:
+						Intent intent = new Intent(PlaceListInPlanActivity.this, Note_Main_Activity.class);
+						intent.putExtra("planID", mPlanID);
+						intent.putExtra("planTitle", mPlanTitle);
+						startActivity(intent);
+						overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+						return true;
 
-		int id = view.getId();
+					case R.id.fab_chat:
+						Intent intent_chat = new Intent(PlaceListInPlanActivity.this, GroupChatActivity.class);
+						intent_chat.putExtra("planID", mPlanID);
+						startActivity(intent_chat);
+						overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+						return true;
 
-		if(id == R.id.place_list_fab_chat){
-			Intent intent = new Intent(PlaceListInPlanActivity.this, GroupChatActivity.class);
-			intent.putExtra("planID", mPlanID);
-			startActivity(intent);
-			overridePendingTransition(R.anim.slide_in_right,R.anim.slide_out_left); //start
-		}
-		else if(id == R.id.place_list_fab_note){
-			Intent intent = new Intent(PlaceListInPlanActivity.this, Note_Main_Activity.class);
-			intent.putExtra("planID", mPlanID);
-			intent.putExtra("planTitle", mPlanTitle);
-			startActivity(intent);
-			overridePendingTransition(R.anim.slide_in_right,R.anim.slide_out_left); //start
-		}
-		else{
-			try {
-				Intent intent =
-						new PlaceAutocomplete.IntentBuilder(PlaceAutocomplete.MODE_OVERLAY)
-								.build(PlaceListInPlanActivity.this);
-				startActivityForResult(intent, PLACE_AUTOCOMPLETE_REQUEST_CODE);
-			} catch (GooglePlayServicesRepairableException e) {
-				// TODO: Handle the error.
-			} catch (GooglePlayServicesNotAvailableException e) {
-				// TODO: Handle the error.
+					case R.id.fab_add_place:
+						try {
+							Intent intent_add_place =
+									new PlaceAutocomplete.IntentBuilder(PlaceAutocomplete.MODE_OVERLAY)
+											.build(PlaceListInPlanActivity.this);
+							startActivityForResult(intent_add_place, PLACE_AUTOCOMPLETE_REQUEST_CODE);
+						} catch (GooglePlayServicesRepairableException e) {
+							// TODO: Handle the error.
+						} catch (GooglePlayServicesNotAvailableException e) {
+							// TODO: Handle the error.
+						}
+						return true;
+
+					case R.id.fab_add_mem:
+						mAlertDialog.show();
+						return true;
+				}
+				return true;
 			}
-		}
+		});
 	}
 
 	public void setGestureForItemInRecylerview(){
@@ -369,7 +361,7 @@ public class PlaceListInPlanActivity extends AppCompatActivity {
 
 			@Override
 			public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDir) {
-				Toast.makeText(PlaceListInPlanActivity.this, "on Swiped ", Toast.LENGTH_SHORT).show();
+				Toast.makeText(PlaceListInPlanActivity.this, "removed", Toast.LENGTH_SHORT).show();
 				//Remove swiped item from list and notify the RecyclerView
 				/*int position = viewHolder.getAdapterPosition();
 				arrayList.remove(position);

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="fab_web" type="id" />
+    <item name="fab_sms" type="id" />
+    <item name="fab_phone" type="id" />
+    <item name="fab_note" type="id" />
+    <item name="fab_chat" type="id" />
+    <item name="fab_add_place" type="id" />
+    <item name="fab_add_mem" type="id" />
+</resources>

@@ -37,45 +37,15 @@
 
         </android.support.v7.widget.RecyclerView>
 
-        <android.support.design.widget.FloatingActionButton
-            android:id="@+id/place_list_fab_add_place"
+        <com.leinardi.android.speeddial.SpeedDialView
+            android:id="@+id/place_list_in_plan_speed_dial"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|end"
-            android:layout_margin="16dp"
-            android:onClick="onFabButtonClicked"
-            android:src="@drawable/ic_add_24dp"
-            android:tint="@android:color/white" />
+            app:sdMainFabClosedSrc="@drawable/ic_add_24dp"
+        />
 
-        <android.support.design.widget.FloatingActionButton
-            android:id="@+id/place_list_fab_note"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center|bottom"
-            android:layout_margin="16dp"
-            android:backgroundTint="@color/colorPrimaryDark"
-            android:onClick="onFabButtonClicked"
-            android:src="@drawable/noteplan" />
 
-        <android.support.design.widget.FloatingActionButton
-            android:id="@+id/place_list_fab_chat"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|end|start"
-            android:layout_margin="16dp"
-            android:backgroundTint="@color/slightlyGreen"
-            android:onClick="onFabButtonClicked"
-            android:src="@drawable/chatplan" />
-
-        <android.support.design.widget.FloatingActionButton
-            android:id="@+id/place_list_fab_add_member"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|end"
-            android:layout_marginRight="16dp"
-            android:layout_marginBottom="66dp"
-            android:backgroundTint="@color/deeppurple"
-            android:src="@drawable/ic_add_24dp"/>
 
     </FrameLayout>
 

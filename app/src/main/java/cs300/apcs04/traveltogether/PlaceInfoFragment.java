@@ -48,9 +48,6 @@ public class PlaceInfoFragment extends Fragment{
 	private TextView mopenHours;
 	private ImageView mphoneicon;
 	private ImageButton mbtnMap;
-	private FloatingActionButton mbtnWeb;
-	private FloatingActionButton mbtnPhone;
-	private FloatingActionButton mbtnSms;
 
 	private MapView mMapView;
 	private GoogleMap googleMap;
@@ -78,9 +75,6 @@ public class PlaceInfoFragment extends Fragment{
 		mweek_time_txt = (TextView) v.findViewById(R.id.week_time);
 		mbtnMap = (ImageButton) v.findViewById(R.id.btnMap);
 		mAlert = new AlertDialog.Builder(getContext());
-		mbtnWeb = v.findViewById(R.id.web_button);
-		mbtnPhone = v.findViewById(R.id.phone_button);
-		mbtnSms = v.findViewById(R.id.sms_button);
 
 		if(place != null) {
 
@@ -132,63 +126,6 @@ public class PlaceInfoFragment extends Fragment{
 				@Override
 				public void onClick(View view) {
 					mAlertDialog.show();
-				}
-			});
-
-			mbtnWeb.setOnClickListener(new View.OnClickListener() {
-				@Override
-				public void onClick(View view) {
-					String url = place.getmWebsiteURL();
-					Uri weburl = Uri.parse(url);
-					if (!url.equals("None")) {
-						Intent mapIntent = new Intent(Intent.ACTION_VIEW, weburl);
-						PackageManager packageManager = getActivity().getPackageManager();
-						List<ResolveInfo> activities = packageManager.queryIntentActivities(mapIntent, 0);
-						boolean isIntentSafe = activities.size() > 0;
-						if (isIntentSafe) {
-							startActivity(mapIntent);
-						}
-					} else {
-						Snackbar.make(view, "Not available for this location", Snackbar.LENGTH_LONG)
-								.setAction("Action", null).show();
-					}
-				}
-			});
-
-			mbtnPhone.setOnClickListener(new View.OnClickListener() {
-				@Override
-				public void onClick(View view) {
-					if(!place.getmPhone().equals("None")) {
-						Uri number = Uri.parse("tel:" + place.getmPhone());
-
-						Intent callIntent = new Intent(Intent.ACTION_CALL, number);
-						if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.CALL_PHONE)
-								!= PackageManager.PERMISSION_GRANTED) {
-							return;
-						}
-						startActivity(callIntent);
-					}
-					else{
-						Snackbar.make(view, "Not available for this location", Snackbar.LENGTH_LONG)
-								.setAction("Action", null).show();
-					}
-				}
-			});
-
-			mbtnSms.setOnClickListener(new View.OnClickListener() {
-				@Override
-				public void onClick(View view) {
-					if (!place.getmPhone().equals("None")){
-						Intent smsIntent = new Intent(Intent.ACTION_VIEW);
-						smsIntent.setType("vnd.android-dir/mms-sms");
-						smsIntent.putExtra("sms_body", "Hi");
-						smsIntent.putExtra("address", place.getmPhone());
-						startActivity(smsIntent);
-					}
-					else{
-						Snackbar.make(view, "Not available for this location", Snackbar.LENGTH_LONG)
-								.setAction("Action", null).show();
-					}
 				}
 			});
 

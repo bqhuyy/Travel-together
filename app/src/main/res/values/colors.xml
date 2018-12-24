@@ -30,6 +30,8 @@
 
     <color name="black_overlay">#66000000</color>
 
-    deeppurple, red_300, colorPrimaryDark, slightlyGreen, red_pink, darkblue
-    #7c4dff, #E43F3F, #3FAED3, #09D07A, #D81B60, #23283a, #9E9E9E, #ffb300
+    <color name="inbox_primary">#4285f4</color>
+    <color name="inbox_primary_dark">#3367d6</color>
+    <color name="inbox_accent">#db4437</color>
+
 </resources>

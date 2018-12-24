@@ -33,6 +33,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.leinardi.android.speeddial.SpeedDialView;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -70,6 +71,7 @@ public class PlanListActivity extends AppCompatActivity {
 		setContentView(R.layout.activity_plan_list);
 
 		Toolbar toolbar = findViewById(R.id.toolbar_planlist);
+
 		setSupportActionBar(toolbar);
 
 		// toolbar fancy stuff
