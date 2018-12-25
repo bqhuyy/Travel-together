@@ -19,16 +19,20 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".LoginActivity"
-            android:theme="@style/ThemeOverlay.MyNoTitleActivity">
+            android:theme="@style/ThemeOverlay.MyNoTitleActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".PlanListActivity" />
-        <activity android:name=".PlaceListInPlanActivity" />
-        <activity android:name=".UploadImageActivity" />
+        <activity android:name=".PlanListActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".PlaceListInPlanActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".UploadImageActivity"
+            android:screenOrientation="portrait"/>
 
         <provider
             android:name="android.support.v4.content.FileProvider"
@@ -40,10 +44,14 @@
                 android:resource="@xml/filepaths" />
         </provider>
 
-        <activity android:name=".CameraActivity" />
-        <activity android:name=".TestActivity" />
-        <activity android:name=".PlaceDetailActivity" />
-        <activity android:name=".ImageFullscreenActivity" />
+        <activity android:name=".CameraActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".TestActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".PlaceDetailActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".ImageFullscreenActivity"
+            android:screenOrientation="portrait"/>
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
@@ -51,21 +59,32 @@
 
         <activity
             android:name=".Note_Main_Activity"
-            android:theme="@style/NoteTheme"/>
+            android:theme="@style/NoteTheme"
+            android:screenOrientation="portrait"/>
         <activity
-            android:name=".Note_AddNote_Activity" />
+            android:name=".Note_AddNote_Activity"
+            android:screenOrientation="portrait"/>
         <activity
-            android:name=".MainActivity"></activity>
-        <activity android:name=".ManageAccountActivity" />
-        <activity android:name=".EmergencyCallActivity" />
+            android:name=".MainActivity"
+            android:screenOrientation="portrait">
+
+        </activity>
+        <activity android:name=".ManageAccountActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".EmergencyCallActivity"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".SignupActivity"
-            android:theme="@style/ThemeOverlay.MyNoTitleActivity"></activity>
-        <activity android:name=".GroupChatActivity" />
+            android:theme="@style/ThemeOverlay.MyNoTitleActivity"
+            android:screenOrientation="portrait"></activity>
+        <activity android:name=".GroupChatActivity"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".Author_Main_Activity"
-            android:theme="@style/ThemeOverlay.MyNoTitleActivity" />
-        <activity android:name=".OCRActivity"></activity>
+            android:theme="@style/ThemeOverlay.MyNoTitleActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".OCRActivity"
+            android:screenOrientation="portrait"></activity>
     </application>
 
 </manifest>

@@ -240,21 +240,21 @@ public class PlaceListInPlanActivity extends AppCompatActivity {
 						getTheme()))
 				.create());
 
-		mSpeedDialView.addActionItem(new SpeedDialActionItem.Builder(R.id.fab_chat, R.drawable.chatplan)
+		mSpeedDialView.addActionItem(new SpeedDialActionItem.Builder(R.id.fab_chat, R.drawable.group)
 				.setLabel("My group chat")
 				.setLabelColor(Color.WHITE)
 				.setLabelBackgroundColor(ResourcesCompat.getColor(getResources(), R.color.inbox_primary,
 						getTheme()))
 				.create());
 
-		mSpeedDialView.addActionItem(new SpeedDialActionItem.Builder(R.id.fab_add_place, R.drawable.ic_add_24dp)
+		mSpeedDialView.addActionItem(new SpeedDialActionItem.Builder(R.id.fab_add_place, R.drawable.locationpin)
 				.setLabel("Add new place")
 				.setLabelColor(Color.WHITE)
 				.setLabelBackgroundColor(ResourcesCompat.getColor(getResources(), R.color.inbox_primary,
 						getTheme()))
 				.create());
 
-		mSpeedDialView.addActionItem(new SpeedDialActionItem.Builder(R.id.fab_add_mem, R.drawable.addmem)
+		mSpeedDialView.addActionItem(new SpeedDialActionItem.Builder(R.id.fab_add_mem, R.drawable.friendship)
 				.setLabel("Add new member")
 				.setLabelColor(Color.WHITE)
 				.setLabelBackgroundColor(ResourcesCompat.getColor(getResources(), R.color.inbox_primary,

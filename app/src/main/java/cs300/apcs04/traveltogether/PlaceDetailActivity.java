@@ -122,21 +122,21 @@ public class PlaceDetailActivity extends AppCompatActivity implements OnMapReady
 		if(mPlace != null){
 			mToolbar.setTitle(mPlace.getmName());
 
-			mSpeedDialView.addActionItem(new SpeedDialActionItem.Builder(R.id.fab_phone, R.drawable.phoneicon2)
-					.setLabel("Phone call")
+			mSpeedDialView.addActionItem(new SpeedDialActionItem.Builder(R.id.fab_phone, R.drawable.phonecall)
+					.setLabel("Call")
 					.setLabelColor(Color.WHITE)
 					.setLabelBackgroundColor(ResourcesCompat.getColor(getResources(), R.color.inbox_primary,
 					 getTheme()))
 					.create());
 
-			mSpeedDialView.addActionItem(new SpeedDialActionItem.Builder(R.id.fab_sms, R.drawable.smsicon2)
+			mSpeedDialView.addActionItem(new SpeedDialActionItem.Builder(R.id.fab_sms, R.drawable.mail)
 					.setLabel("Send sms")
 					.setLabelColor(Color.WHITE)
 					.setLabelBackgroundColor(ResourcesCompat.getColor(getResources(), R.color.inbox_primary,
 							getTheme()))
 					.create());
 
-			mSpeedDialView.addActionItem(new SpeedDialActionItem.Builder(R.id.fab_web, R.drawable.webicon2)
+			mSpeedDialView.addActionItem(new SpeedDialActionItem.Builder(R.id.fab_web, R.drawable.web)
 					.setLabel("Go to website")
 					.setLabelColor(Color.WHITE)
 					.setLabelBackgroundColor(ResourcesCompat.getColor(getResources(), R.color.inbox_primary,
