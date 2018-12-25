@@ -2,29 +2,31 @@
 <LinearLayout
     android:id="@+id/PlanItem_plan_layout"
     xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
-    android:layout_height="60dp"
+    android:layout_height="100dp"
     android:orientation="vertical"
     >
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <TextView
+            android:id="@+id/PlanItem_plan_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="dsadad"
+            android:layout_gravity="center_horizontal|center_vertical"
+            android:textSize="25dp"
+            android:textColor="@color/white"
+            />
 
-    <TextView
-        android:id="@+id/PlanItem_plan_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="dsadad"
-        android:layout_gravity="center"
-        android:textSize="25dp"
-        android:layout_marginLeft="10dp"
-        android:textColor="@color/white"
-        />
-
-    <TextView
-        android:id="@+id/PlanItem_plan_added_date"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="15dp"
-        android:text="May 20 2018"
-        android:layout_marginRight="10dp"
-        android:layout_gravity="right"
-
-        />
+        <TextView
+            android:id="@+id/PlanItem_plan_added_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="15dp"
+            android:text="May 20 2018"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="5dp"
+            android:layout_gravity="right|bottom"
+            />
+    </FrameLayout>
 </LinearLayout>
