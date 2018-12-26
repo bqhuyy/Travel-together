@@ -324,6 +324,7 @@ public class PlaceListInPlanActivity extends AppCompatActivity {
 					case R.id.fab_chat:
 						Intent intent_chat = new Intent(PlaceListInPlanActivity.this, GroupChatActivity.class);
 						intent_chat.putExtra("planID", mPlanID);
+						intent_chat.putExtra("planTitle", mPlanTitle);
 						startActivity(intent_chat);
 						overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
 						return true;

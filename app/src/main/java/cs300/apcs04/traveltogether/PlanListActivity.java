@@ -218,7 +218,9 @@ public class PlanListActivity extends AppCompatActivity {
 				Plan plan = mArrayList.get(viewHolder.getAdapterPosition());
 				String id = plan.getmPlanID();
 				mRefPlan.child(id).removeValue();
-				mRef.child(mUserID).child("mPlans").child(id).removeValue();
+				mDatabase.getReference("user").child(mUserID).child("mPlans").child(id).removeValue();
+				mDatabase.getReference().child("note/" + id).removeValue();
+				mDatabase.getReference().child("message/"+ id).removeValue();
 				mAdapter.onItemRemove(viewHolder.getAdapterPosition());
 
 			}

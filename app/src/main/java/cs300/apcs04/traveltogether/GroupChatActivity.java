@@ -50,6 +50,7 @@ public class GroupChatActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         planID = intent.getStringExtra("planID");
+        String planTitle = intent.getStringExtra("planTitle");
         mUser = FirebaseAuth.getInstance().getCurrentUser().getUid();
         database = FirebaseDatabase.getInstance();
         messageRef = database.getReference("message/"+planID);
@@ -61,7 +62,7 @@ public class GroupChatActivity extends AppCompatActivity {
 
         // toolbar fancy stuff
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle("");
+        getSupportActionBar().setTitle(planTitle);
 
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
