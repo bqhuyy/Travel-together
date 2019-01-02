@@ -64,8 +64,8 @@ public class Note_AddNote_Activity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // Add note to Database
-                String newTitle = etTitle.getText().toString();
-                String newDesc = etDesc.getText().toString();
+                String newTitle = etTitle.getText().toString().trim();
+                String newDesc = etDesc.getText().toString().trim();
                 int callback = 0;
                 Intent data = new Intent(Note_AddNote_Activity.this, Note_Main_Activity.class);
                 if (!editingNote){

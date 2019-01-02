@@ -79,9 +79,9 @@ public class PlaceImagesFragment extends Fragment{
 										Bitmap bm = ((BitmapDrawable) img.getDrawable()).getBitmap();
 										bm.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
 										String path = MediaStore.Images.Media.insertImage(getContext().getContentResolver(), bm, "Title", null);
-										Uri imgUri = Uri.parse(path);
+										//Uri imgUri = Uri.parse(path);
 										Intent intent = new Intent(getContext(), ImageFullscreenActivity.class);
-										intent.putExtra("image_uri_view", imgUri.toString());
+										intent.putExtra("image_uri_view", path);
 										startActivity(intent);
 									}
 								});
