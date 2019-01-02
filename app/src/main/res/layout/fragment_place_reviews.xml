@@ -12,12 +12,19 @@
         android:gravity="right"
         android:background="@android:color/background_light"
         >
-        <ImageView
+        <!--<ImageView
             android:layout_width="50dp"
             android:layout_height="wrap_content"
             android:src="@drawable/yellowstar"
             android:layout_gravity="center"
             android:layout_marginRight="5dp"
+            />-->
+
+        <RatingBar
+            android:id="@+id/rating_bar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:theme="@style/RatingBar"
             />
 
         <TextView

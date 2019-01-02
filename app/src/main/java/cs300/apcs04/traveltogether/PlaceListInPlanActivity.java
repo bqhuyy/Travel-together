@@ -362,7 +362,7 @@ public class PlaceListInPlanActivity extends AppCompatActivity {
 
 			@Override
 			public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDir) {
-				Toast.makeText(PlaceListInPlanActivity.this, "removed", Toast.LENGTH_SHORT).show();
+				Toast.makeText(PlaceListInPlanActivity.this, "Removed", Toast.LENGTH_SHORT).show();
 				//Remove swiped item from list and notify the RecyclerView
 				/*int position = viewHolder.getAdapterPosition();
 				arrayList.remove(position);

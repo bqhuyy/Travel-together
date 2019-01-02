@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import org.json.JSONArray;
@@ -26,6 +27,7 @@ public class PlaceReviewsFragment extends Fragment {
 	private ReviewAdapter mAdapter;
 	private ReviewData mReviewData;
 	private TextView mRating;
+	private RatingBar mRatingBar;
 
 	@Nullable
 	@Override
@@ -36,10 +38,12 @@ public class PlaceReviewsFragment extends Fragment {
 		float rating = (float) getArguments().getFloat("average_rating");
 
 		mRating = (TextView) v.findViewById(R.id.rating);
+		mRatingBar = v.findViewById(R.id.rating_bar);
+
 		mRecyclerView = (RecyclerView) v.findViewById(R.id.review_list);
 
 		mRating.setText(String.valueOf(rating));
-
+		mRatingBar.setRating(rating);
 
 		mAdapter = new ReviewAdapter(mArrayList, getContext());
 		mRecyclerView.setHasFixedSize(true);

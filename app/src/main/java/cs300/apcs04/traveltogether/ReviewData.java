@@ -1,6 +1,8 @@
 package cs300.apcs04.traveltogether;
 
-public class ReviewData {
+import java.io.Serializable;
+
+public class ReviewData implements Serializable{
 	private String username;
 	private String avt;
 	private String review;

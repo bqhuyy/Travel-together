@@ -36,11 +36,12 @@ public class ImageFullscreenActivity extends AppCompatActivity {
 
 		Intent i = getIntent();
 		imgUri = Uri.parse(i.getStringExtra("image_uri_view"));
+
 		ImageView img = new ImageView(this);
 		img.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
 		Picasso.get().load(imgUri).into(img);
 
-		LinearLayout linearLayout = (LinearLayout) findViewById(R.id.layout_img);
+		LinearLayout linearLayout = findViewById(R.id.layout_img);
 		linearLayout.addView(img);
 	}
 

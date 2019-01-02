@@ -10,6 +10,11 @@
         <item name="android:windowTranslucentStatus">true</item>
     </style>
 
+    <style name="RatingBar" parent="Theme.AppCompat">
+        <item name="colorControlNormal">@color/yellow</item>
+        <item name="colorControlActivated">@color/grey_100</item>
+    </style>
+
     <style name="ThemeOverlay.MyToolbarText" parent="AppTheme">
         <item name="android:gravity">center</item>
         <item name="android:textSize">25sp</item>
