@@ -11,9 +11,13 @@
         android:orientation="horizontal"
         android:gravity="right"
         android:background="@android:color/background_light"
+        android:layout_margin="10dp"
         >
+
         <!--<ImageView
             android:layout_width="50dp"
+        <ImageView
+            android:layout_width="40dp"
             android:layout_height="wrap_content"
             android:src="@drawable/yellowstar"
             android:layout_gravity="center"
@@ -32,7 +36,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="4.6"
-            android:textSize="40dp"
+            android:textSize="30dp"
+            android:layout_marginRight="5dp"
+            android:layout_gravity="center"
             />
 
     </LinearLayout>

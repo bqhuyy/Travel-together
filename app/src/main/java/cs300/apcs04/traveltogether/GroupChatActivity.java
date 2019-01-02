@@ -75,11 +75,20 @@ public class GroupChatActivity extends AppCompatActivity {
         chatView.setOnClickSendButtonListener(new ChatView.OnClickSendButtonListener() {
             @Override
             public void onSendButtonClick(String body) {
-                messageRef.push().setValue(new ChatMessage(body,
-                        FirebaseAuth.getInstance().getCurrentUser().getUid()));
+                if (!isEmptyString(body)) {
+                    messageRef.push().setValue(new ChatMessage(body,
+                            FirebaseAuth.getInstance().getCurrentUser().getUid()));
+                }
             }
         });
         getData();
+    }
+
+    boolean isEmptyString(String s) {
+        s = s.replace(" ","");
+        if (s.equals(""))
+            return true;
+        return false;
     }
 
     public void getData() {
