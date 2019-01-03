@@ -173,6 +173,9 @@ public class PlaceDetailActivity extends AppCompatActivity implements OnMapReady
 							Intent callIntent = new Intent(Intent.ACTION_CALL, number);
 							if (ActivityCompat.checkSelfPermission(PlaceDetailActivity.this, Manifest.permission.CALL_PHONE)
 									!= PackageManager.PERMISSION_GRANTED) {
+								ActivityCompat.requestPermissions(PlaceDetailActivity.this,
+									new String[]{Manifest.permission.CALL_PHONE},   //request specific permission from user
+									10);
 								return true;
 							}
 							startActivity(callIntent);
