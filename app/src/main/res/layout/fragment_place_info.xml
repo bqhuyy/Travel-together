@@ -13,8 +13,6 @@
         android:layout_height="match_parent"
         >
 
-
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -70,14 +68,14 @@
                         android:layout_width="15dp"
                         android:layout_height="15dp"
                         android:layout_marginLeft="15dp"
-                        android:layout_marginTop="15dp"
+                        android:layout_marginTop="5dp"
                         android:src="@drawable/phoneicon" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="10dp"
-                        android:layout_marginTop="15dp"
+                        android:layout_marginTop="5dp"
                         android:text="Phone"
                         android:textColor="@android:color/black"
                         android:textStyle="bold" />
@@ -87,7 +85,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="10dp"
-                        android:layout_marginTop="15dp"
+                        android:layout_marginTop="5dp"
                         android:text="012547789777"
                         android:textColor="@android:color/holo_red_dark" />
 
@@ -160,14 +158,13 @@
 
                 </LinearLayout>
 
-                <TextView
-                    android:id="@+id/week_time"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="40dp"
-                    android:layout_marginTop="10dp"
-                    android:textColor="@android:color/black"
-                    />
+                    <TextView
+                        android:id="@+id/week_time"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="40dp"
+                        android:layout_marginTop="10dp"
+                        android:textColor="@android:color/black" />
 
             </LinearLayout>
 

@@ -3,7 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:layout_marginTop="15dp"
+    android:layout_margin="10dp"
     >
 
     <LinearLayout
@@ -36,7 +36,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="5dp"
                 >
                 <RatingBar
                     android:id="@+id/user_rating"
@@ -60,6 +60,7 @@
                 android:layout_height="wrap_content"
                 android:textSize="15dp"
                 android:text="dqwdhjqfnjxsbjiurhw"
+                android:layout_marginTop="5dp"
                 />
         </LinearLayout>
 
