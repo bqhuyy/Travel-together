@@ -102,10 +102,10 @@ public class OCRActivity extends AppCompatActivity {
 				mBitmap = BitmapFactory.decodeFile(image_file_path, bmOptions);
 
 				if(mBitmap != null){
-					/*Picasso.get().load(new File(image_file_path)).into(mCaptureView);
-					m_tess.setImage(mBitmap);*/
-					Picasso.get().load(R.drawable.blockchain).into(mCaptureView);
-					m_tess.setImage(BitmapFactory.decodeResource(getResources(), R.drawable.blockchain));
+					Picasso.get().load(new File(image_file_path)).into(mCaptureView);
+					m_tess.setImage(mBitmap);
+					/*Picasso.get().load(R.drawable.blockchain).into(mCaptureView);
+					m_tess.setImage(BitmapFactory.decodeResource(getResources(), R.drawable.blockchain));*/
 					String result = m_tess.getUTF8Text().toLowerCase();
 					TextView resultView = (TextView) findViewById(R.id.txt_result);
 					resultView.setText(result);

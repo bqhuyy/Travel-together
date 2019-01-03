@@ -11,8 +11,8 @@
     </style>
 
     <style name="RatingBar" parent="Theme.AppCompat">
-        <item name="colorControlNormal">@color/yellow</item>
-        <item name="colorControlActivated">@color/grey_100</item>
+        <item name="colorControlNormal">@color/grey_300</item>
+        <item name="colorControlActivated">@color/yellow</item>
     </style>
 
     <style name="ThemeOverlay.MyToolbarText" parent="AppTheme">
