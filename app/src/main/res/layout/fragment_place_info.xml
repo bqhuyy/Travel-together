@@ -19,6 +19,16 @@
             android:orientation="vertical">
 
             <LinearLayout
+                android:id="@+id/type"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="15dp"
+                android:orientation="horizontal">
+
+            </LinearLayout>
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5dp"
@@ -93,16 +103,6 @@
                 </LinearLayout>
 
                 <LinearLayout
-                    android:id="@+id/type"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="15dp"
-                    android:layout_marginTop="15dp"
-                    android:orientation="horizontal">
-
-                </LinearLayout>
-
-                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
@@ -147,28 +147,18 @@
                         android:src="@drawable/descriptionicon" />
 
                     <TextView
-                        android:id="@+id/Description"
+                        android:id="@+id/week_time"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="10dp"
                         android:layout_marginTop="15dp"
                         android:text="WeekTime"
                         android:textColor="@android:color/black"
-                        android:textStyle="bold" />
+                         />
 
                 </LinearLayout>
 
-                    <TextView
-                        android:id="@+id/week_time"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="40dp"
-                        android:layout_marginTop="10dp"
-                        android:textColor="@android:color/black" />
-
             </LinearLayout>
-
-
 
             </FrameLayout>
 

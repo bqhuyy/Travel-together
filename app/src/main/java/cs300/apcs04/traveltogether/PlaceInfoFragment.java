@@ -14,6 +14,9 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.text.Spannable;
+import android.text.SpannableStringBuilder;
+import android.text.style.StyleSpan;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -82,13 +85,16 @@ public class PlaceInfoFragment extends Fragment{
 			mphone.setText(place.getmPhone());
 			ArrayList<String> weektime = place.getmWeek_time();
 			if (weektime != null) {
-				StringBuilder s = new StringBuilder();
-				s.append("\n");
+				StringBuilder sb = new StringBuilder();
+				StyleSpan bss = new StyleSpan(android.graphics.Typeface.BOLD);
+				sb.append("WeekTime" + "\n");
 				for (int i = 0; i < weektime.size(); i++) {
-					s.append(weektime.get(i));
-					s.append("\n");
+					sb.append(weektime.get(i));
+					sb.append("\n");
 				}
-				mweek_time_txt.setText(s.toString());
+				SpannableStringBuilder sp = new SpannableStringBuilder(sb.toString());
+				sp.setSpan(bss, 0, 8, Spannable.SPAN_INCLUSIVE_INCLUSIVE);
+				mweek_time_txt.setText(sp);
 			} else {
 				mweek_time_txt.setText("None");
 			}
