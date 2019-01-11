@@ -4,11 +4,13 @@
 - Display demo for plan list, place list
 ## Setup
 - Firebase
+```
     implementation 'com.google.firebase:firebase-database:16.0.3'
     implementation 'com.google.firebase:firebase-core:16.0.4'
     implementation 'com.google.firebase:firebase-storage:16.0.3'
     implementation 'com.google.firebase:firebase-auth:16.0.4'
     implementation 'com.google.firebase:firebase-messaging:17.3.4'
+ ```
 ## Dependencies:  
 - Volley  
 ```
