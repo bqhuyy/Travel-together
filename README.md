@@ -6,7 +6,7 @@
   3) Schedule for a trip: this feature helps the user to store all the expected places to go, including the information of these places such as address, work hours, telephone number, images, and reviews
 
 ## Prerequisite
-
+  1) A
 ## Setup
 
 ### Firebase
