@@ -1,5 +1,7 @@
 # TRAVEL TOGETHER - TRAITORS
 
+## Prerequisite
+
 ## Setup
 
 ### Firebase
