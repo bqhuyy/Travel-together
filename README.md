@@ -36,7 +36,7 @@ implementation 'com.firebaseui:firebase-ui:0.6.2'
 implementation 'com.android.volley:volley:1.1.1'
 ```
   
-- Expandable recylerview  
+- Expandable recylerview
 [Visit here](https://github.com/thoughtbot/expandable-recycler-view)  
 ```
 implementation 'com.thoughtbot:expandablerecyclerview:1.3'
@@ -45,7 +45,7 @@ implementation 'com.thoughtbot:expandablerecyclerview:1.3'
 implementation 'com.thoughtbot:expandablecheckrecyclerview:1.4'
 ```
 
-- ChatView: 
+- ChatView
 [Visit here](https://github.com/shrikanth7698/ChatView)
 ```
 implementation 'com.github.shrikanth7698:ChatView:v0.1.2'
