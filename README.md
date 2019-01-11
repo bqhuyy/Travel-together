@@ -45,9 +45,34 @@ implementation 'com.thoughtbot:expandablerecyclerview:1.3'
 implementation 'com.thoughtbot:expandablecheckrecyclerview:1.4'
 ```
 
-- Chatview: https://github.com/shrikanth7698/ChatView
+- ChatView: 
+[Visit here](https://github.com/shrikanth7698/ChatView)
 ```
 implementation 'com.github.shrikanth7698:ChatView:v0.1.2'
+```
+
+- Picasso
+[Visit here](https://github.com/square/picasso)
+```
+implementation 'com.squareup.picasso:picasso:2.71828'
+```
+
+- CircleImageView
+[Visit here](https://github.com/hdodenhof/CircleImageView)
+```
+implementation 'de.hdodenhof:circleimageview:2.2.0'
+```
+
+- Floating Action Button Speed Dial
+[Visit here](https://github.com/leinardi/FloatingActionButtonSpeedDial)
+```
+implementation 'com.leinardi.android:speed-dial:2.0.0'
+```
+
+- tess-two
+[Visit here](https://github.com/rmtheis/tess-two)
+```
+implementation 'com.rmtheis:tess-two:9.0.0'
 ```
 
 ## Demo
