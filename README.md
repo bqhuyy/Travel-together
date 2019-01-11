@@ -6,7 +6,10 @@
   3) Schedule for a trip: this feature helps the user to store all the expected places to go, including the information of these places such as address, work hours, telephone number, images, and reviews
 
 ## Prerequisite
-  1) A
+  1) Android OS 5.0 (API 21) or higher
+  2) Install Android Studio
+  3) Using Linux environment to run Django server
+  4) Google account to setup Firebase
 ## Setup
 
 ### Firebase
