@@ -16,6 +16,12 @@ implementation 'com.thoughtbot:expandablerecyclerview:1.3'
 ```
 implementation 'com.thoughtbot:expandablecheckrecyclerview:1.4'
 ```
+## Landmark recognition (data + source code)
+- Use SVM to classify 20 places in Vietnam
+- link: https://drive.google.com/drive/folders/1Covx25GHrjebKErLCLAuSeSEkMUkSCm1?usp=sharing
+
+## Django server
+- link: https://drive.google.com/drive/folders/15uQsMTcluuR54mwRgKEKJn4Y1jHsdip0?usp=sharing
 
 ## Demo
-https://drive.google.com/file/d/1fVCtW4NziRGm9pgkqQcW_wf9urybtCSE/view?usp=sharing
+- link: https://drive.google.com/file/d/1fVCtW4NziRGm9pgkqQcW_wf9urybtCSE/view?usp=sharing
