@@ -13,6 +13,7 @@ implementation 'com.google.firebase:firebase-core:16.0.4'
 implementation 'com.google.firebase:firebase-storage:16.0.3'
 implementation 'com.google.firebase:firebase-auth:16.0.4'
 implementation 'com.google.firebase:firebase-messaging:17.3.4'
+implementation 'com.firebaseui:firebase-ui:0.6.2'
  ```
  
 ### Django server
@@ -43,5 +44,11 @@ implementation 'com.thoughtbot:expandablerecyclerview:1.3'
 ```
 implementation 'com.thoughtbot:expandablecheckrecyclerview:1.4'
 ```
+
+- Chatview: https://github.com/shrikanth7698/ChatView
+```
+implementation 'com.github.shrikanth7698:ChatView:v0.1.2'
+```
+
 ## Demo
 - link: https://drive.google.com/file/d/1fVCtW4NziRGm9pgkqQcW_wf9urybtCSE/view?usp=sharing
