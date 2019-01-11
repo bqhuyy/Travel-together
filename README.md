@@ -3,7 +3,7 @@
 - The app will have these key features:
   1) Landmark recognition: user can take a photo of a famous place in Vietnam, outside or just in the brochure. The photo is sent to the server, and the landmark recognition code (using machine learning method) runs. Details about the place will be displayed to the user.    We decided to build the server by Django.
   2) Text recognition on banners or signs: this feature helps the user to understand the text written in Vietnamese. We decided to use Tesseract OCR.
-  3) Schedule for a trip: this feature helps the user to store all the expected places to go including the information of that place such as address, work hours, telephone number, images, and reviews
+  3) Schedule for a trip: this feature helps the user to store all the expected places to go, including the information of these places such as address, work hours, telephone number, images, and reviews
 
 ## Prerequisite
 
